@@ -18,4 +18,9 @@ class OdeegoApplicationTests {
 	void ciTest() {
 		log.info("CI test test");
 	}
+
+	@Test
+	void cdTest() {
+		log.info("CD test test");
+	}
 }
