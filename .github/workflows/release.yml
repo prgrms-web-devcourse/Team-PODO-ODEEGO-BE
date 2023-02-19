@@ -1,13 +1,13 @@
 name: springboot-gradle-docker-ec2-cd
 
 on:
-  pull_request:
-    branches: [ main ]
-    types: [ closed ]
+  push:
+    branches: [ test ]
+#    types: [ closed ]
 
 jobs:
   build:
-    if: github.event.pull_request.merged == true
+#    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
@@ -42,4 +42,4 @@ jobs:
             docker rm odeego
             docker rmi ${{ secrets.DOCKER_HUB_USERNAME }}/odeego
             docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/odeego
-            docker-compose up -d
+            sudo docker-compose up -d
