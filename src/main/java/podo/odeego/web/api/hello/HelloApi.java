@@ -16,8 +16,8 @@ public class HelloApi {
         return new HelloResponse("hello " + query);
     }
 
-    @GetMapping("/body")
+    @PostMapping("/body")
     public HelloResponse requestBody(@RequestBody HelloRequest request) {
-        return new HelloResponse(request.message());
+        return new HelloResponse("hello " + request.message());
     }
 }
