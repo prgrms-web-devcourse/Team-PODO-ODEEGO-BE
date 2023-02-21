@@ -25,6 +25,16 @@ jobs:
           java-version: '17'
           distribution: 'corretto'
 
+      - name: Set YML
+        env:
+          APPLICATION_YML: "${{ secrets.APPLICATION_YML }}"
+          YML_DIR: src/main/resources
+          YML_DIR_FILE_NAME: application.yml
+        run: |
+          echo $APPLICATION_YML | base64 --decode > src/main/resources/application.yml
+          cd src/main/resources
+          ls -al
+
       - name: Build with Gradle
         run: ./gradlew build
 
