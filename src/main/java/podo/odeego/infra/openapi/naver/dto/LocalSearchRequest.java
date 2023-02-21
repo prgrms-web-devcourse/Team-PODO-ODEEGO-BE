@@ -31,8 +31,8 @@ public class LocalSearchRequest {
 
 		map.add("query", query);
 		map.add("display", String.valueOf(display));
-		map.add("display", String.valueOf(start));
-		map.add("display", sort);
+		map.add("start", String.valueOf(start));
+		map.add("sort", sort);
 
 		return map;
 	}
