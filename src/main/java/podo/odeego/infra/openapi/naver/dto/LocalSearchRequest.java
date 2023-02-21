@@ -3,10 +3,12 @@ package podo.odeego.infra.openapi.naver.dto;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import podo.odeego.domain.place.domain.PlaceCategory;
+
 public class LocalSearchRequest {
 
-	private static final String QUERY_SUFFIX_RESTAURANT = " 맛집";
-	private static final String QUERY_SUFFIX_CAFE = " 카페";
+	private static final String SUFFIX_RESTAURANT = " 맛집";
+	private static final String SUFFIX_CAFE = " 카페";
 
 	private final String query;
 	private final int display = 5;
@@ -18,12 +20,11 @@ public class LocalSearchRequest {
 		this.sort = sort;
 	}
 
-	public static LocalSearchRequest newRestaurantRequest(String query, SortType sortType) {
-		return new LocalSearchRequest(query + QUERY_SUFFIX_RESTAURANT, sortType.literal);
-	}
-
-	public static LocalSearchRequest newCafeRequest(String query, SortType sortType) {
-		return new LocalSearchRequest(query + QUERY_SUFFIX_CAFE, sortType.literal);
+	public static LocalSearchRequest of(String query, PlaceCategory category, SortType sortType) {
+		return switch (category) {
+			case CAFE -> new LocalSearchRequest(query + SUFFIX_CAFE, sortType.type);
+			case RESTAURANT -> new LocalSearchRequest(query + SUFFIX_RESTAURANT, sortType.type);
+		};
 	}
 
 	public MultiValueMap<String, String> toMultiValueMap() {
@@ -42,10 +43,10 @@ public class LocalSearchRequest {
 		RANDOM("random"),
 		COMMENT("comment");
 
-		private final String literal;
+		private final String type;
 
-		SortType(String literal) {
-			this.literal = literal;
+		SortType(String type) {
+			this.type = type;
 		}
 	}
 }
