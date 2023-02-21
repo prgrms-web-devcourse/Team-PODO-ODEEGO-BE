@@ -5,16 +5,16 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
-import podo.odeego.domain.user.service.UserService;
+import podo.odeego.domain.user.service.MemberService;
 import podo.odeego.web.security.oauth2.OAuth2AuthenticationSuccessHandler;
 
 @EnableWebSecurity
 public class WebSecurityConfig {
 
-	private final UserService userService;
+	private final MemberService memberService;
 
-	public WebSecurityConfig(UserService userService) {
-		this.userService = userService;
+	public WebSecurityConfig(MemberService memberService) {
+		this.memberService = memberService;
 	}
 
 	@Bean
@@ -28,6 +28,6 @@ public class WebSecurityConfig {
 
 	@Bean
 	public OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler() {
-		return new OAuth2AuthenticationSuccessHandler(userService);
+		return new OAuth2AuthenticationSuccessHandler(memberService);
 	}
 }

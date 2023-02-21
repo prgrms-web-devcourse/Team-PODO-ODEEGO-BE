@@ -13,16 +13,16 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
-import podo.odeego.domain.user.service.UserService;
+import podo.odeego.domain.user.service.MemberService;
 
 public class OAuth2AuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
 	private final Logger log = LoggerFactory.getLogger(getClass());
 
-	private final UserService userService;
+	private final MemberService memberService;
 
-	public OAuth2AuthenticationSuccessHandler(UserService userService) {
-		this.userService = userService;
+	public OAuth2AuthenticationSuccessHandler(MemberService memberService) {
+		this.memberService = memberService;
 	}
 
 	@Override
