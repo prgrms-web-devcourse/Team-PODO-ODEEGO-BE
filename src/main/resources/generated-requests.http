@@ -1,0 +1,10 @@
+### 장소 추천 - 모든 장소
+GET http://localhost:8080/api/v1/places?station-name=강남역&address=서울 강남구 강남대로 396
+
+
+### 장소 추천 - 음식점
+GET http://localhost:8080/api/v1/places?station-name=강남역&address=서울 강남구 강남대로 396&category=RESTAURANT
+
+
+### 장소 추천 - 카페
+GET http://localhost:8080/api/v1/places?station-name=강남역&address=서울 강남구 강남대로 396&category=CAFE
