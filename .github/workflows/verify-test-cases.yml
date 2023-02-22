@@ -31,10 +31,10 @@ jobs:
           YML_DIR: src/main/resources
           YML_DIR_FILE_NAME: application.yml
         run: |
-          echo "${{ secrets.APPLICATION_YML }}" | base64 --decode > src/main/resources/application.yml
-          mkdir src/main/resources
-          find src
-          ls -al
+          sudo mkdir src/main/resources
+          sudo echo "${{ secrets.APPLICATION_YML }}" | base64 --decode > src/main/resources/application.yml
+          sudo find src
+          sudo ls -al
 
       - name: Build with Gradle
         run: ./gradlew build
