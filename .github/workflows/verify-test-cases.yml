@@ -31,8 +31,8 @@ jobs:
         #          YML_DIR: src/main/resources
         #          YML_DIR_FILE_NAME: application.yml
         run: |
-          echo "${{ secrets.APPLICATION_YML }}" | base64 --decode > src/main/resources/application.yml
           mkdir src/main/resources
+          echo "${{ secrets.APPLICATION_YML }}" | base64 --decode > src/main/resources/application.yml
           find src
           ls -al
 
