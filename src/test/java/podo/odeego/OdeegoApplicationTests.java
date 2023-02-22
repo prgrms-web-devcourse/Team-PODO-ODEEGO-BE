@@ -1,5 +1,6 @@
 package podo.odeego;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,12 @@ class OdeegoApplicationTests {
 
 	@Test
 	void cdTest() {
+		log.info("CD test test");
+	}
+
+	@Test
+	@DisplayName("CI yml issue")
+	void testMethodNameHere() {
 		log.info("CD test test");
 	}
 }
