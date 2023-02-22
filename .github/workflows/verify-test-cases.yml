@@ -11,6 +11,7 @@ on:
       - '**/build.gradle*'
       - '**/settings.gradle*'
       - '**/application*.yml'
+      - '**/verify-test-cases.yml'
       - '**.sql'
 
 jobs:
