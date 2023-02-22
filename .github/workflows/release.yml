@@ -21,14 +21,10 @@ jobs:
           distribution: 'corretto'
 
       - name: Set YML
-        env:
-          APPLICATION_YML: "${{ secrets.APPLICATION_YML }}"
-          YML_DIR: src/main/resources
-          YML_DIR_FILE_NAME: application.yml
         run: |
-          echo $APPLICATION_YML | base64 --decode > src/main/resources/application.yml
-          cd src/main/resources
-          ls -al
+          mkdir src/main/resources
+          echo "${{ secrets.APPLICATION_YML }}" | base64 --decode > src/main/resources/application.yml
+          find src
 
       - name: Build with Gradle
         run: ./gradlew bootJar
