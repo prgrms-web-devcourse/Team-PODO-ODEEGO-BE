@@ -35,7 +35,9 @@ jobs:
           sudo echo "${{ secrets.APPLICATION_YML }}" | base64 --decode > src/main/resources/application.yml
           sudo find src
           sudo ls -al
-
+          
+      
+      
       - name: Build with Gradle
         run: ./gradlew build
 
