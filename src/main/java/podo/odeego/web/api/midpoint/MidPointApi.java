@@ -13,7 +13,7 @@ import podo.odeego.domain.midpoint.dto.MidPointSearchResponse;
 import podo.odeego.domain.midpoint.service.MidPointService;
 
 @RestController
-@RequestMapping("/api/v1/midpoint")
+@RequestMapping("/api/v1/mid-points")
 public class MidPointApi {
 
 	private final MidPointService midPointService;
