@@ -8,12 +8,10 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.hibernate.validator.constraints.Range;
-
 public record MidPointSearchRequest(
 
 	@NotNull
-	@Size(min = 1, max = 4, message = "출발지의 개수를 확인해주세요.")
+	@Size(min = 2, max = 4, message = "출발지의 개수를 확인해주세요.")
 	List<Start> stations
 ) {
 	public record Start(
@@ -22,7 +20,7 @@ public record MidPointSearchRequest(
 		String name,
 
 		@NotNull
-		@Range
+		@DecimalMin("0.0")
 		double lat,
 
 		@NotNull
