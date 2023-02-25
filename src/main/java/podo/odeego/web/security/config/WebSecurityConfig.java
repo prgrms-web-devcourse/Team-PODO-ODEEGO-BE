@@ -20,6 +20,9 @@ public class WebSecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
+			.formLogin().disable();
+
+		http
 			.oauth2Login()
 			.successHandler(oAuth2AuthenticationSuccessHandler());
 
