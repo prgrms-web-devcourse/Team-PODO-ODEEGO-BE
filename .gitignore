@@ -204,3 +204,5 @@ gradle-app.setting
 
 # .idea
 .idea
+/rule-config/
+/src/main/resources/application.yml
