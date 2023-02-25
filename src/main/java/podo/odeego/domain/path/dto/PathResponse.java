@@ -12,9 +12,9 @@ public record PathResponse(
 	List<StationResponse> stations
 ) {
 
-	public static PathResponse from(Path path, List<Station> stations) {
-		List<StationResponse> stationRespons = convert(stations);
-		return new PathResponse(path.start(), path.requiredTime(), stationRespons);
+	public static PathResponse from(Path path, List<Station> routeStations) {
+		List<StationResponse> stationResponse = convert(routeStations);
+		return new PathResponse(path.start(), path.requiredTime(), stationResponse);
 	}
 
 	private static List<StationResponse> convert(List<Station> stations) {
