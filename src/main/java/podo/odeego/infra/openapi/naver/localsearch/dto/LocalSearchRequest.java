@@ -1,22 +1,22 @@
-package podo.odeego.infra.openapi.naver.dto;
+package podo.odeego.infra.openapi.naver.localsearch.dto;
 
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import podo.odeego.domain.place.domain.PlaceCategory;
+import podo.odeego.infra.openapi.naver.ClientRequest;
 
-public class LocalSearchRequest {
+public class LocalSearchRequest extends ClientRequest {
 
 	private static final String SUFFIX_RESTAURANT = " 맛집";
 	private static final String SUFFIX_CAFE = " 카페";
 
-	private final String query;
 	private final int display = 5;
 	private final int start = 1;
 	private final String sort;
 
-	private LocalSearchRequest(String query, String sort) {
-		this.query = query;
+	public LocalSearchRequest(String query, String sort) {
+		super(query);
 		this.sort = sort;
 	}
 
@@ -27,10 +27,11 @@ public class LocalSearchRequest {
 		};
 	}
 
+	@Override
 	public MultiValueMap<String, String> toMultiValueMap() {
 		MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
 
-		map.add("query", query);
+		map.add("query", super.query());
 		map.add("display", String.valueOf(display));
 		map.add("start", String.valueOf(start));
 		map.add("sort", sort);

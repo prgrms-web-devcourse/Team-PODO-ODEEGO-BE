@@ -14,14 +14,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import podo.odeego.domain.place.domain.PlaceCategory;
 import podo.odeego.domain.place.dto.SimplePlaceResponse;
+import podo.odeego.infra.openapi.naver.localsearch.LocalSearchClient;
 
 @SpringBootTest
-class NaverClientTest {
+class LocalSearchClientTest {
 
 	private final Logger log = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
-	private NaverClient naverClient;
+	private LocalSearchClient localSearchClient;
 
 	@Test
 	@DisplayName("네이버 지역 검색 API를 호출할 수 있다.")
@@ -30,7 +31,7 @@ class NaverClientTest {
 		String query = "강남역";
 
 		// when
-		List<SimplePlaceResponse> responses = naverClient.searchLocal(query);
+		List<SimplePlaceResponse> responses = localSearchClient.searchLocal(query);
 
 		// then
 		assertThat(responses).isNotNull();
@@ -48,8 +49,8 @@ class NaverClientTest {
 		PlaceCategory restaurant = PlaceCategory.RESTAURANT;
 
 		// when
-		List<SimplePlaceResponse> searchCafeResponses = naverClient.searchLocal(query, cafe);
-		List<SimplePlaceResponse> searchRestaurantResponses = naverClient.searchLocal(query, restaurant);
+		List<SimplePlaceResponse> searchCafeResponses = localSearchClient.searchLocal(query, cafe);
+		List<SimplePlaceResponse> searchRestaurantResponses = localSearchClient.searchLocal(query, restaurant);
 
 		// then
 		assertAll(
