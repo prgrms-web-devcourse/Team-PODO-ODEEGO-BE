@@ -23,7 +23,7 @@ public class MemberService {
 
 	@Transactional(readOnly = true)
 	public Member findByUsername(String username) {
-		return memberRepository.findByUsername(username)
+		return memberRepository.findByNickname(username)
 			.orElseThrow(() -> new RuntimeException("User not found: username - %s".formatted(username)));
 	}
 

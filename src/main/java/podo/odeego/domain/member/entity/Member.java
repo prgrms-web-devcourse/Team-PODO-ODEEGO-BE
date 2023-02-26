@@ -15,7 +15,7 @@ public class Member {
 	private Long id;
 
 	@Column(length = 20)
-	private String username;
+	private String nickname;
 
 	@Column(nullable = false, length = 20)
 	private String provider;
@@ -31,17 +31,17 @@ public class Member {
 		this.providerId = providerId;
 	}
 
-	public Member(String username, String provider, String providerId) {
+	public Member(String nickname, String provider, String providerId) {
 		this(provider, providerId);
-		this.username = username;
+		this.nickname = nickname;
 	}
 
 	public Long id() {
 		return id;
 	}
 
-	public String username() {
-		return username;
+	public String nickname() {
+		return nickname;
 	}
 
 	public String provider() {
