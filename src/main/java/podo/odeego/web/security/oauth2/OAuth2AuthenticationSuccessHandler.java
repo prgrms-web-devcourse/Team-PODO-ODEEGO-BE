@@ -43,16 +43,18 @@ public class OAuth2AuthenticationSuccessHandler extends SavedRequestAwareAuthent
 		if (authentication instanceof OAuth2AuthenticationToken token) {
 			log.info("OAuth2Authentication Success");
 			OAuth2User oauth2User = token.getPrincipal();
-			String provider = token.getAuthorizedClientRegistrationId();
-			MemberJoinRes memberJoinRes = joinOAuth2UserToMember(oauth2User, provider);
+			MemberJoinRes memberJoinRes = joinOAuth2UserToMember(
+				token.getAuthorizedClientRegistrationId(),
+				oauth2User.getName()
+			);
 			responseLoginSuccess(response, memberJoinRes);
 		} else {
 			super.onAuthenticationSuccess(request, response, authentication);
 		}
 	}
 
-	private MemberJoinRes joinOAuth2UserToMember(OAuth2User oauth2User, String provider) {
-		return memberService.join(oauth2User, provider);
+	private MemberJoinRes joinOAuth2UserToMember(String provider, String providerId) {
+		return memberService.join(provider, providerId);
 	}
 
 	private void responseLoginSuccess(HttpServletResponse response, MemberJoinRes memberJoinRes) throws IOException {
@@ -61,7 +63,6 @@ public class OAuth2AuthenticationSuccessHandler extends SavedRequestAwareAuthent
 
 		response.setContentType("application/json");
 		response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-
 		response.getWriter().write(objectMapper.writeValueAsString(
 			new OAuth2LoginRes(accessToken, refreshToken, memberJoinRes.loginType())
 		));
