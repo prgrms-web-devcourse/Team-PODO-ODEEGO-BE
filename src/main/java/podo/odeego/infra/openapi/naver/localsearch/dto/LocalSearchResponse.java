@@ -1,9 +1,9 @@
-package podo.odeego.infra.openapi.naver.dto;
+package podo.odeego.infra.openapi.naver.localsearch.dto;
 
 import java.util.List;
 
 import podo.odeego.domain.place.dto.SimplePlaceResponse;
-import podo.odeego.infra.openapi.naver.util.PlaceDataParser;
+import podo.odeego.infra.openapi.naver.localsearch.util.PlaceDataParser;
 
 public record LocalSearchResponse(
 	String lastBuildDate,
