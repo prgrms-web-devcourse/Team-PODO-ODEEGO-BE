@@ -13,8 +13,8 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
-import podo.odeego.domain.user.entity.Member;
-import podo.odeego.domain.user.service.MemberService;
+import podo.odeego.domain.member.entity.Member;
+import podo.odeego.domain.member.service.MemberService;
 
 public class OAuth2AuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
