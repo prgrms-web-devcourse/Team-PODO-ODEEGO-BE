@@ -1,7 +1,5 @@
 package podo.odeego.domain.user.service;
 
-import java.util.Map;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -43,15 +41,8 @@ public class MemberService {
 					oauth2User.getName());
 				return member;
 			})
-			.orElseGet(() -> {
-				Map<String, Object> attributes = oauth2User.getAttributes();
-				@SuppressWarnings("unchecked")
-				Map<String, Object> properties = (Map<String, Object>)attributes.get("properties");
-
-				String nickname = (String)properties.get("profile_nickname");
-				return memberRepository.save(
-					new Member("nickname", provider, oauth2User.getName())
-				);
-			});
+			.orElseGet(() -> memberRepository.save(
+				new Member("nickname", provider, oauth2User.getName())
+			));
 	}
 }
