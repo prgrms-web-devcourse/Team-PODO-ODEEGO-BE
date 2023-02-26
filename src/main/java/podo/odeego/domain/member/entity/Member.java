@@ -14,7 +14,7 @@ public class Member {
 	@Column(name = "member_id")
 	private Long id;
 
-	@Column(nullable = false, length = 20)
+	@Column(length = 20)
 	private String username;
 
 	@Column(nullable = false, length = 20)
@@ -26,10 +26,14 @@ public class Member {
 	protected Member() {
 	}
 
-	public Member(String username, String provider, String providerId) {
-		this.username = username;
+	public Member(String provider, String providerId) {
 		this.provider = provider;
 		this.providerId = providerId;
+	}
+
+	public Member(String username, String provider, String providerId) {
+		this(provider, providerId);
+		this.username = username;
 	}
 
 	public Long id() {

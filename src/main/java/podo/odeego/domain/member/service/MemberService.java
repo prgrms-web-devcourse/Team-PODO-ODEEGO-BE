@@ -6,6 +6,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import podo.odeego.domain.member.dto.MemberJoinRes;
 import podo.odeego.domain.member.entity.Member;
 import podo.odeego.domain.member.repository.MemberRepository;
 
@@ -34,15 +35,20 @@ public class MemberService {
 				"User not found: provider - %s / providerId - %s".formatted(provider, providerId)));
 	}
 
-	public Member join(OAuth2User oauth2User, String provider) {
+	public MemberJoinRes join(OAuth2User oauth2User, String provider) {
 		return memberRepository.findByProviderAndProviderId(provider, oauth2User.getName())
 			.map(member -> {
-				log.info("User already joined: {} for provider: {}, providerId: {}.", member, provider,
+				log.info("Member already exist: {} for provider: {}, providerId: {}.", member, provider,
 					oauth2User.getName());
-				return member;
+				return MemberJoinRes.existMember(member.id());
 			})
-			.orElseGet(() -> memberRepository.save(
-				new Member("nickname", provider, oauth2User.getName())
-			));
+			.orElseGet(() -> {
+				log.info("New Member for provider: {}, providerId: {}.", provider,
+					oauth2User.getName());
+				Member newMember = memberRepository.save(
+					new Member(provider, oauth2User.getName())
+				);
+				return MemberJoinRes.newMember(newMember.id());
+			});
 	}
 }

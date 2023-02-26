@@ -16,8 +16,8 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import podo.odeego.domain.user.entity.Member;
-import podo.odeego.domain.user.service.MemberService;
+import podo.odeego.domain.member.dto.MemberJoinRes;
+import podo.odeego.domain.member.service.MemberService;
 import podo.odeego.web.security.jwt.JwtProvider;
 
 public class OAuth2AuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
@@ -41,28 +41,29 @@ public class OAuth2AuthenticationSuccessHandler extends SavedRequestAwareAuthent
 		Authentication authentication
 	) throws ServletException, IOException {
 		if (authentication instanceof OAuth2AuthenticationToken token) {
-			log.info("OAuth2Authentication Successed");
+			log.info("OAuth2Authentication Success");
 			OAuth2User oauth2User = token.getPrincipal();
 			String provider = token.getAuthorizedClientRegistrationId();
-			Member member = joinOAuth2UserToMember(oauth2User, provider);
-			responseLoginSuccess(response, member.id());
+			MemberJoinRes memberJoinRes = joinOAuth2UserToMember(oauth2User, provider);
+			responseLoginSuccess(response, memberJoinRes);
 		} else {
 			super.onAuthenticationSuccess(request, response, authentication);
 		}
 	}
 
-	private Member joinOAuth2UserToMember(OAuth2User oauth2User, String provider) {
+	private MemberJoinRes joinOAuth2UserToMember(OAuth2User oauth2User, String provider) {
 		return memberService.join(oauth2User, provider);
 	}
 
-	private void responseLoginSuccess(HttpServletResponse response, Long memberId) throws IOException {
-		String jwtToken = jwtProvider.generateToken(memberId);
+	private void responseLoginSuccess(HttpServletResponse response, MemberJoinRes memberJoinRes) throws IOException {
+		String accessToken = jwtProvider.generateAccessToken(memberJoinRes.id());
+		String refreshToken = jwtProvider.generateRefreshToken(memberJoinRes.id());
 
 		response.setContentType("application/json");
 		response.setCharacterEncoding(StandardCharsets.UTF_8.name());
 
 		response.getWriter().write(objectMapper.writeValueAsString(
-			new OAuth2LoginRes(jwtToken)
+			new OAuth2LoginRes(accessToken, refreshToken, memberJoinRes.loginType())
 		));
 	}
 }
