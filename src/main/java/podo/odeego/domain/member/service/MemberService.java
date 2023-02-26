@@ -1,4 +1,4 @@
-package podo.odeego.domain.user.service;
+package podo.odeego.domain.member.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -6,8 +6,8 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import podo.odeego.domain.user.entity.Member;
-import podo.odeego.domain.user.repository.MemberRepository;
+import podo.odeego.domain.member.entity.Member;
+import podo.odeego.domain.member.repository.MemberRepository;
 
 @Service
 @Transactional

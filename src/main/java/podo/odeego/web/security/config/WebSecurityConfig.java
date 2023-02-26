@@ -5,7 +5,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
-import podo.odeego.domain.user.service.MemberService;
+import podo.odeego.domain.member.service.MemberService;
 import podo.odeego.web.security.jwt.JwtProvider;
 import podo.odeego.web.security.oauth2.OAuth2AuthenticationSuccessHandler;
 

@@ -1,4 +1,4 @@
-package podo.odeego.domain.user.entity;
+package podo.odeego.domain.member.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

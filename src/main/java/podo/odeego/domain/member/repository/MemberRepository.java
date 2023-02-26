@@ -1,10 +1,10 @@
-package podo.odeego.domain.user.repository;
+package podo.odeego.domain.member.repository;
 
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import podo.odeego.domain.user.entity.Member;
+import podo.odeego.domain.member.entity.Member;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
