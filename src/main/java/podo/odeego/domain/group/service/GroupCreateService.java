@@ -10,25 +10,25 @@ import podo.odeego.domain.group.entity.Group;
 import podo.odeego.domain.group.entity.GroupCapacity;
 import podo.odeego.domain.group.repository.GroupRepository;
 import podo.odeego.domain.member.entity.Member;
-import podo.odeego.domain.member.service.MemberQueryService;
+import podo.odeego.domain.member.service.MemberFindService;
 
 @Service
 @Transactional
 public class GroupCreateService {
 
 	private final GroupRepository groupRepository;
-	private final MemberQueryService memberQueryService;
+	private final MemberFindService memberFindService;
 
 	public GroupCreateService(
 		GroupRepository groupRepository,
-		MemberQueryService memberQueryService
+		MemberFindService memberFindService
 	) {
 		this.groupRepository = groupRepository;
-		this.memberQueryService = memberQueryService;
+		this.memberFindService = memberFindService;
 	}
 
 	public UUID create(Long memberId, GroupCreateRequest createRequest) {
-		Member findMember = memberQueryService.findById(memberId);
+		Member findMember = memberFindService.findById(memberId);
 
 		findMember.verifyNonOfGroupParticipating();
 
