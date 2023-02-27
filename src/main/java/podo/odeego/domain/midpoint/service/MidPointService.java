@@ -33,7 +33,7 @@ public class MidPointService {
 
 		if (midPointSearchRequest.isAllSameStart()) {
 			Station start = stationFindService.findByName(midPointSearchRequest.getFirstStart());
-			return MidPointSearchResponse.from(start);
+			return MidPointSearchResponse.fromOne(start);
 		}
 
 		List<Station> starts = stationFindService.findAllByNames(midPointSearchRequest.getStartNames());

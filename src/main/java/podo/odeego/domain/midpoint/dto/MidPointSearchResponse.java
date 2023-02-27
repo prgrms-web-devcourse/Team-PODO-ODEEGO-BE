@@ -16,7 +16,7 @@ public record MidPointSearchResponse(
 		return new MidPointSearchResponse(start, midPointResponses);
 	}
 
-	public static MidPointSearchResponse from(Station start) {
+	public static MidPointSearchResponse fromOne(Station start) {
 		return new MidPointSearchResponse(List.of(new StationResponse(start)),
 			List.of(MidPointResponse.fromSame(start)));
 	}
