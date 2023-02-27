@@ -20,6 +20,7 @@ public class WebSecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
+			.csrf().disable()
 			.formLogin().disable();
 
 		http
