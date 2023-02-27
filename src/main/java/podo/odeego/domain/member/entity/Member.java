@@ -6,8 +6,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import podo.odeego.domain.type.BaseTime;
+
 @Entity
-public class Member {
+public class Member extends BaseTime {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
