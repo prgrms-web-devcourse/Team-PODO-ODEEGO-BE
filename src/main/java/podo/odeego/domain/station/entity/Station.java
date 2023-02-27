@@ -24,7 +24,8 @@ public class Station {
 
 	private double longitude;
 
-	private int line;
+	@Column(nullable = false, length = 10)
+	private String line;
 
 	public Long id() {
 		return id;
@@ -46,7 +47,7 @@ public class Station {
 		return longitude;
 	}
 
-	public int line() {
+	public String line() {
 		return line;
 	}
 
