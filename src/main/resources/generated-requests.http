@@ -8,3 +8,11 @@ GET http://localhost:8080/api/v1/places?station-name=강남역&address=서울 �
 
 ### 장소 추천 - 카페
 GET http://localhost:8080/api/v1/places?station-name=강남역&address=서울 강남구 강남대로 396&category=CAFE
+
+
+### 테스트용 회원가입
+POST http://localhost:8080/api/hello/auth/join
+
+
+### 테스트용 로그인
+POST http://localhost:8080/api/hello/auth/login?memberId=1
