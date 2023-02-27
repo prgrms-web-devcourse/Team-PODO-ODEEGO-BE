@@ -38,10 +38,4 @@ public class PathFindService {
 			.toList();
 	}
 
-	public List<PathResponse> findAllPathResponses(List<Path> paths) {
-		return paths.stream()
-			.map(path -> PathResponse.from(path, findAllStationsInPath(path)))
-			.toList();
-	}
-
 }
