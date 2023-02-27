@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import podo.odeego.domain.place.domain.PlaceCategory;
 import podo.odeego.domain.place.dto.PlaceResponses;
 import podo.odeego.domain.place.service.PlaceQueryService;
-import podo.odeego.domain.subway.dto.StationInfo;
+import podo.odeego.domain.station.dto.StationInfo;
 
 @Service
 @Qualifier("naverPlaceQueryService")
