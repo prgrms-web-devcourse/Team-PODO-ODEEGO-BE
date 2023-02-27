@@ -1,7 +1,5 @@
 package podo.odeego.domain.group.entity;
 
-import static javax.persistence.FetchType.*;
-
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -12,13 +10,10 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import podo.odeego.domain.member.entity.Member;
 import podo.odeego.domain.type.BaseTime;
 import podo.odeego.domain.util.TimeUtils;
 
@@ -34,10 +29,6 @@ public class Group extends BaseTime {
 	@Column(name = "group_id", columnDefinition = "BINARY(16)")
 	private UUID id;
 
-	@OneToOne(fetch = LAZY)
-	@JoinColumn(name = "owner_id", nullable = false)
-	private Member owner;
-
 	@Embedded
 	@Column(nullable = false)
 	private GroupCapacity capacity;
@@ -48,9 +39,7 @@ public class Group extends BaseTime {
 	protected Group() {
 	}
 
-	public Group(Member owner, GroupCapacity capacity, LocalTime validTime) {
-		this.owner = owner;
-		owner.participateGroup(this);
+	public Group(GroupCapacity capacity, LocalTime validTime) {
 		this.capacity = capacity;
 		this.validTime = validTime;
 	}
@@ -76,10 +65,6 @@ public class Group extends BaseTime {
 
 	public UUID id() {
 		return id;
-	}
-
-	public Member owner() {
-		return owner;
 	}
 
 	public GroupCapacity capacity() {
