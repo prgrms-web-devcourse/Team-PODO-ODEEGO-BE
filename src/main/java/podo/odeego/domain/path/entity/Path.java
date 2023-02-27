@@ -22,23 +22,23 @@ public class Path {
 	@Column(nullable = false)
 	private String start;
 
-	@Column(name = "end_point", nullable = false)
+	@Column(nullable = false)
 	private String end;
 
 	private int requiredTime;
 
 	@Column(nullable = false, columnDefinition = "LONGTEXT")
-	private String path;
+	private String stations;
 
 	protected Path() {
 	}
 
-	private Path(Long id, String start, String end, int requiredTime, String path) {
+	private Path(Long id, String start, String end, int requiredTime, String stations) {
 		this.id = id;
 		this.start = start;
 		this.end = end;
 		this.requiredTime = requiredTime;
-		this.path = path;
+		this.stations = stations;
 	}
 
 	public static Path forTest(String start, String end, int requiredTime, String path) {
@@ -50,7 +50,7 @@ public class Path {
 	}
 
 	public List<String> getPaths() {
-		return List.of(path.split("-"));
+		return List.of(stations.split("-"));
 	}
 
 	public String start() {
@@ -65,7 +65,7 @@ public class Path {
 		return requiredTime;
 	}
 
-	public String path() {
-		return path;
+	public String stations() {
+		return stations;
 	}
 }
