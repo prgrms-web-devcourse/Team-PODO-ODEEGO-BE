@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import podo.odeego.domain.place.domain.PlaceCategory;
 import podo.odeego.domain.place.dto.PlaceResponses;
 import podo.odeego.domain.place.service.PlaceQueryService;
-import podo.odeego.domain.subway.dto.StationInfo;
+import podo.odeego.domain.station.dto.StationInfo;
 
 @RestController
 @RequestMapping("/api/v1/places")
