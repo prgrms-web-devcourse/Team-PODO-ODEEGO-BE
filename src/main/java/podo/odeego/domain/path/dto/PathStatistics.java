@@ -7,32 +7,16 @@ import podo.odeego.domain.path.entity.Path;
 
 public record PathStatistics(
 	String end,
+	List<Path> PathsToEnd,
 	Double average,
 	Double standardDeviation
 ) {
 
-	private static final Comparator<PathStatistics> DEFAULT_SORT = Comparator.comparing(PathStatistics::average)
-		.thenComparing(PathStatistics::standardDeviation)
-		.reversed();
-
-	private static PathStatistics from(PathsByEnd paths) {
+	public static PathStatistics from(PathsByEnd paths) {
 		double average = getAverage(paths);
 		double standardDeviation = getStandardDeviation(paths, average);
 
-		return new PathStatistics(paths.station(), average, standardDeviation);
-	}
-
-	// TODO: 구조 바꾸기
-	private static List<PathStatistics> analysis(List<Path> paths, Comparator<PathStatistics> sort) {
-		return PathsByEnd.from(paths)
-			.stream()
-			.map(PathStatistics::from)
-			.sorted(sort)
-			.toList();
-	}
-
-	public static List<PathStatistics> analysis(List<Path> paths) {
-		return analysis(paths, DEFAULT_SORT);
+		return new PathStatistics(paths.station(), paths.paths(), average, standardDeviation);
 	}
 
 	private static double getAverage(PathsByEnd paths) {
