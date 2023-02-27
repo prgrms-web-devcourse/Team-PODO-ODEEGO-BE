@@ -17,7 +17,6 @@ public class Station {
 	@Column(nullable = false, length = 15)
 	private String name;
 
-	@Column(nullable = false)
 	private String address;
 
 	private double latitude;
