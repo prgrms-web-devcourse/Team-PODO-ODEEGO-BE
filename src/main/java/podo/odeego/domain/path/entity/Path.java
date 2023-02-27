@@ -49,7 +49,7 @@ public class Path {
 		return Objects.equals(end, station.name());
 	}
 
-	public List<String> getPaths() {
+	public List<String> getStations() {
 		return List.of(stations.split("-"));
 	}
 
