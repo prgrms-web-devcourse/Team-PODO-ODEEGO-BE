@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import podo.odeego.domain.path.dto.PathResponse;
 import podo.odeego.domain.path.entity.Path;
@@ -12,6 +13,7 @@ import podo.odeego.domain.station.entity.Station;
 import podo.odeego.domain.station.service.StationFindService;
 
 @Service
+@Transactional(readOnly = true)
 public class PathFindService {
 
 	private final PathRepository pathRepository;

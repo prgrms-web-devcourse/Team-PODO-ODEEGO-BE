@@ -3,6 +3,7 @@ package podo.odeego.domain.midpoint.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import podo.odeego.domain.midpoint.dto.MidPointResponse;
 import podo.odeego.domain.midpoint.dto.MidPointSearchRequest;
@@ -15,6 +16,7 @@ import podo.odeego.domain.station.entity.Station;
 import podo.odeego.domain.station.service.StationFindService;
 
 @Service
+@Transactional(readOnly = true)
 public class MidPointService {
 
 	public static final int DEFAULT_SLICE_NUM = 3;
