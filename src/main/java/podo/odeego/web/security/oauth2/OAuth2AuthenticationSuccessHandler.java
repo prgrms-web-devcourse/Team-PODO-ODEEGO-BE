@@ -16,7 +16,7 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import podo.odeego.domain.member.dto.MemberJoinRes;
+import podo.odeego.domain.member.dto.MemberJoinResponse;
 import podo.odeego.domain.member.service.MemberService;
 import podo.odeego.web.security.jwt.JwtProvider;
 
@@ -43,28 +43,29 @@ public class OAuth2AuthenticationSuccessHandler extends SavedRequestAwareAuthent
 		if (authentication instanceof OAuth2AuthenticationToken token) {
 			log.info("OAuth2Authentication Success");
 			OAuth2User oauth2User = token.getPrincipal();
-			MemberJoinRes memberJoinRes = joinOAuth2UserToMember(
+			MemberJoinResponse memberJoinResponse = joinOAuth2UserToMember(
 				token.getAuthorizedClientRegistrationId(),
 				oauth2User.getName()
 			);
-			responseLoginSuccess(response, memberJoinRes);
+			responseLoginSuccess(response, memberJoinResponse);
 		} else {
 			super.onAuthenticationSuccess(request, response, authentication);
 		}
 	}
 
-	private MemberJoinRes joinOAuth2UserToMember(String provider, String providerId) {
+	private MemberJoinResponse joinOAuth2UserToMember(String provider, String providerId) {
 		return memberService.join(provider, providerId);
 	}
 
-	private void responseLoginSuccess(HttpServletResponse response, MemberJoinRes memberJoinRes) throws IOException {
-		String accessToken = jwtProvider.generateAccessToken(memberJoinRes.id());
-		String refreshToken = jwtProvider.generateRefreshToken(memberJoinRes.id());
+	private void responseLoginSuccess(HttpServletResponse response, MemberJoinResponse memberJoinResponse) throws
+		IOException {
+		String accessToken = jwtProvider.generateAccessToken(memberJoinResponse.id());
+		String refreshToken = jwtProvider.generateRefreshToken(memberJoinResponse.id());
 
 		response.setContentType("application/json");
 		response.setCharacterEncoding(StandardCharsets.UTF_8.name());
 		response.getWriter().write(objectMapper.writeValueAsString(
-			new OAuth2LoginRes(accessToken, refreshToken, memberJoinRes.loginType())
+			new OAuth2LoginResponse(accessToken, refreshToken, memberJoinResponse.loginType())
 		));
 	}
 }

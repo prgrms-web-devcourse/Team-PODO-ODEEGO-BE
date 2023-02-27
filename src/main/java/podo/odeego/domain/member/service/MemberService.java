@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import podo.odeego.domain.member.dto.MemberJoinRes;
+import podo.odeego.domain.member.dto.MemberJoinResponse;
 import podo.odeego.domain.member.entity.Member;
 import podo.odeego.domain.member.repository.MemberRepository;
 
@@ -21,17 +21,17 @@ public class MemberService {
 		this.memberRepository = memberRepository;
 	}
 
-	public MemberJoinRes join(String provider, String providerId) {
+	public MemberJoinResponse join(String provider, String providerId) {
 		return memberRepository.findByProviderAndProviderId(provider, providerId)
 			.map(member -> {
 				log.info("Member already exist: {} for provider: {}, providerId: {}.", member, provider, providerId);
-				return MemberJoinRes.existMember(member.id());
+				return MemberJoinResponse.existMember(member.id());
 			})
 			.orElseGet(() -> {
 				log.info("New Member for provider: {}, providerId: {}.", provider, providerId);
 				Member savedMember = memberRepository.save(
 					new Member(provider, providerId));
-				return MemberJoinRes.newMember(savedMember.id());
+				return MemberJoinResponse.newMember(savedMember.id());
 			});
 	}
 }
