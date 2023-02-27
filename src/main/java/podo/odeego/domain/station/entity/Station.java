@@ -17,14 +17,14 @@ public class Station {
 	@Column(nullable = false, length = 15)
 	private String name;
 
-	@Column(nullable = false)
 	private String address;
 
 	private double latitude;
 
 	private double longitude;
 
-	private int line;
+	@Column(nullable = false, length = 10)
+	private String line;
 
 	public Long id() {
 		return id;
@@ -46,7 +46,7 @@ public class Station {
 		return longitude;
 	}
 
-	public int line() {
+	public String line() {
 		return line;
 	}
 

@@ -11,7 +11,7 @@ public record MidPointResponse(
 	String address,
 	Double lat,
 	Double lng,
-	int line,
+	String line,
 	Long id,
 	List<PathResponse> path
 ) {
