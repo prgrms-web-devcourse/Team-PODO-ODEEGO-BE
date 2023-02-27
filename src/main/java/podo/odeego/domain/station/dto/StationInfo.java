@@ -1,4 +1,4 @@
-package podo.odeego.domain.subway.dto;
+package podo.odeego.domain.station.dto;
 
 public record StationInfo(
 	String name,

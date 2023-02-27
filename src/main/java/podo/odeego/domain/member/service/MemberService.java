@@ -2,10 +2,10 @@ package podo.odeego.domain.member.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import podo.odeego.domain.member.dto.MemberJoinResponse;
 import podo.odeego.domain.member.entity.Member;
 import podo.odeego.domain.member.repository.MemberRepository;
 
@@ -21,28 +21,17 @@ public class MemberService {
 		this.memberRepository = memberRepository;
 	}
 
-	@Transactional(readOnly = true)
-	public Member findByUsername(String username) {
-		return memberRepository.findByUsername(username)
-			.orElseThrow(() -> new RuntimeException("User not found: username - %s".formatted(username)));
-	}
-
-	@Transactional(readOnly = true)
-	public Member findByProviderAndProviderId(String provider, String providerId) {
+	public MemberJoinResponse join(String provider, String providerId) {
 		return memberRepository.findByProviderAndProviderId(provider, providerId)
-			.orElseThrow(() -> new RuntimeException(
-				"User not found: provider - %s / providerId - %s".formatted(provider, providerId)));
-	}
-
-	public Member join(OAuth2User oauth2User, String provider) {
-		return memberRepository.findByProviderAndProviderId(provider, oauth2User.getName())
 			.map(member -> {
-				log.info("User already joined: {} for provider: {}, providerId: {}.", member, provider,
-					oauth2User.getName());
-				return member;
+				log.info("Member already exist: {} for provider: {}, providerId: {}.", member, provider, providerId);
+				return MemberJoinResponse.existMember(member.id());
 			})
-			.orElseGet(() -> memberRepository.save(
-				new Member("nickname", provider, oauth2User.getName())
-			));
+			.orElseGet(() -> {
+				log.info("New Member for provider: {}, providerId: {}.", provider, providerId);
+				Member savedMember = memberRepository.save(
+					new Member(provider, providerId));
+				return MemberJoinResponse.newMember(savedMember.id());
+			});
 	}
 }
