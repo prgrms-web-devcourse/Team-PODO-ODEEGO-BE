@@ -5,6 +5,6 @@ import podo.odeego.web.error.ErrorCode;
 public class ResourceNotFoundException extends BusinessException {
 
 	public ResourceNotFoundException(String message) {
-		super(message, ErrorCode.NO_RESOURCE);
+		super(message, ErrorCode.NOT_FOUND);
 	}
 }
