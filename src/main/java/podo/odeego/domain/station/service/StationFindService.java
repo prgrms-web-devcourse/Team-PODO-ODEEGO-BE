@@ -20,7 +20,9 @@ public class StationFindService {
 	}
 
 	public Station findByName(String name) {
-		return stationRepository.findByName(name)
+		return stationRepository.findAllByName(name)
+			.stream()
+			.findAny()
 			.orElseThrow(() -> new EntityNotFoundException("Can not found Station by %s".formatted(name)));
 	}
 
