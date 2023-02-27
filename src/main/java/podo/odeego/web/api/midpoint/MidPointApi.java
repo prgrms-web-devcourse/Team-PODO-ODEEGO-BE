@@ -10,21 +10,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 import podo.odeego.domain.midpoint.dto.MidPointSearchRequest;
 import podo.odeego.domain.midpoint.dto.MidPointSearchResponse;
-import podo.odeego.domain.midpoint.service.MidPointService;
+import podo.odeego.domain.midpoint.service.MidPointQueryService;
 
 @RestController
 @RequestMapping("/api/v1/mid-points")
 public class MidPointApi {
 
-	private final MidPointService midPointService;
+	private final MidPointQueryService midPointQueryService;
 
-	public MidPointApi(MidPointService midPointService) {
-		this.midPointService = midPointService;
+	public MidPointApi(MidPointQueryService midPointQueryService) {
+		this.midPointQueryService = midPointQueryService;
 	}
 
 	@PostMapping("/search")
 	public ResponseEntity<MidPointSearchResponse> search(
 		@RequestBody @Valid MidPointSearchRequest midPointSearchRequest) {
-		return ResponseEntity.ok(midPointService.search(midPointSearchRequest));
+		return ResponseEntity.ok(midPointQueryService.search(midPointSearchRequest));
 	}
 }
