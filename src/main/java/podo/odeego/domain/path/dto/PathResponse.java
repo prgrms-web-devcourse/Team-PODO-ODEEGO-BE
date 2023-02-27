@@ -11,15 +11,7 @@ public record PathResponse(
 	int time,
 	List<StationResponse> stations
 ) {
-
-	public static PathResponse from(Path path, List<Station> routeStations) {
-		List<StationResponse> stationResponse = convert(routeStations);
-		return new PathResponse(path.start(), path.requiredTime(), stationResponse);
-	}
-
-	private static List<StationResponse> convert(List<Station> stations) {
-		return stations.stream()
-			.map(StationResponse::new)
-			.toList();
+	public PathResponse(Path path, List<Station> stations) {
+		this(path.start(), path.requiredTime(), StationResponse.from(stations));
 	}
 }
