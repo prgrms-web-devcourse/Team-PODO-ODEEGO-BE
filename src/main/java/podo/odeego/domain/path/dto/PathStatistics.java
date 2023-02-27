@@ -1,6 +1,5 @@
-package podo.odeego.domain.midpoint.vo;
+package podo.odeego.domain.path.dto;
 
-import java.util.Comparator;
 import java.util.List;
 
 import podo.odeego.domain.midpoint.dto.PathsByEnd;
@@ -52,9 +51,4 @@ public record PathStatistics(
 			.getAverage());
 	}
 
-	public static List<String> toEndStationNames(List<PathStatistics> statistics) {
-		return statistics.stream()
-			.map(PathStatistics::end)
-			.toList();
-	}
 }
