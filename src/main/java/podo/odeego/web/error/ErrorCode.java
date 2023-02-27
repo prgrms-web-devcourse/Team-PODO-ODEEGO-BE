@@ -5,9 +5,10 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
 
 	// Common
-	INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, "Invalid Input Value"),
-	INVALID_TYPE_VALUE(HttpStatus.BAD_REQUEST, "Invalid Type Value"),
-	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error");
+	INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, "Invalid Input Value."),
+	INVALID_TYPE_VALUE(HttpStatus.BAD_REQUEST, "Invalid Type Value."),
+	NO_RESOURCE(HttpStatus.NOT_FOUND, "No Resource Exists."),
+	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error.");
 
 	private final HttpStatus status;
 	private final String message;
