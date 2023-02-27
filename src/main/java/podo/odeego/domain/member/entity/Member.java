@@ -1,16 +1,16 @@
 package podo.odeego.domain.member.entity;
 
-import static javax.persistence.FetchType.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
-import podo.odeego.domain.group.entity.Group;
+import podo.odeego.domain.group.entity.GroupMember;
 import podo.odeego.domain.group.exception.AlreadyParticipatingGroupException;
 import podo.odeego.domain.type.BaseTime;
 
@@ -31,9 +31,8 @@ public class Member extends BaseTime {
 	@Column(nullable = false, length = 80)
 	private String providerId;
 
-	@ManyToOne(fetch = LAZY)
-	@JoinColumn(name = "group_id")
-	private Group group;
+	@OneToMany(mappedBy = "member")
+	private List<GroupMember> groupMembers = new ArrayList<>();
 
 	protected Member() {
 	}
@@ -48,28 +47,29 @@ public class Member extends BaseTime {
 		this.nickname = nickname;
 	}
 
-	public void participateGroup(Group group) {
-		this.group = group;
+	public void addGroupMember(GroupMember groupMember) {
+		if (this.groupMembers.contains(groupMember)) {
+			throw new AlreadyParticipatingGroupException(
+				"Member '%d' is already participating group '%s'.".formatted(this.id, groupMember.id())
+			);
+		}
+		this.groupMembers.add(groupMember);
 	}
 
 	public void verifyNonOfGroupParticipating() {
 		if (isParticipatingGroup()) {
 			throw new AlreadyParticipatingGroupException(
-				"Member '%d' is already participating group '%s'.".formatted(id(), this.group().id().toString())
+				"Member '%d' is already participating group '%s'.".formatted(id(), this.groupMembers.get(0).id())
 			);
 		}
 	}
 
 	private boolean isParticipatingGroup() {
-		return this.group != null;
+		return this.groupMembers.size() != 0;
 	}
 
 	public Long id() {
 		return id;
-	}
-
-	public Group group() {
-		return group;
 	}
 
 	public String nickname() {
