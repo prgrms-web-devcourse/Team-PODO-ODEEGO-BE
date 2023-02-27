@@ -20,7 +20,7 @@ jobs:
           java-version: '17'
           distribution: 'corretto'
 
-      - name: Set YML
+      - name: Set YML for release
         run: |
           mkdir -p src/main/resources
           echo "${{ secrets.APPLICATION_YML }}" | base64 --decode > src/main/resources/application.yml

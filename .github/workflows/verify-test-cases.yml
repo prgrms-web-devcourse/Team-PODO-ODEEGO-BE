@@ -25,10 +25,10 @@ jobs:
           java-version: '17'
           distribution: 'corretto'
 
-      - name: Set YML
+      - name: Set YML for local
         run: |
           mkdir -p src/main/resources
-          echo "${{ secrets.APPLICATION_YML }}" | base64 --decode > src/main/resources/application.yml
+          echo "${{ secrets.APPLICATION_YML_LOCAL }}" | base64 --decode > src/main/resources/application.yml
           find src
 
       - name: Build with Gradle
