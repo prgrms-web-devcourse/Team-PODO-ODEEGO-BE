@@ -34,5 +34,4 @@ public record PathStatistics(
 			.summaryStatistics()
 			.getAverage());
 	}
-
 }
