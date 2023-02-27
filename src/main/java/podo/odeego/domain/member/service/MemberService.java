@@ -21,19 +21,6 @@ public class MemberService {
 		this.memberRepository = memberRepository;
 	}
 
-	@Transactional(readOnly = true)
-	public Member findByUsername(String username) {
-		return memberRepository.findByNickname(username)
-			.orElseThrow(() -> new RuntimeException("User not found: username - %s".formatted(username)));
-	}
-
-	@Transactional(readOnly = true)
-	public Member findByProviderAndProviderId(String provider, String providerId) {
-		return memberRepository.findByProviderAndProviderId(provider, providerId)
-			.orElseThrow(() -> new RuntimeException(
-				"User not found: provider - %s / providerId - %s".formatted(provider, providerId)));
-	}
-
 	public MemberJoinRes join(String provider, String providerId) {
 		return memberRepository.findByProviderAndProviderId(provider, providerId)
 			.map(member -> {
