@@ -26,7 +26,7 @@ import podo.odeego.domain.type.BaseTime;
 import podo.odeego.domain.util.TimeUtils;
 
 @Entity
-@Table(name = "groups")
+@Table(name = "`group`")
 public class Group extends BaseTime {
 
 	public static final LocalTime GROUP_VALID_TIME = LocalTime.of(1, 0);
