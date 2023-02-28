@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -34,11 +35,15 @@ public class WebSecurityConfig {
 		http
 			.formLogin().disable()
 			.csrf().disable()
-			.cors().configurationSource(corsConfigurationSource());
+			.headers().disable()
+			.rememberMe().disable()
+			.cors().configurationSource(corsConfigurationSource())
+			.and()
+			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
 		http
 			.oauth2Login()
-			.successHandler(oAuth2AuthenticationSuccessHandler());
+			.disable();
 
 		return http.build();
 	}
