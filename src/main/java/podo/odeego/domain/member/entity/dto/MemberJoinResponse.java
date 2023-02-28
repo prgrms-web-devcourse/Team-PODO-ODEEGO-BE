@@ -1,4 +1,4 @@
-package podo.odeego.domain.member.dto;
+package podo.odeego.domain.member.entity.dto;
 
 public record MemberJoinResponse(
 	Long id,

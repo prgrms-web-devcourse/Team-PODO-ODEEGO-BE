@@ -5,8 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import podo.odeego.domain.member.dto.MemberJoinResponse;
 import podo.odeego.domain.member.entity.Member;
+import podo.odeego.domain.member.entity.dto.MemberJoinResponse;
 import podo.odeego.domain.member.repository.MemberRepository;
 
 @Service

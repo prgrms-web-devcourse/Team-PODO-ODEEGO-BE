@@ -16,7 +16,7 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import podo.odeego.domain.member.dto.MemberJoinResponse;
+import podo.odeego.domain.member.entity.dto.MemberJoinResponse;
 import podo.odeego.domain.member.service.MemberService;
 import podo.odeego.web.security.jwt.JwtProvider;
 

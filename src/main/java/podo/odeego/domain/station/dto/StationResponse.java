@@ -5,7 +5,7 @@ import java.util.List;
 import podo.odeego.domain.station.entity.Station;
 
 public record StationResponse(
-	String name,
+	String stationName,
 	String address,
 	Double lat,
 	Double lng

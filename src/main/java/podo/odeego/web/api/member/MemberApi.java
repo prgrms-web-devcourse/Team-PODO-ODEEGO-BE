@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import podo.odeego.domain.member.dto.MemberJoinResponse;
+import podo.odeego.domain.member.entity.dto.MemberJoinResponse;
 import podo.odeego.domain.member.service.MemberService;
 
 @RestController

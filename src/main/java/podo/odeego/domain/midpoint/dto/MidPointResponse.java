@@ -7,7 +7,7 @@ import podo.odeego.domain.path.dto.PathResponse;
 import podo.odeego.domain.station.entity.Station;
 
 public record MidPointResponse(
-	String name,
+	String stationName,
 	String address,
 	Double lat,
 	Double lng,
