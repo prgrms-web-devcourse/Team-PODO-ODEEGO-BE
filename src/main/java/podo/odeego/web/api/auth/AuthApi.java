@@ -84,7 +84,7 @@ public class AuthApi {
 		log.info("profileImageUrl = {}", profileImageUrl);
 
 		Long id = response.getBody().id();
-		MemberJoinResponse memberJoinResponse = memberService.join("kakao", id.toString());
+		MemberJoinResponse memberJoinResponse = memberService.join("kakao", id.toString(), profileImageUrl);
 		return responseLoginSuccess(memberJoinResponse, profileImageUrl);
 	}
 
