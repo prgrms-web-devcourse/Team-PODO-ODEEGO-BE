@@ -11,7 +11,7 @@ public record PathsByEnd(
 ) {
 	public static List<PathsByEnd> from(List<Path> paths) {
 		return paths.stream()
-			.collect(Collectors.groupingBy(Path::end))
+			.collect(Collectors.groupingBy(Path::endStation))
 			.entrySet()
 			.stream()
 			.map(entry -> new PathsByEnd(entry.getKey(), entry.getValue()))

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import podo.odeego.web.error.exception.BusinessException;
+import podo.odeego.web.error.exception.ResourceNotFoundException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -33,6 +34,13 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(BusinessException.class)
 	protected ResponseEntity<ErrorResponse> handleBusinessException(BusinessException e) {
 		log.info("handleBusinessException", e);
+		ErrorResponse response = ErrorResponse.of(e.errorCode());
+		return newResponseEntity(response);
+	}
+
+	@ExceptionHandler(ResourceNotFoundException.class)
+	protected ResponseEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFoundException e) {
+		log.info("handleResourceNotFoundException", e);
 		ErrorResponse response = ErrorResponse.of(e.errorCode());
 		return newResponseEntity(response);
 	}

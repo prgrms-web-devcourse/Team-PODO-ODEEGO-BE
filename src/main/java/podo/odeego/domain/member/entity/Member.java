@@ -1,13 +1,21 @@
 package podo.odeego.domain.member.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import podo.odeego.domain.group.entity.GroupMember;
+import podo.odeego.domain.group.exception.AlreadyParticipatingGroupException;
+import podo.odeego.domain.type.BaseTime;
 
 @Entity
-public class Member {
+public class Member extends BaseTime {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,6 +31,9 @@ public class Member {
 	@Column(nullable = false, length = 80)
 	private String providerId;
 
+	@OneToMany(mappedBy = "member")
+	private List<GroupMember> groupMembers = new ArrayList<>();
+
 	protected Member() {
 	}
 
@@ -34,6 +45,27 @@ public class Member {
 	public Member(String nickname, String provider, String providerId) {
 		this(provider, providerId);
 		this.nickname = nickname;
+	}
+
+	public void addGroupMember(GroupMember groupMember) {
+		if (this.groupMembers.contains(groupMember)) {
+			throw new AlreadyParticipatingGroupException(
+				"Member '%d' is already participating group '%s'.".formatted(this.id, groupMember.getGroupId())
+			);
+		}
+		this.groupMembers.add(groupMember);
+	}
+
+	public void verifyNonOfGroupParticipating() {
+		if (isParticipatingGroup()) {
+			throw new AlreadyParticipatingGroupException(
+				"Member '%d' is already participating group '%s'.".formatted(id(), this.groupMembers.get(0).id())
+			);
+		}
+	}
+
+	private boolean isParticipatingGroup() {
+		return this.groupMembers.size() != 0;
 	}
 
 	public Long id() {

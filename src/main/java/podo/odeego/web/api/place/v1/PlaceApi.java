@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import podo.odeego.domain.place.domain.PlaceCategory;
 import podo.odeego.domain.place.dto.PlaceResponses;
 import podo.odeego.domain.place.service.PlaceQueryService;
-import podo.odeego.domain.station.dto.StationInfo;
+import podo.odeego.domain.station.dto.StationAddress;
 
 @RestController
 @RequestMapping("/api/v1/places")
@@ -32,7 +32,7 @@ public class PlaceApi {
 		@RequestParam String address,
 		@RequestParam(required = false) PlaceCategory category
 	) {
-		PlaceResponses response = placeQueryService.getAll(new StationInfo(stationName, address), category);
+		PlaceResponses response = placeQueryService.getAll(new StationAddress(stationName, address), category);
 		return ResponseEntity.ok(response);
 	}
 }
