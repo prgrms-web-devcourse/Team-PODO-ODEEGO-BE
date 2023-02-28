@@ -3,6 +3,8 @@ package podo.odeego.domain.group.entity;
 import static javax.persistence.EnumType.*;
 import static javax.persistence.FetchType.*;
 
+import java.util.UUID;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
@@ -63,7 +65,11 @@ public class GroupMember extends BaseTime {
 		return this.member.id();
 	}
 
-	public String getNickname() {
+	public UUID getGroupId() {
+		return this.group.id();
+	}
+
+	public String getMemberNickname() {
 		return this.member.nickname();
 	}
 
