@@ -20,10 +20,10 @@ public class Path {
 	private Long id;
 
 	@Column(nullable = false)
-	private String start;
+	private String startStation;
 
-	@Column(nullable = false, name = "`end`")
-	private String end;
+	@Column(nullable = false)
+	private String endStation;
 
 	private int requiredTime;
 
@@ -33,10 +33,10 @@ public class Path {
 	protected Path() {
 	}
 
-	private Path(Long id, String start, String end, int requiredTime, String stations) {
+	private Path(Long id, String startStation, String endStation, int requiredTime, String stations) {
 		this.id = id;
-		this.start = start;
-		this.end = end;
+		this.startStation = startStation;
+		this.endStation = endStation;
 		this.requiredTime = requiredTime;
 		this.stations = stations;
 	}
@@ -46,19 +46,19 @@ public class Path {
 	}
 
 	public boolean isEnd(Station station) {
-		return Objects.equals(end, station.name());
+		return Objects.equals(endStation, station.name());
 	}
 
 	public List<String> getStations() {
 		return List.of(stations.split("-"));
 	}
 
-	public String start() {
-		return start;
+	public String startStation() {
+		return startStation;
 	}
 
-	public String end() {
-		return end;
+	public String endStation() {
+		return endStation;
 	}
 
 	public int requiredTime() {

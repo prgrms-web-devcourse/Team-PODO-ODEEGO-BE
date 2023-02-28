@@ -3,6 +3,8 @@ package podo.odeego.domain.group.entity;
 import static javax.persistence.EnumType.*;
 import static javax.persistence.FetchType.*;
 
+import java.util.UUID;
+
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -55,6 +57,22 @@ public class GroupMember extends BaseTime {
 		member.addGroupMember(this);
 		this.station = station;
 		this.type = type;
+	}
+
+	public boolean isHost() {
+		return this.type.isHost();
+	}
+
+	public Long getMemberId() {
+		return this.member.id();
+	}
+
+	public UUID getGroupId() {
+		return this.group.id();
+	}
+
+	public String getMemberNickname() {
+		return this.member.nickname();
 	}
 
 	public Long id() {

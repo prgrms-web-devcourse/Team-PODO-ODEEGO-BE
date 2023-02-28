@@ -9,5 +9,5 @@ import podo.odeego.domain.group.entity.GroupMember;
 
 public interface GroupMemberRepository extends JpaRepository<GroupMember, Long> {
 
-	List<GroupMember> findAllByGroup(Group group);
+	List<GroupMember> findGroupMembersByGroup(Group group);
 }

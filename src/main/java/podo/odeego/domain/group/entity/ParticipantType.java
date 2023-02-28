@@ -3,5 +3,9 @@ package podo.odeego.domain.group.entity;
 public enum ParticipantType {
 
 	HOST,
-	GUEST
+	GUEST;
+
+	public boolean isHost() {
+		return this == HOST;
+	}
 }
