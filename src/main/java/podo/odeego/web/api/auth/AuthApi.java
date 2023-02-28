@@ -79,16 +79,18 @@ public class AuthApi {
 		ResponseEntity<GetMemberInfoResponse> response = restTemplate.exchange(
 			"https://kapi.kakao.com/v2/user/me", HttpMethod.GET, apiRequest,
 			GetMemberInfoResponse.class);
-		System.out.println("response = " + response.getBody().id());
+		String profileImageUrl = response.getBody().kakao_account().profile().profile_image_url();
+		log.info("memberId = {}", response.getBody().id());
+		log.info("profileImageUrl = {}", profileImageUrl);
 
 		Long id = response.getBody().id();
 		MemberJoinResponse memberJoinResponse = memberService.join("kakao", id.toString());
-		return responseLoginSuccess(memberJoinResponse);
+		return responseLoginSuccess(memberJoinResponse, profileImageUrl);
 	}
 
-	private MemberLoginResponse responseLoginSuccess(MemberJoinResponse memberJoinResponse) {
+	private MemberLoginResponse responseLoginSuccess(MemberJoinResponse memberJoinResponse, String profileImageUrl) {
 		String accessToken = jwtProvider.generateAccessToken(memberJoinResponse.id());
 		String refreshToken = jwtProvider.generateRefreshToken(memberJoinResponse.id());
-		return new MemberLoginResponse(accessToken, refreshToken, memberJoinResponse.loginType());
+		return new MemberLoginResponse(accessToken, refreshToken, memberJoinResponse.loginType(), profileImageUrl);
 	}
 }

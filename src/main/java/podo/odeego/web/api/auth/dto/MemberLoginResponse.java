@@ -5,6 +5,7 @@ import podo.odeego.domain.member.dto.MemberJoinResponse;
 public record MemberLoginResponse(
 	String accessToken,
 	String refreshToken,
-	MemberJoinResponse.LoginType loginType
+	MemberJoinResponse.LoginType loginType,
+	String profileImageUrl
 ) {
 }
