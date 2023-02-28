@@ -1,9 +1,9 @@
 package podo.odeego.web.api.auth;
 
-import java.time.LocalDateTime;
-
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -14,6 +14,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -21,12 +22,15 @@ import org.springframework.web.client.RestTemplate;
 import podo.odeego.domain.member.dto.MemberJoinResponse;
 import podo.odeego.domain.member.service.MemberService;
 import podo.odeego.web.api.auth.dto.GetMemberInfoResponse;
+import podo.odeego.web.api.auth.dto.MemberLoginResponse;
 import podo.odeego.web.api.auth.dto.OAuth2GetTokenResponse;
 import podo.odeego.web.security.jwt.JwtProvider;
-import podo.odeego.web.security.oauth2.OAuth2LoginResponse;
 
 @RestController
+@RequestMapping("/api/v1/auth")
 public class AuthApi {
+
+	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	private final MemberService memberService;
 	private final JwtProvider jwtProvider;
@@ -36,13 +40,13 @@ public class AuthApi {
 		this.jwtProvider = jwtProvider;
 	}
 
-	@GetMapping("/api/v1/auth/login/oauth2/callback/kakao")
+	@GetMapping("/login/oauth2/callback/kakao")
 	public ResponseEntity<OAuth2GetTokenResponse> loginWithKakao(@RequestParam String code) {
-		System.out.println("AuthApi.loginWithKakao called at " + LocalDateTime.now());
+		log.info("AuthApi.loginWithKakao() called");
+		log.info("code = " + code);
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 		headers.add("Accept", "application/json");
-		System.out.println("code = " + code);
 
 		LinkedMultiValueMap<String, String> map = new LinkedMultiValueMap<>();
 		map.add("grant_type", "authorization_code");
@@ -58,16 +62,15 @@ public class AuthApi {
 			request, OAuth2GetTokenResponse.class);
 		OAuth2GetTokenResponse body = response.getBody();
 
-		System.out.println("================AuthApi.loginWithKakao END================================");
 		return ResponseEntity.ok(body);
 	}
 
-	@PostMapping("/api/v1/auth/user/me")
-	private OAuth2LoginResponse getMemberInfo(HttpServletRequest request) {
-		System.out.println("AuthApi.getMemberInfo");
+	@PostMapping("/user/me")
+	private MemberLoginResponse getMemberInfo(HttpServletRequest request) {
+		log.info("AuthApi.getMemberInfo() called");
+		log.info("request.getHeader(\"Authorization\") = " + request.getHeader("Authorization"));
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-		System.out.println("request.getHeader(\"Authhorization\") = " + request.getHeader("Authorization"));
 		headers.add("Authorization", request.getHeader("Authorization"));
 
 		HttpEntity<MultiValueMap<String, String>> apiRequest = new HttpEntity<>(headers);
@@ -80,14 +83,12 @@ public class AuthApi {
 
 		Long id = response.getBody().id();
 		MemberJoinResponse memberJoinResponse = memberService.join("kakao", id.toString());
-
-		System.out.println("================AuthApi.getMemberInfo END================================");
 		return responseLoginSuccess(memberJoinResponse);
 	}
 
-	private OAuth2LoginResponse responseLoginSuccess(MemberJoinResponse memberJoinResponse) {
+	private MemberLoginResponse responseLoginSuccess(MemberJoinResponse memberJoinResponse) {
 		String accessToken = jwtProvider.generateAccessToken(memberJoinResponse.id());
 		String refreshToken = jwtProvider.generateRefreshToken(memberJoinResponse.id());
-		return new OAuth2LoginResponse(accessToken, refreshToken, memberJoinResponse.loginType());
+		return new MemberLoginResponse(accessToken, refreshToken, memberJoinResponse.loginType());
 	}
 }

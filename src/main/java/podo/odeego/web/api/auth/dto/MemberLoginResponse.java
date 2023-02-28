@@ -1,8 +1,8 @@
-package podo.odeego.web.security.oauth2;
+package podo.odeego.web.api.auth.dto;
 
 import podo.odeego.domain.member.dto.MemberJoinResponse;
 
-public record OAuth2LoginResponse(
+public record MemberLoginResponse(
 	String accessToken,
 	String refreshToken,
 	MemberJoinResponse.LoginType loginType

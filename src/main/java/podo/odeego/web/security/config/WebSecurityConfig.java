@@ -11,23 +11,18 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import podo.odeego.domain.member.service.MemberService;
 import podo.odeego.web.security.filter.JwtAuthenticationFilter;
 import podo.odeego.web.security.jwt.JwtProvider;
-import podo.odeego.web.security.oauth2.OAuth2AuthenticationSuccessHandler;
 
 @EnableWebSecurity
 public class WebSecurityConfig {
 
-	private final MemberService memberService;
 	private final JwtProvider jwtProvider;
 	private final String origin;
 
 	public WebSecurityConfig(
-		MemberService memberService,
 		JwtProvider jwtProvider,
 		@Value("${server.host.front}") String origin) {
-		this.memberService = memberService;
 		this.jwtProvider = jwtProvider;
 		this.origin = origin;
 	}
@@ -61,11 +56,6 @@ public class WebSecurityConfig {
 	@Bean
 	public JwtAuthenticationFilter jwtAuthenticationFilter() {
 		return new JwtAuthenticationFilter(jwtProvider);
-	}
-
-	@Bean
-	public OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler() {
-		return new OAuth2AuthenticationSuccessHandler(memberService, jwtProvider);
 	}
 
 	@Bean
