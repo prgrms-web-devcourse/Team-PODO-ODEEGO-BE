@@ -39,8 +39,8 @@ public class GlobalExceptionHandler {
 	}
 
 	@ExceptionHandler(ResourceNotFoundException.class)
-	protected ResponseEntity<ErrorResponse> handleBusinessException(ResourceNotFoundException e) {
-		log.info("handleEntityNotFoundException", e);
+	protected ResponseEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFoundException e) {
+		log.info("handleResourceNotFoundException", e);
 		ErrorResponse response = ErrorResponse.of(e.errorCode());
 		return newResponseEntity(response);
 	}
