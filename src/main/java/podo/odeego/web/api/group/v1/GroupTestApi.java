@@ -21,15 +21,15 @@ import podo.odeego.domain.group.service.GroupCreateService;
 import podo.odeego.domain.group.service.GroupQueryService;
 
 @RestController
-@RequestMapping("/api/v1/groups")
-public class GroupApi {
+@RequestMapping("/api/test/groups")
+public class GroupTestApi {
 
-	private static final String GROUP_LOCATION_PATH = "/api/v1/groups/{groupId}";
+	private static final String GROUP_LOCATION_PATH = "/api/test/groups/{groupId}";
 
 	private final GroupCreateService createService;
 	private final GroupQueryService queryService;
 
-	public GroupApi(
+	public GroupTestApi(
 		GroupCreateService createService,
 		GroupQueryService queryService
 	) {

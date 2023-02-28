@@ -33,7 +33,7 @@ public class PathFindService {
 
 	public List<Path> findAllByStarts(List<Station> starts) {
 		return starts.stream()
-			.map(station -> pathRepository.findAllByStart(station.name()))
+			.map(station -> pathRepository.findAllByStartStation(station.name()))
 			.flatMap(Collection::stream)
 			.toList();
 	}

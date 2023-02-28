@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import podo.odeego.domain.member.entity.Member;
+import podo.odeego.domain.member.exception.MemberNotFoundException;
 import podo.odeego.domain.member.repository.MemberRepository;
 import podo.odeego.web.error.exception.EntityNotFoundException;
 
@@ -15,6 +16,13 @@ public class MemberFindService {
 
 	public MemberFindService(MemberRepository memberRepository) {
 		this.memberRepository = memberRepository;
+	}
+	
+	public Member findById(Long memberId) {
+		return memberRepository.findById(memberId)
+			.orElseThrow(() -> new MemberNotFoundException(
+				"Cannot find Member for memberId=%d.".formatted(memberId))
+			);
 	}
 
 	public Member findByUsername(String username) {

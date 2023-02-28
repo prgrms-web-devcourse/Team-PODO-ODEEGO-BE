@@ -12,6 +12,6 @@ public record PathResponse(
 	List<StationResponse> stations
 ) {
 	public PathResponse(Path path, List<Station> stations) {
-		this(path.start(), path.requiredTime(), StationResponse.from(stations));
+		this(path.startStation(), path.requiredTime(), StationResponse.from(stations));
 	}
 }

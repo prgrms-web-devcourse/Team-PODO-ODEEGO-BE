@@ -34,4 +34,9 @@ public class MemberService {
 				return MemberJoinResponse.newMember(savedMember.id());
 			});
 	}
+
+	public Long join(String nickname) {
+		Member savedMember = memberRepository.save(new Member(nickname, "provider", "providerId"));
+		return savedMember.id();
+	}
 }
