@@ -67,8 +67,8 @@ public class Group extends BaseTime {
 		return id;
 	}
 
-	public GroupCapacity capacity() {
-		return capacity;
+	public Long capacity() {
+		return this.capacity.capacity();
 	}
 
 	public LocalTime validTime() {

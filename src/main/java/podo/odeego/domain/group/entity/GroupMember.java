@@ -50,8 +50,21 @@ public class GroupMember extends BaseTime {
 	public GroupMember(Group group, Member member, Station station, ParticipantType type) {
 		this.group = group;
 		this.member = member;
+		member.addGroupMember(this);
 		this.station = station;
 		this.type = type;
+	}
+
+	public boolean isHost() {
+		return this.type.isHost();
+	}
+
+	public Long getMemberId() {
+		return this.member.id();
+	}
+
+	public String getNickname() {
+		return this.member.nickname();
 	}
 
 	public Long id() {

@@ -33,4 +33,8 @@ public class GroupCapacity {
 			);
 		}
 	}
+
+	public Long capacity() {
+		return capacity;
+	}
 }
