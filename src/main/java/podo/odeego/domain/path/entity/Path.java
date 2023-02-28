@@ -22,7 +22,7 @@ public class Path {
 	@Column(nullable = false)
 	private String start;
 
-	@Column(nullable = false)
+	@Column(nullable = false, name = "`end`")
 	private String end;
 
 	private int requiredTime;
