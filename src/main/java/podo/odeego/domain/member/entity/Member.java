@@ -50,7 +50,7 @@ public class Member extends BaseTime {
 	public void addGroupMember(GroupMember groupMember) {
 		if (this.groupMembers.contains(groupMember)) {
 			throw new AlreadyParticipatingGroupException(
-				"Member '%d' is already participating group '%s'.".formatted(this.id, groupMember.id())
+				"Member '%d' is already participating group '%s'.".formatted(this.id, groupMember.getGroupId())
 			);
 		}
 		this.groupMembers.add(groupMember);
