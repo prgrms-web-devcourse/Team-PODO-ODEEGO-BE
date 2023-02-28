@@ -5,6 +5,8 @@ import static javax.persistence.FetchType.*;
 
 import java.util.UUID;
 
+import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
@@ -91,5 +93,22 @@ public class GroupMember extends BaseTime {
 
 	public ParticipantType type() {
 		return type;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+		GroupMember that = (GroupMember)o;
+		return Objects.equals(id, that.id) && Objects.equals(group, that.group)
+			&& Objects.equals(member, that.member) && Objects.equals(station, that.station)
+			&& type == that.type;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, group, member, station, type);
 	}
 }

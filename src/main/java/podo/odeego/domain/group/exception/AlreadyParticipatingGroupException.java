@@ -7,4 +7,5 @@ public class AlreadyParticipatingGroupException extends InvalidValueException {
 	public AlreadyParticipatingGroupException(String message) {
 		super(message);
 	}
+
 }
