@@ -33,4 +33,8 @@ public class GroupCapacity {
 			);
 		}
 	}
+
+	public boolean isLessOrEqual(int size) {
+		return capacity <= size;
+	}
 }

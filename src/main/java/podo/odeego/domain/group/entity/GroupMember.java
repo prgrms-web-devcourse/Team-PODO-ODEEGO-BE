@@ -3,6 +3,8 @@ package podo.odeego.domain.group.entity;
 import static javax.persistence.EnumType.*;
 import static javax.persistence.FetchType.*;
 
+import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
@@ -25,11 +27,11 @@ public class GroupMember extends BaseTime {
 	private Long id;
 
 	@ManyToOne(fetch = LAZY)
-	@JoinColumn(name = "group_id")
+	@JoinColumn(name = "group_id", nullable = false)
 	private Group group;
 
 	@ManyToOne(fetch = LAZY)
-	@JoinColumn(name = "member_id")
+	@JoinColumn(name = "member_id", nullable = false)
 	private Member member;
 
 	@ManyToOne(fetch = LAZY)
@@ -37,6 +39,7 @@ public class GroupMember extends BaseTime {
 	private Station station;
 
 	@Enumerated(value = STRING)
+	@Column(nullable = false)
 	private ParticipantType type;
 
 	protected GroupMember() {
@@ -49,6 +52,7 @@ public class GroupMember extends BaseTime {
 	public GroupMember(Group group, Member member, Station station, ParticipantType type) {
 		this.group = group;
 		this.member = member;
+		member.addGroupMember(this);
 		this.station = station;
 		this.type = type;
 	}
@@ -71,5 +75,22 @@ public class GroupMember extends BaseTime {
 
 	public ParticipantType type() {
 		return type;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+		GroupMember that = (GroupMember)o;
+		return Objects.equals(id, that.id) && Objects.equals(group, that.group)
+			&& Objects.equals(member, that.member) && Objects.equals(station, that.station)
+			&& type == that.type;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, group, member, station, type);
 	}
 }
