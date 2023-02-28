@@ -6,11 +6,13 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import podo.odeego.domain.member.service.MemberService;
+import podo.odeego.web.security.filter.JwtAuthenticationFilter;
 import podo.odeego.web.security.jwt.JwtProvider;
 import podo.odeego.web.security.oauth2.OAuth2AuthenticationSuccessHandler;
 
@@ -33,6 +35,7 @@ public class WebSecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
+			.httpBasic().disable()
 			.formLogin().disable()
 			.csrf().disable()
 			.headers().disable()
@@ -45,7 +48,19 @@ public class WebSecurityConfig {
 			.oauth2Login()
 			.disable();
 
+		http
+			.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+
+		http
+			.authorizeRequests()
+			.antMatchers("/api/v1/auth/login/**")
+			.permitAll();
 		return http.build();
+	}
+
+	@Bean
+	public JwtAuthenticationFilter jwtAuthenticationFilter() {
+		return new JwtAuthenticationFilter(jwtProvider);
 	}
 
 	@Bean
@@ -66,4 +81,5 @@ public class WebSecurityConfig {
 		source.registerCorsConfiguration("/**", configuration);
 		return source;
 	}
+
 }

@@ -2,59 +2,60 @@ package podo.odeego.web.api.auth.dto;
 
 public class GetMemberInfoResponse {
 
-	private final Long id;
-	private final String connected_at;
-	private final Properties properties;
-	private final KakaoAccount kakao_acount;
+	private Long id;
+	private String connected_at;
+	private Properties properties;
+	private KakaoAccount kakao_account;
 
-	public GetMemberInfoResponse(Long id, String connected_at, Properties properties, KakaoAccount kakao_acount) {
-		this.id = id;
-		this.connected_at = connected_at;
-		this.properties = properties;
-		this.kakao_acount = kakao_acount;
+	public GetMemberInfoResponse() {
 	}
 
 	public Long id() {
 		return id;
 	}
 
-	public String connected_at() {
-		return connected_at;
-	}
-
-	public Properties properties() {
-		return properties;
-	}
-
-	public KakaoAccount kakao_acount() {
-		return kakao_acount;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public static class Properties {
-		private final String nickname;
-		private final String profile_image;
-		private final String thumbnail_image;
+		private String nickname;
+		private String profile_image;
+		private String thumbnail_image;
 
-		public Properties(String nickname, String profile_image, String thumbnail_image) {
-			this.nickname = nickname;
-			this.profile_image = profile_image;
-			this.thumbnail_image = thumbnail_image;
+		public Properties() {
 		}
-
-		public String nickname() {
-			return nickname;
-		}
-
-		public String profile_image() {
-			return profile_image;
-		}
-
-		public String thumbnail_image() {
-			return thumbnail_image;
-		}
-
 	}
 
 	public static class KakaoAccount {
+
+		private Boolean profile_nickname_needs_agreement;
+		private Boolean profile_image_needs_agreement;
+		private Profile profile;
+		private Boolean has_email;
+		private Boolean email_needs_agreement;
+		private Boolean is_email_valid;
+		private Boolean is_email_verified;
+		private String email;
+		private Boolean has_age_range;
+		private Boolean age_range_needs_agreement;
+		private Boolean age_range;
+		private Boolean has_gender;
+		private Boolean gender_needs_agreement;
+		private String gender;
+
+		public KakaoAccount() {
+		}
+
+		public static class Profile {
+
+			private String nickname;
+			private String thumbnail_image_url;
+			private String profile_image_url;
+			private Boolean is_default_image;
+
+			public Profile() {
+			}
+		}
 	}
 }
