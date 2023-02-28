@@ -8,5 +8,5 @@ import podo.odeego.domain.path.entity.Path;
 
 public interface PathRepository extends Repository<Path, Long> {
 
-	List<Path> findAllByStart(String start);
+	List<Path> findAllByStartStation(String startStation);
 }
