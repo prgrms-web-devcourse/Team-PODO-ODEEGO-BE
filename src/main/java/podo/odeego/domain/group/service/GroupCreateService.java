@@ -32,7 +32,7 @@ public class GroupCreateService {
 
 		findMember.verifyNonOfGroupParticipating();
 
-		Group group = new Group(findMember, new GroupCapacity(createRequest.capacity()), Group.GROUP_VALID_TIME);
+		Group group = new Group(new GroupCapacity(createRequest.capacity()), Group.GROUP_VALID_TIME);
 		groupRepository.save(group);
 
 		return group.id();
