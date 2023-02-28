@@ -71,9 +71,10 @@ class GroupMemberAddServiceTest {
 
 		@Bean
 		public GroupQueryService groupQueryService(
-			GroupRepository groupRepository
+			GroupRepository groupRepository,
+			GroupMemberRepository groupMemberRepository
 		) {
-			return new GroupQueryService(groupRepository);
+			return new GroupQueryService(groupRepository, groupMemberRepository);
 		}
 
 		@Bean
