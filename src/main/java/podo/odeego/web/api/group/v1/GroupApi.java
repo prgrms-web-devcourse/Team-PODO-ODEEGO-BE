@@ -6,6 +6,7 @@ import java.util.UUID;
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +21,7 @@ import podo.odeego.domain.group.dto.response.GroupResponse;
 import podo.odeego.domain.group.dto.response.GroupResponses;
 import podo.odeego.domain.group.service.GroupCreateService;
 import podo.odeego.domain.group.service.GroupQueryService;
+import podo.odeego.domain.group.service.GroupRemoveService;
 
 @RestController
 @RequestMapping("/api/v1/groups")
@@ -29,13 +31,16 @@ public class GroupApi {
 
 	private final GroupCreateService createService;
 	private final GroupQueryService queryService;
+	private final GroupRemoveService removeService;
 
 	public GroupApi(
 		GroupCreateService createService,
-		GroupQueryService queryService
+		GroupQueryService queryService,
+		GroupRemoveService removeService
 	) {
 		this.createService = createService;
 		this.queryService = queryService;
+		this.removeService = removeService;
 	}
 
 	@PostMapping
@@ -67,5 +72,14 @@ public class GroupApi {
 	) {
 		return ResponseEntity.ok()
 			.body(queryService.getAll(memberId));
+	}
+
+	@DeleteMapping("/{groupId}")
+	public ResponseEntity<GroupResponse> remove(
+		@PathVariable UUID groupId
+	) {
+		removeService.remove(groupId);
+		return ResponseEntity.ok()
+			.build();
 	}
 }
