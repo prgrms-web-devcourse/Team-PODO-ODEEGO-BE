@@ -18,13 +18,22 @@ Content-Type: application/json
   "capacity": 2
 }
 
+
 ### 모임 단건 조회 API
 GET http://localhost:8080/api/v1/groups/{groupId}
 
 
 
+
+
+
+
 ### [TEST] 더미 회원 생성 API
 POST http://localhost:8080/api/test/members?nickname=nickname1
+
+
+### [TEST] 모든 모임 조회 API
+GET http://localhost:8080/api/test/groups?member-id=1
 
 
 ### [TEST] 모임 생성 API
@@ -35,7 +44,6 @@ Content-Type: application/json
   "capacity": 2
 }
 
-
-### [TEST] 모임 조회 API
-GET http://localhost:8080/api/test/groups/13b92942-3b8e-445a-b639-233262346562
+### [TEST] 모임 상세 조회 API
+GET http://localhost:8080/api/test/groups/652a5580-1837-490c-9108-a05ab464ff9a
 
