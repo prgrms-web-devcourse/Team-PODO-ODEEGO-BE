@@ -17,6 +17,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import podo.odeego.domain.group.dto.request.GroupCreateRequest;
 import podo.odeego.domain.group.dto.response.GroupResponse;
+import podo.odeego.domain.group.dto.response.GroupResponses;
 import podo.odeego.domain.group.service.GroupCreateService;
 import podo.odeego.domain.group.service.GroupQueryService;
 
@@ -58,5 +59,13 @@ public class GroupApi {
 	) {
 		return ResponseEntity.ok()
 			.body(queryService.getOne(groupId));
+	}
+
+	@GetMapping
+	public ResponseEntity<GroupResponses> getAll(
+		@RequestParam(name = "member-id") Long memberId
+	) {
+		return ResponseEntity.ok()
+			.body(queryService.getAll(memberId));
 	}
 }
