@@ -1,5 +1,7 @@
 package podo.odeego.domain.group.entity;
 
+import static javax.persistence.CascadeType.*;
+
 import java.text.MessageFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -48,7 +50,7 @@ public class Group extends BaseTime {
 	@Column(nullable = false)
 	private LocalTime validTime;
 
-	@OneToMany(mappedBy = "group")
+	@OneToMany(mappedBy = "group", cascade = REMOVE)
 	private List<GroupMember> groupMembers = new ArrayList<>();
 
 	protected Group() {

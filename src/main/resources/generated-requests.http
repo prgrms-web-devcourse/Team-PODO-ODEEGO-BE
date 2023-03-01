@@ -18,13 +18,10 @@ Content-Type: application/json
   "capacity": 2
 }
 
+<> 2023-03-01T144358.400.json
 
 ### 모임 단건 조회 API
 GET http://localhost:8080/api/v1/groups/{groupId}
-
-
-
-
 
 
 
@@ -44,6 +41,11 @@ Content-Type: application/json
   "capacity": 2
 }
 
+
 ### [TEST] 모임 상세 조회 API
-GET http://localhost:8080/api/test/groups/652a5580-1837-490c-9108-a05ab464ff9a
+GET http://localhost:8080/api/test/groups/aa9de2b4-5901-44ea-8bbd-a5cdd377c0c6
+
+
+### [TEST] 모임 삭제 API
+DELETE http://localhost:8080/api/test/groups/6b3543db-3a4e-4fbf-8839-696847576511
 
