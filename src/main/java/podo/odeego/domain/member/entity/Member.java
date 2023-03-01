@@ -4,7 +4,6 @@ import static javax.persistence.EnumType.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -122,33 +121,5 @@ public class Member extends BaseTime {
 
 	public String providerId() {
 		return providerId;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
-		Member member = (Member)o;
-		return Objects.equals(id, member.id) && Objects.equals(nickname, member.nickname)
-			&& Objects.equals(provider, member.provider) && Objects.equals(providerId,
-			member.providerId) && Objects.equals(groupMembers, member.groupMembers);
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(id, nickname, provider, providerId, groupMembers);
-	}
-
-	@Override
-	public String toString() {
-		return "Member{" +
-			"id=" + id +
-			", nickname='" + nickname + '\'' +
-			", provider='" + provider + '\'' +
-			", providerId='" + providerId + '\'' +
-			", groupMembers=" + groupMembers +
-			'}';
 	}
 }
