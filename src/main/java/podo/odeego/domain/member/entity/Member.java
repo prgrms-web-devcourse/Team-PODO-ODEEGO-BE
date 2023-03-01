@@ -26,6 +26,9 @@ public class Member extends BaseTime {
 	@Column(length = 20)
 	private String nickname;
 
+	@Column
+	private String profileImageUrl;
+
 	@Column(nullable = false, length = 20)
 	private String provider;
 
@@ -38,14 +41,21 @@ public class Member extends BaseTime {
 	protected Member() {
 	}
 
-	public Member(String provider, String providerId) {
+	private Member(String provider, String providerId) {
 		this.provider = provider;
 		this.providerId = providerId;
 	}
 
-	public Member(String nickname, String provider, String providerId) {
-		this(provider, providerId);
-		this.nickname = nickname;
+	public static Member ofNickname(String nickname, String provider, String providerId) {
+		Member member = new Member(provider, providerId);
+		member.nickname = nickname;
+		return member;
+	}
+
+	public static Member ofProfileImageUrl(String profileImageUrl, String provider, String providerId) {
+		Member member = new Member(provider, providerId);
+		member.profileImageUrl = profileImageUrl;
+		return member;
 	}
 
 	public void addGroupMember(GroupMember groupMember) {

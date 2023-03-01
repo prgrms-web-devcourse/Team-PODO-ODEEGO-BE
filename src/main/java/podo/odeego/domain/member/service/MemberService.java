@@ -21,7 +21,7 @@ public class MemberService {
 		this.memberRepository = memberRepository;
 	}
 
-	public MemberJoinResponse join(String provider, String providerId) {
+	public MemberJoinResponse join(String provider, String providerId, String profileImageUrl) {
 		return memberRepository.findByProviderAndProviderId(provider, providerId)
 			.map(member -> {
 				log.info("Member already exist: {} for provider: {}, providerId: {}.", member, provider, providerId);
@@ -30,13 +30,13 @@ public class MemberService {
 			.orElseGet(() -> {
 				log.info("New Member for provider: {}, providerId: {}.", provider, providerId);
 				Member savedMember = memberRepository.save(
-					new Member(provider, providerId));
+					Member.ofProfileImageUrl(profileImageUrl, provider, providerId));
 				return MemberJoinResponse.newMember(savedMember.id());
 			});
 	}
 
 	public Long join(String nickname) {
-		Member savedMember = memberRepository.save(new Member(nickname, "provider", "providerId"));
+		Member savedMember = memberRepository.save(Member.ofNickname(nickname, "provider", "providerId"));
 		return savedMember.id();
 	}
 }
