@@ -7,41 +7,29 @@ import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import podo.odeego.config.TestConfig;
 import podo.odeego.domain.group.entity.Group;
 import podo.odeego.domain.group.entity.GroupCapacity;
 import podo.odeego.domain.group.entity.GroupMember;
 import podo.odeego.domain.group.entity.ParticipantType;
 import podo.odeego.domain.group.exception.GroupAlreadyFullException;
-import podo.odeego.domain.group.repository.GroupMemberRepository;
 import podo.odeego.domain.group.repository.GroupRepository;
 import podo.odeego.domain.member.entity.Member;
 import podo.odeego.domain.member.repository.MemberRepository;
-import podo.odeego.domain.member.service.MemberFindService;
 import podo.odeego.domain.midpoint.dto.StartSubmitRequest;
 import podo.odeego.domain.station.entity.Station;
 import podo.odeego.domain.station.repository.StationRepository;
-import podo.odeego.domain.station.service.StationFindService;
 
+@ExtendWith(SpringExtension.class)
+@Import(TestConfig.class)
 @DataJpaTest
 class GroupMemberAddServiceTest {
-
-	private static final Logger log = LoggerFactory.getLogger(GroupMemberAddServiceTest.class);
-
-	@Autowired
-	private MemberFindService memberFindService;
-
-	@Autowired
-	private GroupQueryService groupQueryService;
-
-	@Autowired
-	private StationFindService stationFindService;
 
 	@Autowired
 	private GroupMemberAddService groupMemberAddService;
@@ -54,50 +42,6 @@ class GroupMemberAddServiceTest {
 
 	@Autowired
 	private StationRepository stationRepository;
-
-	@Autowired
-	private GroupMemberRepository groupMemberRepository;
-
-	@TestConfiguration
-	static class TestConfig {
-
-		@Bean
-		public MemberFindService memberFindService(
-			MemberRepository memberRepository
-		) {
-			return new MemberFindService(memberRepository);
-		}
-
-		@Bean
-		public GroupQueryService groupQueryService(
-			GroupRepository groupRepository,
-			GroupMemberRepository groupMemberRepository,
-			MemberFindService memberFindService
-		) {
-			return new GroupQueryService(groupRepository, groupMemberRepository, memberFindService);
-		}
-
-		@Bean
-		public StationFindService stationFindService(
-			StationRepository stationRepository
-		) {
-			return new StationFindService(stationRepository);
-		}
-
-		@Bean
-		public GroupMemberAddService groupMemberAddService(
-			MemberFindService memberFindService,
-			GroupQueryService groupQueryService,
-			StationFindService stationFindService
-		) {
-			return new GroupMemberAddService(
-				memberFindService,
-				groupQueryService,
-				stationFindService
-			);
-		}
-
-	}
 
 	@DisplayName("회원은 그룹에 참여자로 등록할 수 있다.")
 	@Test
