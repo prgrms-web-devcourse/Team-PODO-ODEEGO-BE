@@ -58,6 +58,13 @@ public class Member extends BaseTime {
 		this.memberType = memberType;
 	}
 
+	public static Member ofStationName(String nickname, String stationName, String provider, String providerId) {
+		Member member = new Member(provider, providerId);
+		member.nickname = nickname;
+		member.defaultStationName = stationName;
+		return member;
+	}
+
 	public static Member ofNickname(String nickname, String provider, String providerId) {
 		Member member = new Member(provider, providerId);
 		member.nickname = nickname;

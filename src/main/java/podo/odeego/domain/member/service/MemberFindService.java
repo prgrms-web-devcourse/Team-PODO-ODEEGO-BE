@@ -3,21 +3,24 @@ package podo.odeego.domain.member.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import podo.odeego.domain.member.dto.MemberDefaultStationGetResponse;
 import podo.odeego.domain.member.entity.Member;
 import podo.odeego.domain.member.exception.MemberNotFoundException;
 import podo.odeego.domain.member.repository.MemberRepository;
-import podo.odeego.web.error.exception.EntityNotFoundException;
+import podo.odeego.domain.station.service.StationFindService;
 
 @Service
 @Transactional(readOnly = true)
 public class MemberFindService {
 
 	private final MemberRepository memberRepository;
+	private final StationFindService stationFindService;
 
-	public MemberFindService(MemberRepository memberRepository) {
+	public MemberFindService(MemberRepository memberRepository, StationFindService stationFindService) {
 		this.memberRepository = memberRepository;
+		this.stationFindService = stationFindService;
 	}
-	
+
 	public Member findById(Long memberId) {
 		return memberRepository.findById(memberId)
 			.orElseThrow(() -> new MemberNotFoundException(
@@ -25,14 +28,10 @@ public class MemberFindService {
 			);
 	}
 
-	public Member findByUsername(String username) {
-		return memberRepository.findByNickname(username)
-			.orElseThrow(() -> new EntityNotFoundException("User not found: username - %s".formatted(username)));
-	}
-
-	public Member findByProviderAndProviderId(String provider, String providerId) {
-		return memberRepository.findByProviderAndProviderId(provider, providerId)
-			.orElseThrow(() -> new EntityNotFoundException(
-				"User not found: provider - %s / providerId - %s".formatted(provider, providerId)));
+	public MemberDefaultStationGetResponse findDefaultStation(Long memberId) {
+		String defaultStationName = findById(memberId).defaultStationName();
+		return new MemberDefaultStationGetResponse(
+			stationFindService.findByName(defaultStationName)
+		);
 	}
 }
