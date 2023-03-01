@@ -2,6 +2,7 @@ package podo.odeego.web.security.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -64,7 +65,14 @@ public class WebSecurityConfig {
 
 		configuration.addAllowedOrigin(origin);
 		configuration.addAllowedHeader("*");
-		configuration.addAllowedMethod("*");
+		configuration.addAllowedMethod(HttpMethod.GET);
+		configuration.addAllowedMethod(HttpMethod.POST);
+		configuration.addAllowedMethod(HttpMethod.HEAD);
+		configuration.addAllowedMethod(HttpMethod.PUT);
+		configuration.addAllowedMethod(HttpMethod.DELETE);
+		configuration.addAllowedMethod(HttpMethod.TRACE);
+		configuration.addAllowedMethod(HttpMethod.PATCH);
+		configuration.addAllowedMethod(HttpMethod.OPTIONS);
 		configuration.setAllowCredentials(true);
 
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
