@@ -32,7 +32,7 @@ public class Member extends BaseTime {
 	private String defaultStationName;
 
 	@Enumerated(value = STRING)
-	private MemberType memberType;
+	private MemberType type;
 
 	private String profileImageUrl;
 
@@ -53,10 +53,10 @@ public class Member extends BaseTime {
 		this.providerId = providerId;
 	}
 
-	public Member(String profileImageUrl, MemberType memberType, String provider, String providerId) {
+	public Member(String profileImageUrl, MemberType type, String provider, String providerId) {
 		this(provider, providerId);
 		this.profileImageUrl = profileImageUrl;
-		this.memberType = memberType;
+		this.type = type;
 	}
 
 	public static Member ofNickname(String nickname, String provider, String providerId) {
@@ -96,6 +96,10 @@ public class Member extends BaseTime {
 		return this.groupMembers.size() != 0;
 	}
 
+	public boolean isPre() {
+		return MemberType.PRE.equals(type);
+	}
+
 	public Long id() {
 		return id;
 	}
@@ -108,8 +112,8 @@ public class Member extends BaseTime {
 		return defaultStationName;
 	}
 
-	public MemberType memberType() {
-		return memberType;
+	public MemberType type() {
+		return type;
 	}
 
 	public String profileImageUrl() {
@@ -132,13 +136,16 @@ public class Member extends BaseTime {
 			return false;
 		Member member = (Member)o;
 		return Objects.equals(id, member.id) && Objects.equals(nickname, member.nickname)
-			&& Objects.equals(provider, member.provider) && Objects.equals(providerId,
-			member.providerId) && Objects.equals(groupMembers, member.groupMembers);
+			&& Objects.equals(defaultStationName, member.defaultStationName) && type == member.type
+			&& Objects.equals(profileImageUrl, member.profileImageUrl) && Objects.equals(provider,
+			member.provider) && Objects.equals(providerId, member.providerId) && Objects.equals(
+			groupMembers, member.groupMembers);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, nickname, provider, providerId, groupMembers);
+		return Objects.hash(id, nickname, defaultStationName, type, profileImageUrl, provider, providerId,
+			groupMembers);
 	}
 
 	@Override
@@ -146,6 +153,9 @@ public class Member extends BaseTime {
 		return "Member{" +
 			"id=" + id +
 			", nickname='" + nickname + '\'' +
+			", defaultStationName='" + defaultStationName + '\'' +
+			", type=" + type +
+			", profileImageUrl='" + profileImageUrl + '\'' +
 			", provider='" + provider + '\'' +
 			", providerId='" + providerId + '\'' +
 			", groupMembers=" + groupMembers +

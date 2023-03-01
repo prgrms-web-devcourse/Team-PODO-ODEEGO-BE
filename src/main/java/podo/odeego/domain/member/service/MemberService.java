@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import podo.odeego.domain.member.dto.MemberJoinResponse;
 import podo.odeego.domain.member.entity.Member;
+import podo.odeego.domain.member.entity.MemberType;
 import podo.odeego.domain.member.repository.MemberRepository;
 
 @Service
@@ -24,14 +25,17 @@ public class MemberService {
 	public MemberJoinResponse join(String provider, String providerId, String profileImageUrl) {
 		return memberRepository.findByProviderAndProviderId(provider, providerId)
 			.map(member -> {
-				log.info("Member already exist: {} for provider: {}, providerId: {}.", member, provider, providerId);
-				return MemberJoinResponse.existMember(member.id());
+				log.info("Member already exist: {} for provider: {}, providerId: {}, memberType: {}.", member, provider,
+					providerId, member.type());
+				return new MemberJoinResponse(member.id(),
+					member.type());
 			})
 			.orElseGet(() -> {
 				log.info("New Member for provider: {}, providerId: {}.", provider, providerId);
 				Member savedMember = memberRepository.save(
-					Member.ofProfileImageUrl(profileImageUrl, provider, providerId));
-				return MemberJoinResponse.newMember(savedMember.id());
+					new Member(profileImageUrl, MemberType.PRE, provider, providerId)
+				);
+				return new MemberJoinResponse(savedMember.id(), savedMember.type());
 			});
 	}
 
