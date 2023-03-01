@@ -59,6 +59,13 @@ public class Member extends BaseTime {
 		this.memberType = memberType;
 	}
 
+	public static Member ofStationName(String nickname, String stationName, String provider, String providerId) {
+		Member member = new Member(provider, providerId);
+		member.nickname = nickname;
+		member.defaultStationName = stationName;
+		return member;
+	}
+
 	public static Member ofNickname(String nickname, String provider, String providerId) {
 		Member member = new Member(provider, providerId);
 		member.nickname = nickname;
@@ -128,13 +135,16 @@ public class Member extends BaseTime {
 			return false;
 		Member member = (Member)o;
 		return Objects.equals(id, member.id) && Objects.equals(nickname, member.nickname)
-			&& Objects.equals(provider, member.provider) && Objects.equals(providerId,
-			member.providerId) && Objects.equals(groupMembers, member.groupMembers);
+			&& Objects.equals(defaultStationName, member.defaultStationName) && memberType == member.memberType
+			&& Objects.equals(profileImageUrl, member.profileImageUrl) && Objects.equals(provider,
+			member.provider) && Objects.equals(providerId, member.providerId) && Objects.equals(
+			groupMembers, member.groupMembers);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, nickname, provider, providerId, groupMembers);
+		return Objects.hash(id, nickname, defaultStationName, memberType, profileImageUrl, provider, providerId,
+			groupMembers);
 	}
 
 	@Override
@@ -142,6 +152,9 @@ public class Member extends BaseTime {
 		return "Member{" +
 			"id=" + id +
 			", nickname='" + nickname + '\'' +
+			", defaultStationName='" + defaultStationName + '\'' +
+			", memberType=" + memberType +
+			", profileImageUrl='" + profileImageUrl + '\'' +
 			", provider='" + provider + '\'' +
 			", providerId='" + providerId + '\'' +
 			", groupMembers=" + groupMembers +
