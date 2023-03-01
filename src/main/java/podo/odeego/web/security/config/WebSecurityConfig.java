@@ -1,5 +1,7 @@
 package podo.odeego.web.security.config;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -19,13 +21,17 @@ import podo.odeego.web.security.jwt.JwtProvider;
 public class WebSecurityConfig {
 
 	private final JwtProvider jwtProvider;
-	private final String origin;
+	private final String localOrigin;
+	private final String releaseOrigin;
 
 	public WebSecurityConfig(
 		JwtProvider jwtProvider,
-		@Value("${server.host.front}") String origin) {
+		@Value("${server.host.front.local}") String localOrigin,
+		@Value("${server.host.front.release}") String releaseOrigin
+	) {
+		this.localOrigin = localOrigin;
+		this.releaseOrigin = releaseOrigin;
 		this.jwtProvider = jwtProvider;
-		this.origin = origin;
 	}
 
 	@Bean
@@ -63,7 +69,8 @@ public class WebSecurityConfig {
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration();
 
-		configuration.addAllowedOrigin(origin);
+		configuration.setAllowedOrigins(
+			List.of(localOrigin, releaseOrigin));
 		configuration.addAllowedHeader("*");
 		configuration.addAllowedMethod(HttpMethod.GET);
 		configuration.addAllowedMethod(HttpMethod.POST);
