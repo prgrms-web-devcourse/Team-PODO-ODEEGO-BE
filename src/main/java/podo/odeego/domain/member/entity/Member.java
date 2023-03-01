@@ -29,14 +29,11 @@ public class Member extends BaseTime {
 	@Column(length = 20, unique = true)
 	private String nickname;
 
-	@Column
 	private String defaultStationName;
 
 	@Enumerated(value = STRING)
-	@Column(nullable = false)
 	private MemberType memberType;
 
-	@Column(nullable = false)
 	private String profileImageUrl;
 
 	@Column(nullable = false, length = 20)
