@@ -17,7 +17,7 @@ public record MidPointSearchRequest(
 	public record Start(
 
 		@NotBlank
-		String name,
+		String stationName,
 
 		@NotNull
 		@DecimalMin("0.0")
@@ -31,18 +31,18 @@ public record MidPointSearchRequest(
 
 	public boolean isAllSameStart() {
 		return stations.stream()
-			.collect(Collectors.groupingBy(Start::name))
+			.collect(Collectors.groupingBy(Start::stationName))
 			.size() == 1;
 	}
 
 	public List<String> getStartNames() {
 		return stations.stream()
-			.map(Start::name)
+			.map(Start::stationName)
 			.toList();
 	}
 
 	public String getFirstStart() {
 		return stations.get(0)
-			.name();
+			.stationName();
 	}
 }
