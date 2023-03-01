@@ -4,20 +4,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-public record ErrorResponse(
-	HttpStatus status,
-	String errorMessage,
-	List<FieldError> errors
-) {
+public class ErrorResponse {
+
+	private HttpStatus status;
+	private String errorMessage;
+	private List<FieldError> errors;
+
+	private ErrorResponse(ErrorCode errorCode) {
+		this(errorCode, new ArrayList<>());
+	}
+
+	private ErrorResponse(ErrorCode errorCode, List<FieldError> errors) {
+		this.status = errorCode.status();
+		this.errorMessage = errorCode.message();
+		this.errors = errors;
+	}
 
 	public static ErrorResponse of(ErrorCode errorCode) {
-		return new ErrorResponse(errorCode.status(), errorCode.message(), new ArrayList<>());
+		return new ErrorResponse(errorCode);
 	}
 
 	public static ErrorResponse of(ErrorCode errorCode, List<FieldError> errors) {
-		return new ErrorResponse(errorCode.status(), errorCode.message(), errors);
+		return new ErrorResponse(errorCode, errors);
+	}
+
+	public static ErrorResponse of(ErrorCode errorCode, BindingResult bindingResult) {
+		return new ErrorResponse(errorCode, FieldError.of(bindingResult));
 	}
 
 	public static ErrorResponse of(MethodArgumentTypeMismatchException e) {
@@ -26,16 +41,64 @@ public record ErrorResponse(
 		return ErrorResponse.of(ErrorCode.INVALID_TYPE_VALUE, errors);
 	}
 
-	private record FieldError(
-		String field,
-		String value,
-		String reason
-	) {
+	public HttpStatus getStatus() {
+		return status;
+	}
+
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+
+	public List<FieldError> getErrors() {
+		return errors;
+	}
+
+	private static class FieldError {
+
+		private String field;
+		private String value;
+		private String reason;
+
+		private FieldError() {
+		}
 
 		public static List<FieldError> of(String field, String value, String reason) {
-			List<FieldError> fieldErrors = new ArrayList<>();
-			fieldErrors.add(new FieldError(field, value, reason));
-			return fieldErrors;
+			FieldError error = new FieldError();
+
+			error.field = field;
+			error.value = value;
+			error.reason = reason;
+
+			return List.of(error);
+		}
+
+		private static List<FieldError> of(BindingResult bindingResult) {
+			return bindingResult.getFieldErrors()
+				.stream()
+				.map(FieldError::of)
+				.toList();
+		}
+
+		private static FieldError of(org.springframework.validation.FieldError fieldError) {
+			FieldError error = new FieldError();
+
+			error.field = fieldError.getField();
+			error.value = fieldError.getRejectedValue() == null ? "" : fieldError.getRejectedValue().toString();
+			error.reason = fieldError.getDefaultMessage();
+
+			return error;
+		}
+
+		public String getField() {
+			return field;
+		}
+
+		public String getValue() {
+			return value;
+		}
+
+		public String getReason() {
+			return reason;
 		}
 	}
 }

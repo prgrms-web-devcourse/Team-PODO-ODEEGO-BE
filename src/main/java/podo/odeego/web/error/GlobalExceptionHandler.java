@@ -3,6 +3,7 @@ package podo.odeego.web.error;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -14,6 +15,13 @@ import podo.odeego.web.error.exception.ResourceNotFoundException;
 public class GlobalExceptionHandler {
 
 	private final Logger log = LoggerFactory.getLogger(this.getClass());
+
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	protected ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+		log.error("handleMethodArgumentNotValidException", e);
+		ErrorResponse response = ErrorResponse.of(ErrorCode.INVALID_INPUT_VALUE, e.getBindingResult());
+		return newResponseEntity(response);
+	}
 
 	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
 	protected ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatchException(
@@ -46,6 +54,6 @@ public class GlobalExceptionHandler {
 	}
 
 	private ResponseEntity<ErrorResponse> newResponseEntity(ErrorResponse response) {
-		return new ResponseEntity<>(response, response.status());
+		return new ResponseEntity<>(response, response.getStatus());
 	}
 }
