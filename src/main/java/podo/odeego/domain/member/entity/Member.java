@@ -75,6 +75,10 @@ public class Member extends BaseTime {
 		}
 	}
 
+	public List<GroupMember> getGroupMembers() {
+		return this.groupMembers;
+	}
+
 	private boolean isParticipatingGroup() {
 		return this.groupMembers.size() != 0;
 	}
