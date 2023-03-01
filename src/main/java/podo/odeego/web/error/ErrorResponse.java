@@ -11,20 +11,34 @@ public class ErrorResponse {
 
 	private HttpStatus status;
 	private String errorMessage;
+	private String details;
 	private List<FieldError> errors;
 
 	private ErrorResponse(ErrorCode errorCode) {
 		this(errorCode, new ArrayList<>());
 	}
 
+	private ErrorResponse(ErrorCode errorCode, String details) {
+		this(errorCode, details, new ArrayList<>());
+	}
+
 	private ErrorResponse(ErrorCode errorCode, List<FieldError> errors) {
+		this(errorCode, "", errors);
+	}
+
+	private ErrorResponse(ErrorCode errorCode, String details, List<FieldError> errors) {
 		this.status = errorCode.status();
 		this.errorMessage = errorCode.message();
+		this.details = details;
 		this.errors = errors;
 	}
 
 	public static ErrorResponse of(ErrorCode errorCode) {
 		return new ErrorResponse(errorCode);
+	}
+
+	public static ErrorResponse of(ErrorCode errorCode, String errorDetails) {
+		return new ErrorResponse(errorCode, errorDetails);
 	}
 
 	public static ErrorResponse of(ErrorCode errorCode, List<FieldError> errors) {
@@ -47,6 +61,10 @@ public class ErrorResponse {
 
 	public String getErrorMessage() {
 		return errorMessage;
+	}
+
+	public String getDetails() {
+		return details;
 	}
 
 	public List<FieldError> getErrors() {

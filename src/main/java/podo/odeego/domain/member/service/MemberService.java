@@ -2,11 +2,13 @@ package podo.odeego.domain.member.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import podo.odeego.domain.member.dto.MemberJoinResponse;
 import podo.odeego.domain.member.entity.Member;
+import podo.odeego.domain.member.exception.MemberDuplicatedException;
 import podo.odeego.domain.member.repository.MemberRepository;
 
 @Service
@@ -36,7 +38,14 @@ public class MemberService {
 	}
 
 	public Long join(String nickname) {
-		Member savedMember = memberRepository.save(Member.ofNickname(nickname, "provider", "providerId"));
-		return savedMember.id();
+		try {
+			Member newMember = Member.ofNickname(nickname, "provider", "providerId");
+			Member savedMember = memberRepository.saveAndFlush(newMember);
+			return savedMember.id();
+		} catch (DataIntegrityViolationException e) {
+			throw new MemberDuplicatedException(
+				"Cannot execute member join. Nickname '%s' is duplicated.".formatted(nickname)
+			);
+		}
 	}
 }
