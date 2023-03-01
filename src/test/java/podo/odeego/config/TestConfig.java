@@ -33,9 +33,10 @@ public class TestConfig {
 	@Bean
 	public GroupQueryService groupQueryService(
 		GroupRepository groupRepository,
-		GroupMemberRepository groupMemberRepository
+		GroupMemberRepository groupMemberRepository,
+		MemberFindService memberFindService
 	) {
-		return new GroupQueryService(groupRepository, groupMemberRepository);
+		return new GroupQueryService(groupRepository, groupMemberRepository, memberFindService);
 	}
 
 	@Bean
