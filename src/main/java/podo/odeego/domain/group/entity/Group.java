@@ -2,14 +2,12 @@ package podo.odeego.domain.group.entity;
 
 import static javax.persistence.CascadeType.*;
 
-import java.text.MessageFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -66,13 +64,18 @@ public class Group extends BaseTime {
 			throw new GroupAlreadyFullException("Can't not add group member. Group is Full.");
 		}
 
-		if (groupMembers.contains(groupMember)) {
+		if (isContains(groupMember)) {
 			throw new GroupAlreadyContainsException(
-				MessageFormat.format("Can't not add group member. Member is already contained. [group member]:{0}",
-					groupMember.member()));
+				"Can't not add group member. Member is already contained. [member id]: %d".formatted(
+					groupMember.member().id()));
 		}
 
 		this.groupMembers.add(groupMember);
+	}
+
+	private boolean isContains(GroupMember groupMember) {
+		return groupMembers.stream()
+			.anyMatch(savedMember -> savedMember.getMemberId().equals(groupMember.getMemberId()));
 	}
 
 	public LocalTime getRemainingTime() {
@@ -113,22 +116,5 @@ public class Group extends BaseTime {
 
 	public List<GroupMember> groupMembers() {
 		return Collections.unmodifiableList(this.groupMembers);
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
-		Group group = (Group)o;
-		return Objects.equals(id, group.id) && Objects.equals(capacity, group.capacity)
-			&& Objects.equals(validTime, group.validTime) && Objects.equals(groupMembers,
-			group.groupMembers);
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(id, capacity, validTime, groupMembers);
 	}
 }
