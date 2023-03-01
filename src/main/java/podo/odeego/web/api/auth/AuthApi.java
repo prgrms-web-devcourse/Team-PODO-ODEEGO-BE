@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import podo.odeego.domain.member.dto.MemberJoinResponse;
+import podo.odeego.domain.member.entity.dto.MemberJoinResponse;
 import podo.odeego.domain.member.service.MemberService;
 import podo.odeego.web.api.auth.dto.GetMemberInfoResponse;
 import podo.odeego.web.api.auth.dto.MemberLoginResponse;

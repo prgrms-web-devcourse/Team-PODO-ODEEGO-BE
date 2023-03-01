@@ -1,6 +1,6 @@
 package podo.odeego.web.api.auth.dto;
 
-import podo.odeego.domain.member.dto.MemberJoinResponse;
+import podo.odeego.domain.member.entity.dto.MemberJoinResponse;
 
 public record MemberLoginResponse(
 	String accessToken,
