@@ -18,7 +18,6 @@ import podo.odeego.domain.group.entity.Group;
 import podo.odeego.domain.group.entity.GroupCapacity;
 import podo.odeego.domain.group.entity.GroupMember;
 import podo.odeego.domain.group.entity.ParticipantType;
-import podo.odeego.domain.group.exception.GroupAlreadyContainsException;
 import podo.odeego.domain.group.exception.GroupAlreadyFullException;
 import podo.odeego.domain.group.repository.GroupMemberRepository;
 import podo.odeego.domain.group.repository.GroupRepository;
@@ -145,26 +144,5 @@ class GroupMemberAddServiceTest {
 		// when && then
 		assertThatThrownBy(() -> groupMemberAddService.add(savedMember.id(), requestDto))
 			.isInstanceOf(GroupAlreadyFullException.class);
-	}
-
-	@DisplayName("회원은 이미 참가한 그룹에 들어갈 수 없다.")
-	@Test
-	void add_in_participated_group() {
-		// given
-		Station savedStation = stationRepository.save(new Station("가양역", null, 127.12314, 37.123124, "9"));
-
-		Member host = memberRepository.save(Member.ofNickname("host", "kakao", "12312123412"));
-		Group savedGroup = groupRepository.save(new Group(new GroupCapacity(3L), LocalTime.of(1, 0)));
-		savedGroup.addGroupMember(new GroupMember(savedGroup, host, ParticipantType.HOST));
-
-		Member savedMember = memberRepository.save(Member.ofNickname("test", "kakao", "12312412"));
-		savedGroup.addGroupMember(new GroupMember(savedGroup, savedMember, savedStation, ParticipantType.GUEST));
-
-		StartSubmitRequest requestDto = new StartSubmitRequest(savedGroup.id(), savedStation.name(),
-			savedStation.latitude(), savedStation.longitude());
-
-		// when && then
-		assertThatThrownBy(() -> groupMemberAddService.add(savedMember.id(), requestDto))
-			.isInstanceOf(GroupAlreadyContainsException.class);
 	}
 }

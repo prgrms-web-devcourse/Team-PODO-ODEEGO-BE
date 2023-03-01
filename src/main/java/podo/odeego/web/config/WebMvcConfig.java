@@ -12,16 +12,21 @@ import podo.odeego.web.api.place.converter.PlaceCategoryConverter;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
-	private final String origin;
+	private final String localOrigin;
+	private final String releaseOrigin;
 
-	public WebMvcConfig(@Value("${server.host.front}") String origin) {
-		this.origin = origin;
+	public WebMvcConfig(
+		@Value("${server.host.front.local}") String localOrigin,
+		@Value("${server.host.front.release}") String releaseOrigin
+	) {
+		this.localOrigin = localOrigin;
+		this.releaseOrigin = releaseOrigin;
 	}
 
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/**")
-			.allowedOrigins(origin)
+			.allowedOrigins(localOrigin, releaseOrigin)
 			.allowedMethods(HttpMethod.GET.name())
 			.allowedMethods(HttpMethod.POST.name())
 			.allowedMethods(HttpMethod.HEAD.name())
