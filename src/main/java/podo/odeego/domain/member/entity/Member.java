@@ -1,11 +1,14 @@
 package podo.odeego.domain.member.entity;
 
+import static javax.persistence.EnumType.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,16 +26,23 @@ public class Member extends BaseTime {
 	@Column(name = "member_id")
 	private Long id;
 
-	@Column(length = 20)
+	@Column(length = 20, unique = true)
 	private String nickname;
 
 	@Column
+	private String defaultStationName;
+
+	@Enumerated(value = STRING)
+	@Column(nullable = false)
+	private MemberType memberType;
+
+	@Column(nullable = false)
 	private String profileImageUrl;
 
 	@Column(nullable = false, length = 20)
 	private String provider;
 
-	@Column(nullable = false, length = 80)
+	@Column(nullable = false, unique = true, length = 80)
 	private String providerId;
 
 	@OneToMany(mappedBy = "member")
@@ -44,6 +54,12 @@ public class Member extends BaseTime {
 	private Member(String provider, String providerId) {
 		this.provider = provider;
 		this.providerId = providerId;
+	}
+
+	public Member(String profileImageUrl, MemberType memberType, String provider, String providerId) {
+		this(provider, providerId);
+		this.profileImageUrl = profileImageUrl;
+		this.memberType = memberType;
 	}
 
 	public static Member ofNickname(String nickname, String provider, String providerId) {
@@ -85,6 +101,18 @@ public class Member extends BaseTime {
 
 	public String nickname() {
 		return nickname;
+	}
+
+	public String defaultStationName() {
+		return defaultStationName;
+	}
+
+	public MemberType memberType() {
+		return memberType;
+	}
+
+	public String profileImageUrl() {
+		return profileImageUrl;
 	}
 
 	public String provider() {
