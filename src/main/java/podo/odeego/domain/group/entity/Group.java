@@ -50,7 +50,7 @@ public class Group extends BaseTime {
 	@Column(nullable = false)
 	private LocalTime validTime;
 
-	@OneToMany(mappedBy = "group", cascade = REMOVE)
+	@OneToMany(mappedBy = "group", cascade = {REMOVE, PERSIST})
 	private List<GroupMember> groupMembers = new ArrayList<>();
 
 	protected Group() {
