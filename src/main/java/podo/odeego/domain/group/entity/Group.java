@@ -19,6 +19,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import podo.odeego.domain.group.exception.GroupAlreadyContainsException;
 import podo.odeego.domain.group.exception.GroupAlreadyFullException;
@@ -28,6 +30,8 @@ import podo.odeego.domain.util.TimeUtils;
 @Entity
 @Table(name = "`group`")
 public class Group extends BaseTime {
+
+	private static final Logger log = LoggerFactory.getLogger(Group.class);
 
 	public static final LocalTime GROUP_VALID_TIME = LocalTime.of(1, 0);
 
@@ -85,7 +89,12 @@ public class Group extends BaseTime {
 	}
 
 	private LocalDateTime getExpireTime() {
-		return super.createdAt().plus(TimeUtils.toDuration(this.validTime));
+		log.info("Group.getExpireTime(): createdAt={}", super.createdAt());
+
+		LocalDateTime expireDateTime = super.createdAt().plus(TimeUtils.toDuration(this.validTime));
+		log.info("Group.getExpireTime(): expireDateTime={}", expireDateTime);
+
+		return expireDateTime;
 	}
 
 	public UUID id() {
