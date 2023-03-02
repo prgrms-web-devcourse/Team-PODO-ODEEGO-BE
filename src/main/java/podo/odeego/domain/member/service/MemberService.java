@@ -6,8 +6,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import podo.odeego.domain.member.dto.MemberJoinResponse;
+import podo.odeego.domain.member.dto.MemberSignUpRequest;
 import podo.odeego.domain.member.entity.Member;
 import podo.odeego.domain.member.entity.MemberType;
+import podo.odeego.domain.member.exception.MemberNotFoundException;
 import podo.odeego.domain.member.repository.MemberRepository;
 
 @Service
@@ -42,5 +44,14 @@ public class MemberService {
 	public Long join(String nickname) {
 		Member savedMember = memberRepository.save(Member.ofNickname(nickname, "provider", "providerId"));
 		return savedMember.id();
+	}
+
+	public Long signUp(Long memberId, MemberSignUpRequest signUpRequest) {
+		Member member = memberRepository.findById(memberId)
+			.orElseThrow(() -> new MemberNotFoundException(
+				"Cannot find Member for memberId=%d.".formatted(memberId))
+			);
+		member.signUp(signUpRequest.nickname(), signUpRequest.defaultStationName());
+		return member.id();
 	}
 }

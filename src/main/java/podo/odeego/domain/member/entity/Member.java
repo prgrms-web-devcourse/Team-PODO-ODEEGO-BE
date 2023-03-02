@@ -107,6 +107,12 @@ public class Member extends BaseTime {
 		return MemberType.PRE.equals(type);
 	}
 
+	public void signUp(String nickname, String defaultStationName) {
+		this.nickname = nickname;
+		this.defaultStationName = defaultStationName;
+		this.type = MemberType.REGULAR;
+	}
+
 	public Long id() {
 		return id;
 	}
