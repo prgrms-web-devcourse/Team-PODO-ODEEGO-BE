@@ -1,7 +1,7 @@
 package podo.odeego.domain.group.exception;
 
-import podo.odeego.web.error.ErrorCode;
-import podo.odeego.web.error.exception.AlreadyFullException;
+import podo.odeego.global.error.ErrorCode;
+import podo.odeego.global.error.exception.AlreadyFullException;
 
 public class GroupAlreadyFullException extends AlreadyFullException {
 

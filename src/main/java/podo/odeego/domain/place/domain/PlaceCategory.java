@@ -2,7 +2,7 @@ package podo.odeego.domain.place.domain;
 
 import java.util.Arrays;
 
-import podo.odeego.web.error.exception.InvalidValueException;
+import podo.odeego.global.error.exception.InvalidValueException;
 
 public enum PlaceCategory {
 

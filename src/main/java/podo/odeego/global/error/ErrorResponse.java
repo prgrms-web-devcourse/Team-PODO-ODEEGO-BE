@@ -1,4 +1,4 @@
-package podo.odeego.web.error;
+package podo.odeego.global.error;
 
 import java.util.ArrayList;
 import java.util.List;

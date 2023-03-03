@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import podo.odeego.domain.station.entity.Station;
 import podo.odeego.domain.station.repository.StationRepository;
-import podo.odeego.web.error.exception.ResourceNotFoundException;
+import podo.odeego.global.error.exception.ResourceNotFoundException;
 
 @Service
 @Transactional(readOnly = true)
