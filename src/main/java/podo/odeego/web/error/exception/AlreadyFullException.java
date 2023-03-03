@@ -5,6 +5,10 @@ import podo.odeego.web.error.ErrorCode;
 public class AlreadyFullException extends BusinessException {
 
 	public AlreadyFullException(String message) {
-		super(message, ErrorCode.FORBIDDEN);
+		this(message, ErrorCode.FORBIDDEN);
+	}
+
+	public AlreadyFullException(String message, ErrorCode errorCode) {
+		super(message, errorCode);
 	}
 }
