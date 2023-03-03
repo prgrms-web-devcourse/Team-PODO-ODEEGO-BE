@@ -54,8 +54,7 @@ public class AuthApi {
 	}
 
 	@GetMapping("/login/oauth2/callback/kakao")
-	public ResponseEntity<OAuth2GetTokenResponse> loginWithKakao(@RequestParam String code,
-		HttpServletRequest httpServletRequest) {
+	public ResponseEntity<OAuth2GetTokenResponse> loginWithKakao(@RequestParam String code) {
 		log.info("AuthApi.loginWithKakao() called");
 		log.info("code = " + code);
 		HttpHeaders headers = new HttpHeaders();
@@ -65,7 +64,8 @@ public class AuthApi {
 		LinkedMultiValueMap<String, String> map = new LinkedMultiValueMap<>();
 		map.add("grant_type", "authorization_code");
 		map.add("client_id", clientId);
-		map.add("redirect_uri", "/kakao");
+		String redirect_uri = "%s/kakao".formatted(frontLocalHost);
+		log.info("redirect_uri: {}", redirect_uri);
 		map.add("code", code);
 
 		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
