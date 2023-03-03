@@ -14,6 +14,7 @@ import podo.odeego.domain.member.entity.MemberType;
 import podo.odeego.domain.member.exception.MemberNicknameDuplicatedException;
 import podo.odeego.domain.member.exception.MemberNotFoundException;
 import podo.odeego.domain.member.repository.MemberRepository;
+import podo.odeego.domain.station.service.StationFindService;
 
 @Service
 @Transactional
@@ -21,10 +22,13 @@ public class MemberService {
 
 	private final Logger log = LoggerFactory.getLogger(getClass());
 
+	private final StationFindService stationFindService;
+
 	private final MemberRepository memberRepository;
 
-	public MemberService(MemberRepository memberRepository) {
+	public MemberService(MemberRepository memberRepository, StationFindService stationFindService) {
 		this.memberRepository = memberRepository;
+		this.stationFindService = stationFindService;
 	}
 
 	public MemberJoinResponse join(String provider, String providerId, String profileImageUrl) {
@@ -55,6 +59,9 @@ public class MemberService {
 		Member member = memberRepository.findById(memberId)
 			.orElseThrow(() -> new MemberNotFoundException(
 				"Cannot find Member for memberId=%d.".formatted(memberId)));
+
+		stationFindService.findByName(signUpRequest.defaultStationName());
+
 		member.signUp(signUpRequest.nickname(), signUpRequest.defaultStationName());
 		return member.id();
 	}

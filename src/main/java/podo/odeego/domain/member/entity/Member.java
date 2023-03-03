@@ -4,6 +4,7 @@ import static javax.persistence.EnumType.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,9 +17,13 @@ import javax.persistence.OneToMany;
 import podo.odeego.domain.group.entity.GroupMember;
 import podo.odeego.domain.group.exception.AlreadyParticipatingGroupException;
 import podo.odeego.domain.type.BaseTime;
+import podo.odeego.web.error.exception.InvalidValueException;
 
 @Entity
 public class Member extends BaseTime {
+
+	private static final int MIN_LENGTH = 3;
+	private static final int MAX_LENGTH = 20;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -31,6 +36,7 @@ public class Member extends BaseTime {
 	private String defaultStationName;
 
 	@Enumerated(value = STRING)
+	@Column(nullable = false)
 	private MemberType type;
 
 	private String profileImageUrl;
@@ -63,6 +69,7 @@ public class Member extends BaseTime {
 		Member member = new Member(provider, providerId);
 		member.nickname = nickname;
 		member.defaultStationName = stationName;
+		member.type = MemberType.REGULAR;
 		return member;
 	}
 
@@ -70,7 +77,42 @@ public class Member extends BaseTime {
 	public static Member ofNickname(String nickname, String provider, String providerId) {
 		Member member = new Member(provider, providerId);
 		member.nickname = nickname;
+		member.type = MemberType.REGULAR;
 		return member;
+	}
+
+	public void signUp(String nickname, String defaultStationName) {
+		verifyMemberType();
+		verifyNickname(nickname);
+		this.nickname = nickname;
+		this.defaultStationName = defaultStationName;
+		this.type = MemberType.REGULAR;
+	}
+
+	private void verifyMemberType() {
+		if (MemberType.REGULAR.equals(type)) {
+			throw new InvalidValueException(
+				"Can't signUp this member because member's type is %s".formatted(type.toString()));
+		}
+	}
+
+	private void verifyNickname(String nickname) {
+		if (!isValidNicknameLength(nickname)) {
+			throw new InvalidValueException(
+				"Nickname Length of %s is not valid. It should be between '%d' and '%d'. But was '%d'.".formatted(
+					nickname, MIN_LENGTH, MAX_LENGTH, nickname.length()));
+		}
+		if (!isValidNicknamePattern(nickname)) {
+			throw new InvalidValueException("Nickname is invalid format. Input was %s".formatted(nickname));
+		}
+	}
+
+	private boolean isValidNicknameLength(String nickname) {
+		return MIN_LENGTH <= nickname.length() && nickname.length() <= MAX_LENGTH;
+	}
+
+	private boolean isValidNicknamePattern(String nickname) {
+		return Pattern.matches("^[0-9가-힣]+$", nickname);
 	}
 
 	public void addGroupMember(GroupMember groupMember) {
@@ -98,16 +140,6 @@ public class Member extends BaseTime {
 		return this.groupMembers.size() != 0;
 	}
 
-	public boolean isPre() {
-		return MemberType.PRE.equals(type);
-	}
-
-	public void signUp(String nickname, String defaultStationName) {
-		this.nickname = nickname;
-		this.defaultStationName = defaultStationName;
-		this.type = MemberType.REGULAR;
-	}
-
 	public Long id() {
 		return id;
 	}
@@ -122,17 +154,5 @@ public class Member extends BaseTime {
 
 	public MemberType type() {
 		return type;
-	}
-
-	public String profileImageUrl() {
-		return profileImageUrl;
-	}
-
-	public String provider() {
-		return provider;
-	}
-
-	public String providerId() {
-		return providerId;
 	}
 }
