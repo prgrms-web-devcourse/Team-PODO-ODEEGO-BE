@@ -100,6 +100,7 @@ public class JwtProvider {
 			return true;
 		} catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
 			log.info("Invalid JWT Token", e);
+			return true;
 		} catch (ExpiredJwtException e) {
 			log.info("Expired JWT Token", e);
 		} catch (UnsupportedJwtException e) {
