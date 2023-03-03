@@ -20,7 +20,8 @@ public enum ErrorCode {
 	GROUP_NOT_FOUND(HttpStatus.NOT_FOUND, "G404", "Group Not Found."),
 	MEMBER_ALREADY_PARTICIPATING_IN_GROUP(HttpStatus.BAD_REQUEST, "G001", "Member is already participating group."),
 	GROUP_ALREADY_FULL(HttpStatus.BAD_REQUEST, "G002", "Group is already full."),
-	GROUP_HOST_ABSENT(HttpStatus.INTERNAL_SERVER_ERROR, "G003", "Group host is absent.");
+	GROUP_HOST_ABSENT(HttpStatus.INTERNAL_SERVER_ERROR, "G003", "Group host is absent."),
+	GROUP_CAPACITY_OUT_OF_BOUNDS(HttpStatus.BAD_REQUEST, "G004", "Group capacity is out of bounds.");
 
 	private final HttpStatus status;
 	private final String errorCode;

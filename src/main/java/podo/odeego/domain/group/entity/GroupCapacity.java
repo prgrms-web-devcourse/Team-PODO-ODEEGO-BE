@@ -2,7 +2,7 @@ package podo.odeego.domain.group.entity;
 
 import javax.persistence.Embeddable;
 
-import podo.odeego.web.error.exception.InvalidValueException;
+import podo.odeego.domain.group.exception.GroupCapacityOutOfBoundsException;
 
 @Embeddable
 public class GroupCapacity {
@@ -26,7 +26,7 @@ public class GroupCapacity {
 
 	private void verifyCapacity(Long capacity) {
 		if (!isValidCapacity(capacity)) {
-			throw new InvalidValueException(
+			throw new GroupCapacityOutOfBoundsException(
 				"Capacity is not valid. It should be between '%d' and '%d'. But input was '%d'.".formatted(
 					MIN_CAPACITY, MAX_CAPACITY, capacity
 				)
