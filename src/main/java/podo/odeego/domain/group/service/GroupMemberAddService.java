@@ -29,11 +29,11 @@ public class GroupMemberAddService {
 		this.stationFindService = stationFindService;
 	}
 
-	public void add(Long memberId, StartSubmitRequest startSubmitRequest) {
+	public void add(UUID groupId, Long memberId, StartSubmitRequest startSubmitRequest) {
 
 		Member authorizedMember = validateMemberAndGet(memberId);
 
-		Group savedGroup = validateGroupAndGet(startSubmitRequest.groupId());
+		Group savedGroup = validateGroupAndGet(groupId);
 
 		Station memberStation = validateStationAndGet(startSubmitRequest.stationName());
 
