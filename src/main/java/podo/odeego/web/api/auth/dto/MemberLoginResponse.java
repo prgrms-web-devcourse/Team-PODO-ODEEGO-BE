@@ -1,11 +1,11 @@
 package podo.odeego.web.api.auth.dto;
 
-import podo.odeego.domain.member.dto.MemberJoinResponse;
+import podo.odeego.domain.member.entity.MemberType;
 
 public record MemberLoginResponse(
 	String accessToken,
 	String refreshToken,
-	MemberJoinResponse.LoginType loginType,
+	MemberType memberType,
 	String profileImageUrl
 ) {
 }

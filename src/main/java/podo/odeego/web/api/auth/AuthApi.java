@@ -91,6 +91,6 @@ public class AuthApi {
 	private MemberLoginResponse responseLoginSuccess(MemberJoinResponse memberJoinResponse, String profileImageUrl) {
 		String accessToken = jwtProvider.generateAccessToken(memberJoinResponse.id());
 		String refreshToken = jwtProvider.generateRefreshToken(memberJoinResponse.id());
-		return new MemberLoginResponse(accessToken, refreshToken, memberJoinResponse.loginType(), profileImageUrl);
+		return new MemberLoginResponse(accessToken, refreshToken, memberJoinResponse.memberType(), profileImageUrl);
 	}
 }

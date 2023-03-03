@@ -31,7 +31,7 @@ public class Member extends BaseTime {
 	private String defaultStationName;
 
 	@Enumerated(value = STRING)
-	private MemberType memberType;
+	private MemberType type;
 
 	private String profileImageUrl;
 
@@ -52,12 +52,13 @@ public class Member extends BaseTime {
 		this.providerId = providerId;
 	}
 
-	public Member(String profileImageUrl, MemberType memberType, String provider, String providerId) {
+	public Member(String profileImageUrl, MemberType type, String provider, String providerId) {
 		this(provider, providerId);
 		this.profileImageUrl = profileImageUrl;
-		this.memberType = memberType;
+		this.type = type;
 	}
 
+	//for test
 	public static Member ofStationName(String nickname, String stationName, String provider, String providerId) {
 		Member member = new Member(provider, providerId);
 		member.nickname = nickname;
@@ -65,15 +66,10 @@ public class Member extends BaseTime {
 		return member;
 	}
 
+	//for test
 	public static Member ofNickname(String nickname, String provider, String providerId) {
 		Member member = new Member(provider, providerId);
 		member.nickname = nickname;
-		return member;
-	}
-
-	public static Member ofProfileImageUrl(String profileImageUrl, String provider, String providerId) {
-		Member member = new Member(provider, providerId);
-		member.profileImageUrl = profileImageUrl;
 		return member;
 	}
 
@@ -102,6 +98,16 @@ public class Member extends BaseTime {
 		return this.groupMembers.size() != 0;
 	}
 
+	public boolean isPre() {
+		return MemberType.PRE.equals(type);
+	}
+
+	public void signUp(String nickname, String defaultStationName) {
+		this.nickname = nickname;
+		this.defaultStationName = defaultStationName;
+		this.type = MemberType.REGULAR;
+	}
+
 	public Long id() {
 		return id;
 	}
@@ -114,8 +120,8 @@ public class Member extends BaseTime {
 		return defaultStationName;
 	}
 
-	public MemberType memberType() {
-		return memberType;
+	public MemberType type() {
+		return type;
 	}
 
 	public String profileImageUrl() {

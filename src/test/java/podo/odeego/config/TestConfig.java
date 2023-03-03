@@ -9,6 +9,7 @@ import podo.odeego.domain.group.service.GroupMemberAddService;
 import podo.odeego.domain.group.service.GroupQueryService;
 import podo.odeego.domain.member.repository.MemberRepository;
 import podo.odeego.domain.member.service.MemberFindService;
+import podo.odeego.domain.member.service.MemberService;
 import podo.odeego.domain.station.repository.StationRepository;
 import podo.odeego.domain.station.service.StationFindService;
 
@@ -28,6 +29,13 @@ public class TestConfig {
 		StationFindService stationFindService
 	) {
 		return new MemberFindService(memberRepository, stationFindService);
+	}
+
+	@Bean
+	public MemberService memberService(
+		MemberRepository memberRepository
+	) {
+		return new MemberService(memberRepository);
 	}
 
 	@Bean
