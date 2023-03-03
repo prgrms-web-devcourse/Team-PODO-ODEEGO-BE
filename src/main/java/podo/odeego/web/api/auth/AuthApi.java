@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -34,14 +35,27 @@ public class AuthApi {
 
 	private final MemberService memberService;
 	private final JwtProvider jwtProvider;
+	private final String clientId;
+	private final String frontLocalHost;
+	private final String frontReleaseHost;
 
-	public AuthApi(MemberService memberService, JwtProvider jwtProvider) {
+	public AuthApi(
+		MemberService memberService,
+		JwtProvider jwtProvider,
+		@Value("${kakao.client.id}") String clientId,
+		@Value("${server.host.front.local}") String frontLocalHost,
+		@Value("${server.host.front.release}") String frontReleaseHost
+	) {
 		this.memberService = memberService;
 		this.jwtProvider = jwtProvider;
+		this.clientId = clientId;
+		this.frontLocalHost = frontLocalHost;
+		this.frontReleaseHost = frontReleaseHost;
 	}
 
 	@GetMapping("/login/oauth2/callback/kakao")
-	public ResponseEntity<OAuth2GetTokenResponse> loginWithKakao(@RequestParam String code) {
+	public ResponseEntity<OAuth2GetTokenResponse> loginWithKakao(@RequestParam String code,
+		HttpServletRequest httpServletRequest) {
 		log.info("AuthApi.loginWithKakao() called");
 		log.info("code = " + code);
 		HttpHeaders headers = new HttpHeaders();
@@ -50,8 +64,13 @@ public class AuthApi {
 
 		LinkedMultiValueMap<String, String> map = new LinkedMultiValueMap<>();
 		map.add("grant_type", "authorization_code");
-		map.add("client_id", "06d31e08cffa1b28d94af0313467cde8");
-		map.add("redirect_uri", "http://localhost:3000/kakao");
+		map.add("client_id", clientId);
+		String requestUrl = httpServletRequest.getRequestURL().toString();
+		if (requestUrl.startsWith(frontLocalHost)) {
+			map.add("redirect_uri", "%s/kakao".formatted(frontLocalHost));
+		} else {
+			map.add("redirect_uri", "%s/kakao".formatted(frontReleaseHost));
+		}
 		map.add("code", code);
 
 		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
