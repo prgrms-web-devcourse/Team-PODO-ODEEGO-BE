@@ -1,5 +1,7 @@
 package podo.odeego.domain.member.service;
 
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -9,6 +11,7 @@ import podo.odeego.domain.member.dto.MemberJoinResponse;
 import podo.odeego.domain.member.dto.MemberSignUpRequest;
 import podo.odeego.domain.member.entity.Member;
 import podo.odeego.domain.member.entity.MemberType;
+import podo.odeego.domain.member.exception.MemberNicknameDuplicatedException;
 import podo.odeego.domain.member.exception.MemberNotFoundException;
 import podo.odeego.domain.member.repository.MemberRepository;
 
@@ -47,11 +50,20 @@ public class MemberService {
 	}
 
 	public Long signUp(Long memberId, MemberSignUpRequest signUpRequest) {
+		checkNicknameDuplicated(signUpRequest.nickname());
+
 		Member member = memberRepository.findById(memberId)
 			.orElseThrow(() -> new MemberNotFoundException(
-				"Cannot find Member for memberId=%d.".formatted(memberId))
-			);
+				"Cannot find Member for memberId=%d.".formatted(memberId)));
 		member.signUp(signUpRequest.nickname(), signUpRequest.defaultStationName());
 		return member.id();
+	}
+
+	private void checkNicknameDuplicated(String nickname) {
+		Optional<Member> member = memberRepository.findByNickname(nickname);
+		if (member.isPresent()) {
+			throw new MemberNicknameDuplicatedException(
+				"Cannot sig up with duplicated nickname: %s".formatted(nickname));
+		}
 	}
 }
