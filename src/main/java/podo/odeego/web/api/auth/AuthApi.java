@@ -65,13 +65,7 @@ public class AuthApi {
 		LinkedMultiValueMap<String, String> map = new LinkedMultiValueMap<>();
 		map.add("grant_type", "authorization_code");
 		map.add("client_id", clientId);
-		String requestUrl = httpServletRequest.getRequestURL().toString();
-		log.info("front request url: {}", requestUrl);
-		if (requestUrl.startsWith(frontLocalHost)) {
-			map.add("redirect_uri", "%s/kakao".formatted(frontLocalHost));
-		} else {
-			map.add("redirect_uri", "%s/kakao".formatted(frontReleaseHost));
-		}
+		map.add("redirect_uri", "/kakao");
 		map.add("code", code);
 
 		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
