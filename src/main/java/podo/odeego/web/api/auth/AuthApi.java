@@ -66,6 +66,7 @@ public class AuthApi {
 		map.add("grant_type", "authorization_code");
 		map.add("client_id", clientId);
 		String requestUrl = httpServletRequest.getRequestURL().toString();
+		log.info("front request url: {}", requestUrl);
 		if (requestUrl.startsWith(frontLocalHost)) {
 			map.add("redirect_uri", "%s/kakao".formatted(frontLocalHost));
 		} else {
