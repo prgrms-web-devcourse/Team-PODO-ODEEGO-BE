@@ -4,7 +4,6 @@ import static javax.persistence.EnumType.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -59,6 +58,7 @@ public class Member extends BaseTime {
 		this.type = type;
 	}
 
+	//for test
 	public static Member ofStationName(String nickname, String stationName, String provider, String providerId) {
 		Member member = new Member(provider, providerId);
 		member.nickname = nickname;
@@ -66,15 +66,10 @@ public class Member extends BaseTime {
 		return member;
 	}
 
+	//for test
 	public static Member ofNickname(String nickname, String provider, String providerId) {
 		Member member = new Member(provider, providerId);
 		member.nickname = nickname;
-		return member;
-	}
-
-	public static Member ofProfileImageUrl(String profileImageUrl, String provider, String providerId) {
-		Member member = new Member(provider, providerId);
-		member.profileImageUrl = profileImageUrl;
 		return member;
 	}
 
