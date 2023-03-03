@@ -21,14 +21,14 @@ public class ApiLogInterceptor implements HandlerInterceptor {
 		Object handler
 	) throws Exception {
 		String method = request.getMethod();
-		String requestUri = request.getRequestURI();
+		String requestUrl = request.getRequestURL().toString();
 		String logId = UUID.randomUUID()
 			.toString()
 			.substring(0, 8);
 
 		request.setAttribute(LOG_ID, logId);
 
-		log.info("[>>> REQUEST] {} {} ({})", method, requestUri, logId);
+		log.info("[>>> REQUEST] {} {} ({})", method, requestUrl, logId);
 		return true;
 	}
 
@@ -40,9 +40,9 @@ public class ApiLogInterceptor implements HandlerInterceptor {
 		Exception ex
 	) throws Exception {
 		String method = request.getMethod();
-		String requestUri = request.getRequestURI();
+		String requestUrl = request.getRequestURL().toString();
 		String logId = (String)request.getAttribute(LOG_ID);
 
-		log.info("[<<< RESPONSE] {} {} ({})", method, requestUri, logId);
+		log.info("[<<< RESPONSE] {} {} ({})", method, requestUrl, logId);
 	}
 }
