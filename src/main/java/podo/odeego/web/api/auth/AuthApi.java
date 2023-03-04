@@ -66,6 +66,7 @@ public class AuthApi {
 		map.add("client_id", clientId);
 		String redirect_uri = "%s/kakao".formatted(frontLocalHost);
 		log.info("redirect_uri: {}", redirect_uri);
+		map.add("redirect_uri", redirect_uri);
 		map.add("code", code);
 
 		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);

@@ -15,13 +15,19 @@ public enum ErrorCode {
 	// Member
 	MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "M001", "Member Not Found."),
 	MEMBER_NICKNAME_DUPLICATED(HttpStatus.BAD_REQUEST, "M002", "Member nickname is duplicated."),
+	MEMBER_NICKNAME_OUT_OF_BOUNDS(HttpStatus.BAD_REQUEST, "M003", "Member nickname length is out of bounds."),
+	MEMBER_NICKNAME_UNFORMATTED(HttpStatus.BAD_REQUEST, "M004", "Member nickname is unformatted."),
+	DEFAULT_STATION_NOT_EXISTS(HttpStatus.BAD_REQUEST, "M005", "Station doesn't exists in our service."),
 
 	// Group
 	GROUP_NOT_FOUND(HttpStatus.NOT_FOUND, "G001", "Group Not Found."),
 	MEMBER_ALREADY_PARTICIPATING_IN_GROUP(HttpStatus.BAD_REQUEST, "G002", "Member is already participating group."),
 	GROUP_ALREADY_FULL(HttpStatus.BAD_REQUEST, "G003", "Group is already full."),
 	GROUP_HOST_ABSENT(HttpStatus.INTERNAL_SERVER_ERROR, "G004", "Group host is absent."),
-	GROUP_CAPACITY_OUT_OF_BOUNDS(HttpStatus.BAD_REQUEST, "G005", "Group capacity is out of bounds.");
+	GROUP_CAPACITY_OUT_OF_BOUNDS(HttpStatus.BAD_REQUEST, "G005", "Group capacity is out of bounds."),
+
+	// Station
+	STATION_NOT_FOUND(HttpStatus.NOT_FOUND, "S001", "Station Not Found.");
 
 	private final HttpStatus status;
 	private final String errorCode;
