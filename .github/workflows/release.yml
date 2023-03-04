@@ -1,15 +1,13 @@
 name: springboot-gradle-docker-ec2-cd
 
 on:
-  push:
-    branches: main
-    paths:
-      - '**.java'
-      - '**/release.yml'
+  pull_request:
+    branches: [ main ]
+    types: [ closed ]
 
 jobs:
   build:
-    #    if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
