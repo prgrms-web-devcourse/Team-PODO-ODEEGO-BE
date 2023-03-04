@@ -53,24 +53,25 @@ public class MemberService {
 		return savedMember.id();
 	}
 
-	public Long signUp(Long memberId, MemberSignUpRequest signUpRequest) {
-		checkNicknameDuplicated(signUpRequest.nickname());
+	public void signUp(Long memberId, MemberSignUpRequest signUpRequest) {
+		verifyUniqueNickname(signUpRequest.nickname());
+		verifyStationNamePresent(signUpRequest.defaultStationName());
 
 		Member member = memberRepository.findById(memberId)
 			.orElseThrow(() -> new MemberNotFoundException(
 				"Cannot find Member for memberId=%d.".formatted(memberId)));
-
-		stationFindService.findByName(signUpRequest.defaultStationName());
-
 		member.signUp(signUpRequest.nickname(), signUpRequest.defaultStationName());
-		return member.id();
 	}
 
-	private void checkNicknameDuplicated(String nickname) {
+	private void verifyUniqueNickname(String nickname) {
 		Optional<Member> member = memberRepository.findByNickname(nickname);
 		if (member.isPresent()) {
 			throw new MemberNicknameDuplicatedException(
 				"Cannot sig up with duplicated nickname: %s".formatted(nickname));
 		}
+	}
+
+	private void verifyStationNamePresent(String stationName) {
+		stationFindService.findByName(stationName);
 	}
 }
