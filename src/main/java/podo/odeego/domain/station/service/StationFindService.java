@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import podo.odeego.domain.station.entity.Station;
+import podo.odeego.domain.station.exception.StationNotFoundException;
 import podo.odeego.domain.station.repository.StationRepository;
 import podo.odeego.global.error.exception.ResourceNotFoundException;
 
@@ -31,5 +32,11 @@ public class StationFindService {
 		return names.stream()
 			.map(this::findByName)
 			.toList();
+	}
+
+	public void verifyStationExists(String name) {
+		if (!stationRepository.existsByName(name)) {
+			throw new StationNotFoundException("Cannot find Station for name=%s.".formatted(name));
+		}
 	}
 }

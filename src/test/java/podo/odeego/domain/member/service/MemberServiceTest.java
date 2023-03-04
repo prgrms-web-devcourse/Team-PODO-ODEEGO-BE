@@ -77,7 +77,7 @@ class MemberServiceTest {
 		//then
 		assertThatThrownBy(() -> memberService.signUp(existMember.id(), signUpRequest))
 			.isInstanceOf(MemberNicknameDuplicatedException.class)
-			.hasMessage("Cannot sig up with duplicated nickname: %s".formatted("중복된닉네임"));
+			.hasMessage("Cannot sign up with duplicated nickname: %s".formatted("중복된닉네임"));
 	}
 
 	@Test
@@ -93,6 +93,6 @@ class MemberServiceTest {
 		//then
 		assertThatThrownBy(() -> memberService.signUp(existMember.id(), signUpRequest))
 			.isInstanceOf(MemberNicknameDuplicatedException.class)
-			.hasMessage("Cannot sig up with duplicated nickname: %s".formatted("닉네임"));
+			.hasMessage("Cannot sign up with duplicated nickname: %s".formatted("닉네임"));
 	}
 }

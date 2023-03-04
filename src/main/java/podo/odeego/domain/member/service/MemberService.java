@@ -1,7 +1,5 @@
 package podo.odeego.domain.member.service;
 
-import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -11,9 +9,11 @@ import podo.odeego.domain.member.dto.MemberJoinResponse;
 import podo.odeego.domain.member.dto.MemberSignUpRequest;
 import podo.odeego.domain.member.entity.Member;
 import podo.odeego.domain.member.entity.MemberType;
+import podo.odeego.domain.member.exception.DefaultStationNotExistsException;
 import podo.odeego.domain.member.exception.MemberNicknameDuplicatedException;
 import podo.odeego.domain.member.exception.MemberNotFoundException;
 import podo.odeego.domain.member.repository.MemberRepository;
+import podo.odeego.domain.station.exception.StationNotFoundException;
 import podo.odeego.domain.station.service.StationFindService;
 
 @Service
@@ -55,7 +55,7 @@ public class MemberService {
 
 	public void signUp(Long memberId, MemberSignUpRequest signUpRequest) {
 		verifyUniqueNickname(signUpRequest.nickname());
-		verifyStationNamePresent(signUpRequest.defaultStationName());
+		verifyStationExists(signUpRequest.defaultStationName());
 
 		Member member = memberRepository.findById(memberId)
 			.orElseThrow(() -> new MemberNotFoundException(
@@ -64,14 +64,17 @@ public class MemberService {
 	}
 
 	private void verifyUniqueNickname(String nickname) {
-		Optional<Member> member = memberRepository.findByNickname(nickname);
-		if (member.isPresent()) {
+		if (memberRepository.existsByNickname(nickname)) {
 			throw new MemberNicknameDuplicatedException(
-				"Cannot sig up with duplicated nickname: %s".formatted(nickname));
+				"Cannot sign up with duplicated nickname: %s".formatted(nickname));
 		}
 	}
 
-	private void verifyStationNamePresent(String stationName) {
-		stationFindService.findByName(stationName);
+	private void verifyStationExists(String stationName) {
+		try {
+			stationFindService.verifyStationExists(stationName);
+		} catch (StationNotFoundException e) {
+			throw new DefaultStationNotExistsException(e.getMessage());
+		}
 	}
 }
