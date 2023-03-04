@@ -3,8 +3,8 @@ package podo.odeego.infra.openapi.naver.localsearch.service;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import podo.odeego.domain.place.domain.PlaceCategory;
 import podo.odeego.domain.place.dto.PlaceResponses;
+import podo.odeego.domain.place.entity.PlaceCategory;
 import podo.odeego.domain.place.service.PlaceQueryService;
 import podo.odeego.domain.station.dto.StationAddress;
 import podo.odeego.infra.openapi.naver.localsearch.LocalSearchClient;

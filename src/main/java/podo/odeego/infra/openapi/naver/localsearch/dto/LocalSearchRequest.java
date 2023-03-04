@@ -3,7 +3,7 @@ package podo.odeego.infra.openapi.naver.localsearch.dto;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import podo.odeego.domain.place.domain.PlaceCategory;
+import podo.odeego.domain.place.entity.PlaceCategory;
 import podo.odeego.infra.openapi.naver.ClientRequest;
 
 public class LocalSearchRequest extends ClientRequest {

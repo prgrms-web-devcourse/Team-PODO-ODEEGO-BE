@@ -9,10 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import podo.odeego.domain.place.domain.PlaceCategory;
 import podo.odeego.domain.place.dto.PlaceResponses;
+import podo.odeego.domain.place.entity.PlaceCategory;
 import podo.odeego.domain.place.service.PlaceQueryService;
-import podo.odeego.domain.station.dto.StationAddress;
 
 @RestController
 @RequestMapping("/api/v1/places")

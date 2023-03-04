@@ -12,8 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import podo.odeego.domain.place.domain.PlaceCategory;
 import podo.odeego.domain.place.dto.SimplePlaceResponse;
+import podo.odeego.domain.place.entity.PlaceCategory;
 import podo.odeego.infra.openapi.naver.localsearch.LocalSearchClient;
 
 @SpringBootTest

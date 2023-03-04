@@ -1,4 +1,4 @@
-package podo.odeego.domain.place.domain;
+package podo.odeego.domain.place.entity;
 
 import java.util.Arrays;
 

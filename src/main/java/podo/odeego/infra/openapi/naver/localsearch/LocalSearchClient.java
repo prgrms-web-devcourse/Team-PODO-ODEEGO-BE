@@ -13,8 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import podo.odeego.domain.place.domain.PlaceCategory;
 import podo.odeego.domain.place.dto.SimplePlaceResponse;
+import podo.odeego.domain.place.entity.PlaceCategory;
 import podo.odeego.infra.openapi.naver.NaverClient;
 import podo.odeego.infra.openapi.naver.localsearch.dto.LocalSearchRequest;
 import podo.odeego.infra.openapi.naver.localsearch.dto.LocalSearchResponse;
