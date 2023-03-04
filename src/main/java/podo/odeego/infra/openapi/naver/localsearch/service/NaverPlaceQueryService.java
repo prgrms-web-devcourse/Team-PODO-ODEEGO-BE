@@ -22,8 +22,8 @@ public class NaverPlaceQueryService implements PlaceQueryService {
 	@Override
 	public PlaceResponses getAll(StationAddress station, PlaceCategory category) {
 		if (category == null) {
-			return new PlaceResponses(localSearchClient.searchLocal(station.name()));
+			return new PlaceResponses(localSearchClient.searchLocal(stationName));
 		}
-		return new PlaceResponses(localSearchClient.searchLocal(station.name(), category));
+		return new PlaceResponses(localSearchClient.searchLocal(stationName, category));
 	}
 }

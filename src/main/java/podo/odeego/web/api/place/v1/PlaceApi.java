@@ -29,10 +29,9 @@ public class PlaceApi {
 	@GetMapping
 	public ResponseEntity<PlaceResponses> getAll(
 		@RequestParam(name = "station-name") String stationName,
-		@RequestParam String address,
 		@RequestParam(required = false) PlaceCategory category
 	) {
-		PlaceResponses response = placeQueryService.getAll(new StationAddress(stationName, address), category);
+		PlaceResponses response = placeQueryService.getAll(stationName, category);
 		return ResponseEntity.ok(response);
 	}
 }
