@@ -16,8 +16,10 @@ import javax.persistence.OneToMany;
 
 import podo.odeego.domain.group.entity.GroupMember;
 import podo.odeego.domain.group.exception.AlreadyParticipatingGroupException;
+import podo.odeego.domain.member.exception.MemberNicknameOutOfBoundsException;
+import podo.odeego.domain.member.exception.MemberNicknameUnformattedException;
 import podo.odeego.domain.type.BaseTime;
-import podo.odeego.web.error.exception.InvalidValueException;
+import podo.odeego.global.error.exception.InvalidValueException;
 
 @Entity
 public class Member extends BaseTime {
@@ -98,12 +100,13 @@ public class Member extends BaseTime {
 
 	private void verifyNickname(String nickname) {
 		if (!isValidNicknameLength(nickname)) {
-			throw new InvalidValueException(
+			throw new MemberNicknameOutOfBoundsException(
 				"Nickname Length of %s is not valid. It should be between '%d' and '%d'. But was '%d'.".formatted(
 					nickname, MIN_LENGTH, MAX_LENGTH, nickname.length()));
 		}
 		if (!isValidNicknamePattern(nickname)) {
-			throw new InvalidValueException("Nickname is invalid format. Input was %s".formatted(nickname));
+			throw new MemberNicknameUnformattedException(
+				"Nickname is invalid format. Input was %s".formatted(nickname));
 		}
 	}
 

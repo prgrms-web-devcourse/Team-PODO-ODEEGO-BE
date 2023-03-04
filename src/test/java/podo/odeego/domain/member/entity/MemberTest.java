@@ -7,7 +7,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import podo.odeego.web.error.exception.InvalidValueException;
+import podo.odeego.domain.member.exception.MemberNicknameOutOfBoundsException;
+import podo.odeego.domain.member.exception.MemberNicknameUnformattedException;
+import podo.odeego.global.error.exception.InvalidValueException;
 
 class MemberTest {
 
@@ -38,7 +40,7 @@ class MemberTest {
 		//when & then
 		int actualLength = wrongNickname.length();
 		assertThatThrownBy(() -> member.signUp(wrongNickname, "테스트역"))
-			.isInstanceOf(InvalidValueException.class)
+			.isInstanceOf(MemberNicknameOutOfBoundsException.class)
 			.hasMessage(
 				"Nickname Length of %s is not valid. It should be between '3' and '20'. But was '%d'.".formatted(
 					wrongNickname, actualLength));
@@ -53,7 +55,7 @@ class MemberTest {
 
 		//when & then
 		assertThatThrownBy(() -> member.signUp(wrongNickname, "테스트역"))
-			.isInstanceOf(InvalidValueException.class)
+			.isInstanceOf(MemberNicknameUnformattedException.class)
 			.hasMessage(
 				"Nickname is invalid format. Input was %s".formatted(wrongNickname));
 	}
