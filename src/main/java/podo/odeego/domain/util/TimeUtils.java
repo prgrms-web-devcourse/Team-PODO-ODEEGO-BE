@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.TimeZone;
 
 public class TimeUtils {
 
@@ -16,6 +17,10 @@ public class TimeUtils {
 	public static LocalDateTime getCurrentSeoulTime() {
 		return ZonedDateTime.now(ZoneId.of(ZONE_ASIA_SEOUL))
 			.toLocalDateTime();
+	}
+
+	public static TimeZone getDefaultTimeZone() {
+		return TimeZone.getTimeZone(ZONE_ASIA_SEOUL);
 	}
 
 	public static Duration toDuration(LocalTime localTime) {

@@ -9,4 +9,6 @@ import podo.odeego.domain.station.entity.Station;
 public interface StationRepository extends JpaRepository<Station, Long> {
 
 	List<Station> findAllByName(String name);
+
+	boolean existsByName(String name);
 }
