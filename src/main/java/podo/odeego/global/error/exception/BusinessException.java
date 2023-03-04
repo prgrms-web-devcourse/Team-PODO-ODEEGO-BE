@@ -1,6 +1,6 @@
-package podo.odeego.web.error.exception;
+package podo.odeego.global.error.exception;
 
-import podo.odeego.web.error.ErrorCode;
+import podo.odeego.global.error.ErrorCode;
 
 public class BusinessException extends RuntimeException {
 

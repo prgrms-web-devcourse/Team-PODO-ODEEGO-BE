@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,11 +45,6 @@ public class MemberService {
 			});
 	}
 
-	public Long join(String nickname) {
-		Member savedMember = memberRepository.save(Member.ofNickname(nickname, "provider", "providerId"));
-		return savedMember.id();
-	}
-
 	public Long signUp(Long memberId, MemberSignUpRequest signUpRequest) {
 		checkNicknameDuplicated(signUpRequest.nickname());
 
@@ -64,6 +60,18 @@ public class MemberService {
 		if (member.isPresent()) {
 			throw new MemberNicknameDuplicatedException(
 				"Cannot sig up with duplicated nickname: %s".formatted(nickname));
+		}
+	}
+
+	public Long join(String nickname) {
+		try {
+			Member newMember = Member.ofNickname(nickname, "provider", "providerId");
+			Member savedMember = memberRepository.saveAndFlush(newMember);
+			return savedMember.id();
+		} catch (DataIntegrityViolationException e) {
+			throw new MemberNicknameDuplicatedException(
+				"Cannot execute member join. Nickname '%s' is duplicated.".formatted(nickname)
+			);
 		}
 	}
 }

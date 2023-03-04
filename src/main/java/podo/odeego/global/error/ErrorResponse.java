@@ -1,4 +1,4 @@
-package podo.odeego.web.error;
+package podo.odeego.global.error;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +10,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 public class ErrorResponse {
 
 	private HttpStatus status;
+	private String errorCode;
 	private String errorMessage;
 	private List<FieldError> errors;
 
@@ -19,6 +20,7 @@ public class ErrorResponse {
 
 	private ErrorResponse(ErrorCode errorCode, List<FieldError> errors) {
 		this.status = errorCode.status();
+		this.errorCode = errorCode.errorCode();
 		this.errorMessage = errorCode.message();
 		this.errors = errors;
 	}
@@ -43,6 +45,10 @@ public class ErrorResponse {
 
 	public HttpStatus getStatus() {
 		return status;
+	}
+
+	public String getErrorCode() {
+		return errorCode;
 	}
 
 	public String getErrorMessage() {
