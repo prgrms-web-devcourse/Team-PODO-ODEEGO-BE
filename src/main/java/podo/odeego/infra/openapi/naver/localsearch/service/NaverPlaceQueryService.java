@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import podo.odeego.domain.place.dto.PlaceResponses;
 import podo.odeego.domain.place.entity.PlaceCategory;
 import podo.odeego.domain.place.service.PlaceQueryService;
-import podo.odeego.domain.station.dto.StationAddress;
+import podo.odeego.domain.station.service.StationFindService;
 import podo.odeego.infra.openapi.naver.localsearch.LocalSearchClient;
 
 @Service
@@ -15,12 +15,20 @@ public class NaverPlaceQueryService implements PlaceQueryService {
 
 	private final LocalSearchClient localSearchClient;
 
-	public NaverPlaceQueryService(LocalSearchClient localSearchClient) {
+	private final StationFindService stationFindService;
+
+	public NaverPlaceQueryService(
+		LocalSearchClient localSearchClient,
+		StationFindService stationFindService
+	) {
 		this.localSearchClient = localSearchClient;
+		this.stationFindService = stationFindService;
 	}
 
 	@Override
-	public PlaceResponses getAll(StationAddress station, PlaceCategory category) {
+	public PlaceResponses getAll(String stationName, PlaceCategory category) {
+		stationFindService.verifyStationExists(stationName);
+
 		if (category == null) {
 			return new PlaceResponses(localSearchClient.searchLocal(stationName));
 		}
