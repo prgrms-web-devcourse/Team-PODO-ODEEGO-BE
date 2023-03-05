@@ -15,15 +15,23 @@ public class LocalSearchRequest extends ClientRequest {
 	private final int start = 1;
 	private final String sort;
 
-	public LocalSearchRequest(String query, String sort) {
+	private final String origin;
+	private final PlaceCategory category;
+
+	private LocalSearchRequest(String origin, PlaceCategory category, String query, String sort) {
 		super(query);
+		this.origin = origin;
+		this.category = category;
 		this.sort = sort;
 	}
 
 	public static LocalSearchRequest of(String query, PlaceCategory category, SortType sortType) {
 		return switch (category) {
-			case CAFE -> new LocalSearchRequest(query + SUFFIX_CAFE, sortType.type);
-			case RESTAURANT -> new LocalSearchRequest(query + SUFFIX_RESTAURANT, sortType.type);
+			case CAFE -> new LocalSearchRequest(query, category, query + SUFFIX_CAFE, sortType.type);
+			case RESTAURANT -> new LocalSearchRequest(query, category, query + SUFFIX_RESTAURANT, sortType.type);
+			default -> throw new IllegalArgumentException(
+				"PlaceCategory '%s' is invalid to generate LocalSearchRequest object.".formatted(category.toString())
+			);
 		};
 	}
 
@@ -37,6 +45,14 @@ public class LocalSearchRequest extends ClientRequest {
 		map.add("sort", sort);
 
 		return map;
+	}
+
+	public String getOriginalQuery() {
+		return origin;
+	}
+
+	public PlaceCategory getCategory() {
+		return category;
 	}
 
 	public enum SortType {

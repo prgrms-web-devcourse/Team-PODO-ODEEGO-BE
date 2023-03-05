@@ -1,4 +1,4 @@
-package podo.odeego.infra.openapi.naver.localsearch;
+package podo.odeego.infra.openapi.naver.localsearch.client;
 
 import java.net.URI;
 import java.util.Arrays;
@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import podo.odeego.domain.place.dto.PlaceSimpleResponse;
+import podo.odeego.domain.place.dto.PlaceQueryResponse;
 import podo.odeego.domain.place.entity.PlaceCategory;
 import podo.odeego.infra.openapi.naver.NaverClient;
 import podo.odeego.infra.openapi.naver.localsearch.dto.LocalSearchRequest;
@@ -26,7 +26,7 @@ public class LocalSearchClient extends NaverClient {
 		super(url);
 	}
 
-	public List<PlaceSimpleResponse> searchLocal(String query) {
+	public List<PlaceQueryResponse> searchLocal(String query) {
 		return Arrays.stream(PlaceCategory.values())
 			.map(category -> searchLocal(query, category))
 			.flatMap(List::stream)
@@ -34,13 +34,16 @@ public class LocalSearchClient extends NaverClient {
 			.toList();
 	}
 
-	public List<PlaceSimpleResponse> searchLocal(String query, PlaceCategory category) {
-		return getLocalSearchRequests(query, category).stream()
-			.map(this::callLocalSearchApi)
-			.map(LocalSearchResponse::getPlaces)
-			.flatMap(List::stream)
-			.distinct()
-			.toList();
+	public List<PlaceQueryResponse> searchLocal(String query, PlaceCategory category) {
+		List<LocalSearchRequest> requests = getLocalSearchRequests(query, category);
+		return requests.stream()
+			.map(this::queryLocalSearchApi)
+			.map()
+		// .map(LocalSearchResponse::getPlaces)
+		// .flatMap(List::stream)
+		// .map(localSearchItem -> )
+		// .distinct()
+		// .toList();
 	}
 
 	private List<LocalSearchRequest> getLocalSearchRequests(String query, PlaceCategory category) {
@@ -50,7 +53,12 @@ public class LocalSearchClient extends NaverClient {
 		);
 	}
 
-	private LocalSearchResponse callLocalSearchApi(LocalSearchRequest request) {
+	// private LocalSearchApiQueryDto queryLocalSearchApi(LocalSearchRequest request) {
+	// 	LocalSearchResponse response = executeApiCall(request);
+	// 	return LocalSearchApiQueryDto.from(request, response);
+	// }
+
+	private LocalSearchResponse executeApiCall(LocalSearchRequest request) {
 		URI uri = super.getUri(request);
 		HttpEntity<HttpHeaders> httpEntity = getHttpEntity();
 		ParameterizedTypeReference<LocalSearchResponse> responseType = new ParameterizedTypeReference<>() {

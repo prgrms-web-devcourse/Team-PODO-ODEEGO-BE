@@ -7,7 +7,7 @@ import podo.odeego.domain.place.dto.PlaceQueryResponses;
 import podo.odeego.domain.place.entity.PlaceCategory;
 import podo.odeego.domain.place.service.PlaceQueryService;
 import podo.odeego.domain.station.service.StationFindService;
-import podo.odeego.infra.openapi.naver.localsearch.LocalSearchClient;
+import podo.odeego.infra.openapi.naver.localsearch.client.LocalSearchClient;
 
 @Service
 @Qualifier("naverPlaceQueryService")

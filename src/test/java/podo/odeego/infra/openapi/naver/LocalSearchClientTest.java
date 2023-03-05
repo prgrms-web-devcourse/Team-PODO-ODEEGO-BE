@@ -12,9 +12,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import podo.odeego.domain.place.dto.PlaceSimpleResponse;
+import podo.odeego.domain.place.dto.PlaceQueryResponse;
 import podo.odeego.domain.place.entity.PlaceCategory;
-import podo.odeego.infra.openapi.naver.localsearch.LocalSearchClient;
+import podo.odeego.infra.openapi.naver.localsearch.client.LocalSearchClient;
 
 @SpringBootTest
 class LocalSearchClientTest {
@@ -31,11 +31,11 @@ class LocalSearchClientTest {
 		String query = "강남역";
 
 		// when
-		List<PlaceSimpleResponse> responses = localSearchClient.searchLocal(query);
+		List<PlaceQueryResponse> responses = localSearchClient.searchLocal(query);
 
 		// then
 		assertThat(responses).isNotNull();
-		for (PlaceSimpleResponse response : responses) {
+		for (PlaceQueryResponse response : responses) {
 			log.info(response.toString());
 		}
 	}
@@ -49,8 +49,8 @@ class LocalSearchClientTest {
 		PlaceCategory restaurant = PlaceCategory.RESTAURANT;
 
 		// when
-		List<PlaceSimpleResponse> searchCafeResponses = localSearchClient.searchLocal(query, cafe);
-		List<PlaceSimpleResponse> searchRestaurantResponses = localSearchClient.searchLocal(query, restaurant);
+		List<PlaceQueryResponse> searchCafeResponses = localSearchClient.searchLocal(query, cafe);
+		List<PlaceQueryResponse> searchRestaurantResponses = localSearchClient.searchLocal(query, restaurant);
 
 		// then
 		assertAll(

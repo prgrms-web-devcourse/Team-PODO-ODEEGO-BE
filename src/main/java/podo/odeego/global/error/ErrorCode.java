@@ -7,6 +7,7 @@ public enum ErrorCode {
 	// Common
 	INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, "400", "Invalid Input Value."),
 	INVALID_TYPE_VALUE(HttpStatus.BAD_REQUEST, "400", "Invalid Type Value."),
+	UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "401", "Unauthorized."),
 	FORBIDDEN(HttpStatus.FORBIDDEN, "403", "Forbidden."),
 	NOT_FOUND(HttpStatus.NOT_FOUND, "404", "Not Found."),
 	NOT_ACCEPTABLE(HttpStatus.NOT_ACCEPTABLE, "406", "Not Acceptable."),
