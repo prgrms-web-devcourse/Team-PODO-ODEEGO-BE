@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import podo.odeego.domain.group.exception.GroupHostAbsentException;
-import podo.odeego.domain.group.exception.GroupHostStationAlreadyDefinedException;
+import podo.odeego.domain.group.exception.GroupMemberStationAlreadyDefinedException;
 import podo.odeego.domain.group.repository.GroupMemberRepository;
 import podo.odeego.domain.group.repository.GroupRepository;
 import podo.odeego.domain.member.entity.Member;
@@ -82,6 +82,6 @@ class GroupTest {
 
 		// when && then
 		assertThatThrownBy(() -> savedGroup.defineHostStation(redefinedStation))
-			.isInstanceOf(GroupHostStationAlreadyDefinedException.class);
+			.isInstanceOf(GroupMemberStationAlreadyDefinedException.class);
 	}
 }
