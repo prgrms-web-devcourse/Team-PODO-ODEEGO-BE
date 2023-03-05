@@ -23,8 +23,8 @@ import podo.odeego.domain.member.entity.Member;
 import podo.odeego.domain.member.exception.MemberNotFoundException;
 import podo.odeego.domain.member.repository.MemberRepository;
 import podo.odeego.domain.station.entity.Station;
+import podo.odeego.domain.station.exception.StationNotFoundException;
 import podo.odeego.domain.station.repository.StationRepository;
-import podo.odeego.web.error.exception.EntityNotFoundException;
 
 @ExtendWith(SpringExtension.class)
 @Import(TestConfig.class)
@@ -102,6 +102,6 @@ class GroupMemberValidateServiceTest {
 
 		// when && then
 		assertThatThrownBy(() -> validateService.validateAndGet(savedGroup.id(), host.id(), undefinedStationName))
-			.isInstanceOf(EntityNotFoundException.class);
+			.isInstanceOf(StationNotFoundException.class);
 	}
 }
