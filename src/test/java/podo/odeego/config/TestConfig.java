@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Bean;
 import podo.odeego.domain.group.repository.GroupMemberRepository;
 import podo.odeego.domain.group.repository.GroupRepository;
 import podo.odeego.domain.group.service.GroupMemberAddService;
+import podo.odeego.domain.group.service.GroupMemberModifyService;
+import podo.odeego.domain.group.service.GroupMemberValidateService;
 import podo.odeego.domain.group.service.GroupQueryService;
 import podo.odeego.domain.member.repository.MemberRepository;
 import podo.odeego.domain.member.service.MemberFindService;
@@ -48,15 +50,29 @@ public class TestConfig {
 	}
 
 	@Bean
-	public GroupMemberAddService groupMemberAddService(
+	public GroupMemberValidateService groupMemberValidateService(
 		MemberFindService memberFindService,
 		GroupQueryService groupQueryService,
 		StationFindService stationFindService
 	) {
-		return new GroupMemberAddService(
+		return new GroupMemberValidateService(
 			memberFindService,
 			groupQueryService,
 			stationFindService
 		);
+	}
+
+	@Bean
+	public GroupMemberAddService groupMemberAddService(
+		GroupMemberValidateService groupMemberValidateService
+	) {
+		return new GroupMemberAddService(groupMemberValidateService);
+	}
+
+	@Bean
+	public GroupMemberModifyService groupMemberModifyService(
+		GroupMemberValidateService groupMemberValidateService
+	) {
+		return new GroupMemberModifyService(groupMemberValidateService);
 	}
 }
