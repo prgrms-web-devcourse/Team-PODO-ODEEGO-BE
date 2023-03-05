@@ -1,7 +1,5 @@
 package podo.odeego.domain.member.service;
 
-import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -11,9 +9,12 @@ import podo.odeego.domain.member.dto.MemberJoinResponse;
 import podo.odeego.domain.member.dto.MemberSignUpRequest;
 import podo.odeego.domain.member.entity.Member;
 import podo.odeego.domain.member.entity.MemberType;
+import podo.odeego.domain.member.exception.DefaultStationNotExistsException;
 import podo.odeego.domain.member.exception.MemberNicknameDuplicatedException;
 import podo.odeego.domain.member.exception.MemberNotFoundException;
 import podo.odeego.domain.member.repository.MemberRepository;
+import podo.odeego.domain.station.exception.StationNotFoundException;
+import podo.odeego.domain.station.service.StationFindService;
 
 @Service
 @Transactional
@@ -21,10 +22,12 @@ public class MemberService {
 
 	private final Logger log = LoggerFactory.getLogger(getClass());
 
+	private final StationFindService stationFindService;
 	private final MemberRepository memberRepository;
 
-	public MemberService(MemberRepository memberRepository) {
+	public MemberService(MemberRepository memberRepository, StationFindService stationFindService) {
 		this.memberRepository = memberRepository;
+		this.stationFindService = stationFindService;
 	}
 
 	public MemberJoinResponse join(String provider, String providerId, String profileImageUrl) {
@@ -45,25 +48,39 @@ public class MemberService {
 	}
 
 	public Long join(String nickname) {
+		verifyUniqueNickname(nickname);
 		Member savedMember = memberRepository.save(Member.ofNickname(nickname, "provider", "providerId"));
 		return savedMember.id();
 	}
 
-	public Long signUp(Long memberId, MemberSignUpRequest signUpRequest) {
-		checkNicknameDuplicated(signUpRequest.nickname());
+	public void signUp(Long memberId, MemberSignUpRequest signUpRequest) {
+		verifyUniqueNickname(signUpRequest.nickname());
 
 		Member member = memberRepository.findById(memberId)
 			.orElseThrow(() -> new MemberNotFoundException(
 				"Cannot find Member for memberId=%d.".formatted(memberId)));
 		member.signUp(signUpRequest.nickname(), signUpRequest.defaultStationName());
-		return member.id();
 	}
 
-	private void checkNicknameDuplicated(String nickname) {
-		Optional<Member> member = memberRepository.findByNickname(nickname);
-		if (member.isPresent()) {
+	private void verifyUniqueNickname(String nickname) {
+		if (memberRepository.existsByNickname(nickname)) {
 			throw new MemberNicknameDuplicatedException(
-				"Cannot sig up with duplicated nickname: %s".formatted(nickname));
+				"Cannot sign up with duplicated nickname: %s".formatted(nickname));
 		}
+	}
+
+	private void verifyStationExists(String stationName) {
+		try {
+			stationFindService.verifyStationExists(stationName);
+		} catch (StationNotFoundException e) {
+			throw new DefaultStationNotExistsException(e.getMessage());
+		}
+	}
+
+	public void leave(Long memberId) {
+		Member member = memberRepository.findById(memberId)
+			.orElseThrow(() -> new MemberNotFoundException(
+				"Cannot find Member for memberId=%d.".formatted(memberId)));
+		memberRepository.delete(member);
 	}
 }
