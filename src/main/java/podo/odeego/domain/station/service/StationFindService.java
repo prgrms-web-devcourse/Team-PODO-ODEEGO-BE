@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import podo.odeego.domain.station.entity.Station;
 import podo.odeego.domain.station.exception.StationNotFoundException;
 import podo.odeego.domain.station.repository.StationRepository;
-import podo.odeego.global.error.exception.ResourceNotFoundException;
 
 @Service
 @Transactional(readOnly = true)
@@ -24,7 +23,7 @@ public class StationFindService {
 		return stationRepository.findAllByName(name)
 			.stream()
 			.findAny()
-			.orElseThrow(() -> new ResourceNotFoundException("Can not found Station by %s".formatted(name)));
+			.orElseThrow(() -> new StationNotFoundException("Can not found Station by %s".formatted(name)));
 	}
 
 	// TODO: 중복된 역이 들어올 때 DB 에서 가져오지 않게 짜기
