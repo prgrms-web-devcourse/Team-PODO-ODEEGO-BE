@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import podo.odeego.domain.place.dto.PlaceResponses;
+import podo.odeego.domain.place.dto.PlaceQueryResponses;
 import podo.odeego.domain.place.entity.PlaceCategory;
 import podo.odeego.domain.place.service.PlaceQueryService;
 
@@ -26,11 +26,11 @@ public class PlaceApi {
 	}
 
 	@GetMapping
-	public ResponseEntity<PlaceResponses> getAll(
+	public ResponseEntity<PlaceQueryResponses> getAll(
 		@RequestParam(name = "station-name") String stationName,
 		@RequestParam(required = false) PlaceCategory category
 	) {
-		PlaceResponses response = placeQueryService.getAll(stationName, category);
+		PlaceQueryResponses response = placeQueryService.getAll(stationName, category);
 		return ResponseEntity.ok(response);
 	}
 }

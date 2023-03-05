@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import podo.odeego.domain.place.dto.SimplePlaceResponse;
+import podo.odeego.domain.place.dto.PlaceSimpleResponse;
 import podo.odeego.domain.place.entity.PlaceCategory;
 import podo.odeego.infra.openapi.naver.NaverClient;
 import podo.odeego.infra.openapi.naver.localsearch.dto.LocalSearchRequest;
@@ -26,7 +26,7 @@ public class LocalSearchClient extends NaverClient {
 		super(url);
 	}
 
-	public List<SimplePlaceResponse> searchLocal(String query) {
+	public List<PlaceSimpleResponse> searchLocal(String query) {
 		return Arrays.stream(PlaceCategory.values())
 			.map(category -> searchLocal(query, category))
 			.flatMap(List::stream)
@@ -34,7 +34,7 @@ public class LocalSearchClient extends NaverClient {
 			.toList();
 	}
 
-	public List<SimplePlaceResponse> searchLocal(String query, PlaceCategory category) {
+	public List<PlaceSimpleResponse> searchLocal(String query, PlaceCategory category) {
 		return getLocalSearchRequests(query, category).stream()
 			.map(this::callLocalSearchApi)
 			.map(LocalSearchResponse::getPlaces)
