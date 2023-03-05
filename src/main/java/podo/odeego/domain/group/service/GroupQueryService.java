@@ -55,9 +55,8 @@ public class GroupQueryService {
 
 	public Group findById(UUID groupId) {
 		return groupRepository.findById(groupId)
-			.orElseThrow(() -> new GroupNotFoundException(
-				"Cannot find group for groupId=%s".formatted(groupId.toString()))
-			);
+			.orElseThrow(
+				() -> new GroupNotFoundException("Cannot find group for groupId=%s".formatted(groupId.toString())));
 	}
 
 	public void verifyGroupExists(UUID groupId) {

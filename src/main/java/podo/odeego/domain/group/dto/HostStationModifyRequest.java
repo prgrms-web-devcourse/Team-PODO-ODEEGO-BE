@@ -1,8 +1,8 @@
-package podo.odeego.domain.midpoint.dto;
+package podo.odeego.domain.group.dto;
 
 import javax.validation.constraints.NotBlank;
 
-public record StartSubmitRequest(
+public record HostStationModifyRequest(
 
 	@NotBlank
 	String stationName,

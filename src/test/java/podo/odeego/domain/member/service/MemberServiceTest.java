@@ -16,6 +16,7 @@ import podo.odeego.domain.member.dto.MemberSignUpRequest;
 import podo.odeego.domain.member.entity.Member;
 import podo.odeego.domain.member.entity.MemberType;
 import podo.odeego.domain.member.exception.MemberNicknameDuplicatedException;
+import podo.odeego.domain.member.exception.MemberNotFoundException;
 import podo.odeego.domain.member.repository.MemberRepository;
 import podo.odeego.domain.station.entity.Station;
 import podo.odeego.domain.station.repository.StationRepository;
@@ -81,18 +82,39 @@ class MemberServiceTest {
 	}
 
 	@Test
-	@DisplayName("DB상에 존재하지 않는 역을 추가정보로 입력한 경우 실패합니다")
-	public void signUpFailedByDefaultStationName() {
+	@DisplayName("올바른 회원 ID로 회원 탈퇴를 할 경우 성공합니다.")
+	public void leaveSuccess() {
 		//given
-		Member member = Member.ofNickname("닉네임", "testProvider", "1234");
-		Member existMember = memberRepository.save(member);
+		stationRepository.save(
+			new Station("강남역", "서울특별시", 123.123, 123.123, "2호선"));
+		MemberJoinResponse joinedMember = memberService.join("testProvider", "1234", "testUrl");
+		MemberSignUpRequest signUpRequest = new MemberSignUpRequest("닉네임", "강남역");
+		memberService.signUp(joinedMember.id(), signUpRequest);
 
 		//when
-		MemberSignUpRequest signUpRequest = new MemberSignUpRequest("닉네임", "없는역없는역");
+		memberService.leave(joinedMember.id());
 
 		//then
-		assertThatThrownBy(() -> memberService.signUp(existMember.id(), signUpRequest))
-			.isInstanceOf(MemberNicknameDuplicatedException.class)
-			.hasMessage("Cannot sign up with duplicated nickname: %s".formatted("닉네임"));
+		int actual = memberRepository.findAll().size();
+		assertThat(actual).isEqualTo(0);
+	}
+
+	@Test
+	@DisplayName("존재하지 않는 회원 ID로 회원 탈퇴를 할 경우 실패합니다.")
+	public void leaveFailedById() {
+		//given
+		stationRepository.save(
+			new Station("강남역", "서울특별시", 123.123, 123.123, "2호선"));
+		MemberJoinResponse joinedMember = memberService.join("testProvider", "1234", "testUrl");
+		MemberSignUpRequest signUpRequest = new MemberSignUpRequest("닉네임", "강남역");
+		memberService.signUp(joinedMember.id(), signUpRequest);
+
+		//when
+		Long wrongId = 123234345456L;
+
+		//then
+		assertThatThrownBy(() -> memberService.leave(wrongId))
+			.isInstanceOf(MemberNotFoundException.class)
+			.hasMessage("Cannot find Member for memberId=%d.".formatted(wrongId));
 	}
 }

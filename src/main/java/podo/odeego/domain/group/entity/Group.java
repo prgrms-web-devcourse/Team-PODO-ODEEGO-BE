@@ -24,6 +24,9 @@ import org.slf4j.LoggerFactory;
 
 import podo.odeego.domain.group.exception.GroupAlreadyContainsException;
 import podo.odeego.domain.group.exception.GroupAlreadyFullException;
+import podo.odeego.domain.group.exception.GroupHostAbsentException;
+import podo.odeego.domain.group.exception.GroupMemberStationAlreadyDefinedException;
+import podo.odeego.domain.station.entity.Station;
 import podo.odeego.domain.type.BaseTime;
 import podo.odeego.domain.util.TimeUtils;
 
@@ -48,7 +51,7 @@ public class Group extends BaseTime {
 	@Column(nullable = false)
 	private LocalTime validTime;
 
-	@OneToMany(mappedBy = "group", cascade = {REMOVE, PERSIST})
+	@OneToMany(mappedBy = "group", cascade = {REMOVE, PERSIST, MERGE})
 	private List<GroupMember> groupMembers = new ArrayList<>();
 
 	protected Group() {
@@ -71,6 +74,20 @@ public class Group extends BaseTime {
 		}
 
 		this.groupMembers.add(groupMember);
+	}
+
+	public void defineHostStation(Station station) {
+		GroupMember host = groupMembers.stream()
+			.filter(GroupMember::isHost)
+			.findAny()
+			.orElseThrow(() -> new GroupHostAbsentException("Can't find group host."));
+
+		if (host.hasStation()) {
+			throw new GroupMemberStationAlreadyDefinedException(
+				"Host already has station. [saved station]: %s".formatted(station.name()));
+		}
+
+		host.defineStation(station);
 	}
 
 	private boolean isContains(GroupMember groupMember) {

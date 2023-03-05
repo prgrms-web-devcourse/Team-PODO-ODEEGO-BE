@@ -55,7 +55,6 @@ public class MemberService {
 
 	public void signUp(Long memberId, MemberSignUpRequest signUpRequest) {
 		verifyUniqueNickname(signUpRequest.nickname());
-		verifyStationExists(signUpRequest.defaultStationName());
 
 		Member member = memberRepository.findById(memberId)
 			.orElseThrow(() -> new MemberNotFoundException(
@@ -76,5 +75,12 @@ public class MemberService {
 		} catch (StationNotFoundException e) {
 			throw new DefaultStationNotExistsException(e.getMessage());
 		}
+	}
+
+	public void leave(Long memberId) {
+		Member member = memberRepository.findById(memberId)
+			.orElseThrow(() -> new MemberNotFoundException(
+				"Cannot find Member for memberId=%d.".formatted(memberId)));
+		memberRepository.delete(member);
 	}
 }

@@ -19,6 +19,7 @@ import podo.odeego.domain.group.entity.GroupCapacity;
 import podo.odeego.domain.group.entity.GroupMember;
 import podo.odeego.domain.group.entity.ParticipantType;
 import podo.odeego.domain.group.exception.GroupAlreadyFullException;
+import podo.odeego.domain.group.repository.GroupMemberRepository;
 import podo.odeego.domain.group.repository.GroupRepository;
 import podo.odeego.domain.member.entity.Member;
 import podo.odeego.domain.member.repository.MemberRepository;
@@ -33,6 +34,9 @@ class GroupMemberAddServiceTest {
 
 	@Autowired
 	private GroupMemberAddService groupMemberAddService;
+
+	@Autowired
+	private GroupMemberRepository groupMemberRepository;
 
 	@Autowired
 	private MemberRepository memberRepository;
@@ -55,13 +59,13 @@ class GroupMemberAddServiceTest {
 
 		Station savedStation = stationRepository.save(new Station("가양역", null, 127.12314, 37.123124, "9"));
 
-		StartSubmitRequest requestDto = new StartSubmitRequest(savedGroup.id(), savedStation.name(),
-			savedStation.latitude(), savedStation.longitude());
+		StartSubmitRequest requestDto = new StartSubmitRequest(savedStation.name(), savedStation.latitude(),
+			savedStation.longitude());
 
 		// when
-		groupMemberAddService.add(savedMember.id(), requestDto);
+		groupMemberAddService.add(savedGroup.id(), savedMember.id(), requestDto);
 
-		List<GroupMember> actualGroupMembers = savedGroup.groupMembers();
+		List<GroupMember> actualGroupMembers = groupMemberRepository.findGroupMembersByGroup(savedGroup);
 
 		// then
 		assertThat(actualGroupMembers.size())
@@ -82,11 +86,11 @@ class GroupMemberAddServiceTest {
 
 		Station savedStation = stationRepository.save(new Station("가양역", null, 127.12314, 37.123124, "9"));
 
-		StartSubmitRequest requestDto = new StartSubmitRequest(savedGroup.id(), savedStation.name(),
-			savedStation.latitude(), savedStation.longitude());
+		StartSubmitRequest requestDto = new StartSubmitRequest(savedStation.name(), savedStation.latitude(),
+			savedStation.longitude());
 
 		// when && then
-		assertThatThrownBy(() -> groupMemberAddService.add(savedMember.id(), requestDto))
+		assertThatThrownBy(() -> groupMemberAddService.add(savedGroup.id(), savedMember.id(), requestDto))
 			.isInstanceOf(GroupAlreadyFullException.class);
 	}
 }
