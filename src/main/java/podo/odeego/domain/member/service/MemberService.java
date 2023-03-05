@@ -77,4 +77,11 @@ public class MemberService {
 			throw new DefaultStationNotExistsException(e.getMessage());
 		}
 	}
+
+	public void leave(Long memberId) {
+		Member member = memberRepository.findById(memberId)
+			.orElseThrow(() -> new MemberNotFoundException(
+				"Cannot find Member for memberId=%d.".formatted(memberId)));
+		memberRepository.delete(member);
+	}
 }

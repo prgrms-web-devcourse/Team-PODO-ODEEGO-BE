@@ -2,6 +2,7 @@ package podo.odeego.web.api.member.v1;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,6 +39,14 @@ public class MemberApi {
 		@RequestBody MemberSignUpRequest request
 	) {
 		memberService.signUp(principal.memberId(), request);
+		return ResponseEntity.ok().build();
+	}
+
+	@DeleteMapping("/leave")
+	public ResponseEntity<Void> leave(
+		@AuthenticationPrincipal JwtAuthenticationPrincipal principal
+	) {
+		memberService.leave(principal.memberId());
 		return ResponseEntity.ok().build();
 	}
 }
