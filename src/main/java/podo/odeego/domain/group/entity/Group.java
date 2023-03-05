@@ -77,17 +77,17 @@ public class Group extends BaseTime {
 	}
 
 	public void defineHostStation(Station station) {
-		GroupMember groupMember = groupMembers.stream()
+		GroupMember host = groupMembers.stream()
 			.filter(GroupMember::isHost)
 			.findAny()
 			.orElseThrow(() -> new GroupHostAbsentException("Can't find group host."));
 
-		if (groupMember.hasStation()) {
+		if (host.hasStation()) {
 			throw new GroupMemberStationAlreadyDefinedException(
 				"Host already has station. [saved station]: %s".formatted(station.name()));
 		}
 
-		groupMember.defineStation(station);
+		host.defineStation(station);
 	}
 
 	private boolean isContains(GroupMember groupMember) {
