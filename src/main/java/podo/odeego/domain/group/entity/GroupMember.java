@@ -3,9 +3,8 @@ package podo.odeego.domain.group.entity;
 import static javax.persistence.EnumType.*;
 import static javax.persistence.FetchType.*;
 
-import java.util.UUID;
-
 import java.util.Objects;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -59,6 +58,14 @@ public class GroupMember extends BaseTime {
 		this.type = type;
 	}
 
+	public void defineStation(Station station) {
+		this.station = Objects.requireNonNull(station);
+	}
+
+	public boolean hasStation() {
+		return station != null;
+	}
+
 	public boolean isHost() {
 		return this.type.isHost();
 	}
@@ -93,22 +100,5 @@ public class GroupMember extends BaseTime {
 
 	public ParticipantType type() {
 		return type;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
-		GroupMember that = (GroupMember)o;
-		return Objects.equals(id, that.id) && Objects.equals(group, that.group)
-			&& Objects.equals(member, that.member) && Objects.equals(station, that.station)
-			&& type == that.type;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(id, group, member, station, type);
 	}
 }
