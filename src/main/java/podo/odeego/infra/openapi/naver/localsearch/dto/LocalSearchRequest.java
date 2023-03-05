@@ -15,8 +15,13 @@ public class LocalSearchRequest extends ClientRequest {
 	private final int start = 1;
 	private final String sort;
 
-	public LocalSearchRequest(String query, String sort) {
+	private final String origin;
+	private final PlaceCategory category;
+
+	private LocalSearchRequest(String origin, PlaceCategory category, String query, String sort) {
 		super(query);
+		this.origin = origin;
+		this.category = category;
 		this.sort = sort;
 	}
 
@@ -40,6 +45,14 @@ public class LocalSearchRequest extends ClientRequest {
 		map.add("sort", sort);
 
 		return map;
+	}
+
+	public String origin() {
+		return origin;
+	}
+
+	public PlaceCategory category() {
+		return category;
 	}
 
 	public enum SortType {
