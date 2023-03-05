@@ -1,6 +1,7 @@
 package podo.odeego.domain.place.entity;
 
 import java.util.Arrays;
+import java.util.List;
 
 import podo.odeego.global.error.exception.InvalidValueException;
 
@@ -25,6 +26,12 @@ public enum PlaceCategory {
 					)
 				);
 			});
+	}
+
+	public static List<PlaceCategory> getSpecifiedValues() {
+		return Arrays.stream(PlaceCategory.values())
+			.filter(category -> !category.isAll())
+			.toList();
 	}
 
 	public boolean isAll() {

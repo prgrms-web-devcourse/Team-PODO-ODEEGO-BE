@@ -1,7 +1,6 @@
-package podo.odeego.infra.openapi.naver.localsearch;
+package podo.odeego.infra.openapi.naver.localsearch.client;
 
 import java.net.URI;
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -13,44 +12,44 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import podo.odeego.domain.place.dto.PlaceSimpleResponse;
 import podo.odeego.domain.place.entity.PlaceCategory;
 import podo.odeego.infra.openapi.naver.NaverClient;
+import podo.odeego.infra.openapi.naver.localsearch.dto.LocalSearchQueryDto;
 import podo.odeego.infra.openapi.naver.localsearch.dto.LocalSearchRequest;
 import podo.odeego.infra.openapi.naver.localsearch.dto.LocalSearchResponse;
+import podo.odeego.infra.openapi.naver.localsearch.dto.PlaceQueryDto;
 
 @Component
 public class LocalSearchClient extends NaverClient {
+
+	public static final int DEFAULT_REQUEST_INDEX = 0;
 
 	public LocalSearchClient(@Value("${naver.url.search.local}") String url) {
 		super(url);
 	}
 
-	public List<PlaceSimpleResponse> searchLocal(String query) {
-		return Arrays.stream(PlaceCategory.values())
-			.map(category -> searchLocal(query, category))
+	public List<LocalSearchQueryDto> queryAllPlaces(String query) {
+		return PlaceCategory.getSpecifiedValues()
+			.stream()
+			.map(placeCategory -> queryPlacesByCategory(query, placeCategory))
+			.toList();
+	}
+
+	public LocalSearchQueryDto queryPlacesByCategory(String query, PlaceCategory category) {
+		List<LocalSearchRequest> requests = LocalSearchRequest.newInstancesWithAllSortType(query, category);
+		return new LocalSearchQueryDto(requests.get(DEFAULT_REQUEST_INDEX), getDistinctPlaces(requests));
+	}
+
+	private List<PlaceQueryDto> getDistinctPlaces(List<LocalSearchRequest> requests) {
+		return requests.stream()
+			.map(this::executeApiCall)
+			.map(PlaceQueryDto::from)
 			.flatMap(List::stream)
 			.distinct()
 			.toList();
 	}
 
-	public List<PlaceSimpleResponse> searchLocal(String query, PlaceCategory category) {
-		return getLocalSearchRequests(query, category).stream()
-			.map(this::callLocalSearchApi)
-			.map(LocalSearchResponse::getPlaces)
-			.flatMap(List::stream)
-			.distinct()
-			.toList();
-	}
-
-	private List<LocalSearchRequest> getLocalSearchRequests(String query, PlaceCategory category) {
-		return List.of(
-			LocalSearchRequest.of(query, category, LocalSearchRequest.SortType.RANDOM),
-			LocalSearchRequest.of(query, category, LocalSearchRequest.SortType.COMMENT)
-		);
-	}
-
-	private LocalSearchResponse callLocalSearchApi(LocalSearchRequest request) {
+	private LocalSearchResponse executeApiCall(LocalSearchRequest request) {
 		URI uri = super.getUri(request);
 		HttpEntity<HttpHeaders> httpEntity = getHttpEntity();
 		ParameterizedTypeReference<LocalSearchResponse> responseType = new ParameterizedTypeReference<>() {

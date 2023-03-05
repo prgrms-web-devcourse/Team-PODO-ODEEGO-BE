@@ -12,9 +12,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import podo.odeego.domain.place.dto.PlaceSimpleResponse;
 import podo.odeego.domain.place.entity.PlaceCategory;
-import podo.odeego.infra.openapi.naver.localsearch.LocalSearchClient;
+import podo.odeego.infra.openapi.naver.localsearch.client.LocalSearchClient;
+import podo.odeego.infra.openapi.naver.localsearch.dto.LocalSearchQueryDto;
 
 @SpringBootTest
 class LocalSearchClientTest {
@@ -22,40 +22,38 @@ class LocalSearchClientTest {
 	private final Logger log = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
-	private LocalSearchClient localSearchClient;
+	private LocalSearchClient client;
 
 	@Test
-	@DisplayName("네이버 지역 검색 API를 호출할 수 있다.")
+	@DisplayName("질의어를 사용하여 지역 검색 Open API를 호출할 수 있다.")
 	void call_naver_local_search_api() {
 		// given
 		String query = "강남역";
 
 		// when
-		List<PlaceSimpleResponse> responses = localSearchClient.searchLocal(query);
+		List<LocalSearchQueryDto> queryDtos = client.queryAllPlaces(query);
 
 		// then
-		assertThat(responses).isNotNull();
-		for (PlaceSimpleResponse response : responses) {
-			log.info(response.toString());
-		}
+		assertThat(queryDtos).isNotNull();
 	}
 
 	@Test
-	@DisplayName("장소 카테고리 별로 네이버 지역 검색 API를 호출할 수 있다.")
-	void call_naver_local_search_api_by_place_category() {
+	@DisplayName("장소 카테고리 별로 장소를 검색할 수 있다.")
+	void search_place_by_place_category() {
 		// given
 		String query = "강남역";
+
 		PlaceCategory cafe = PlaceCategory.CAFE;
 		PlaceCategory restaurant = PlaceCategory.RESTAURANT;
 
 		// when
-		List<PlaceSimpleResponse> searchCafeResponses = localSearchClient.searchLocal(query, cafe);
-		List<PlaceSimpleResponse> searchRestaurantResponses = localSearchClient.searchLocal(query, restaurant);
+		LocalSearchQueryDto searchCafeResult = client.queryPlacesByCategory(query, cafe);
+		LocalSearchQueryDto searchRestaurantResult = client.queryPlacesByCategory(query, restaurant);
 
 		// then
 		assertAll(
-			() -> assertThat(searchCafeResponses).isNotNull(),
-			() -> assertThat(searchRestaurantResponses).isNotNull()
+			() -> assertThat(searchCafeResult).isNotNull(),
+			() -> assertThat(searchRestaurantResult).isNotNull()
 		);
 	}
 }

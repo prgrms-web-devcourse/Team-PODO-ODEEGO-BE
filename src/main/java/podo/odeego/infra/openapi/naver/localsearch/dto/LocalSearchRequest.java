@@ -1,5 +1,7 @@
 package podo.odeego.infra.openapi.naver.localsearch.dto;
 
+import java.util.List;
+
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -33,6 +35,16 @@ public class LocalSearchRequest extends ClientRequest {
 				"PlaceCategory '%s' is invalid to generate LocalSearchRequest object.".formatted(category.toString())
 			);
 		};
+	}
+
+	public static List<LocalSearchRequest> newInstancesWithAllSortType(
+		String query,
+		PlaceCategory category
+	) {
+		return List.of(
+			LocalSearchRequest.of(query, category, LocalSearchRequest.SortType.RANDOM),
+			LocalSearchRequest.of(query, category, LocalSearchRequest.SortType.COMMENT)
+		);
 	}
 
 	@Override
