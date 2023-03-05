@@ -22,8 +22,11 @@ public class LocalSearchRequest extends ClientRequest {
 
 	public static LocalSearchRequest of(String query, PlaceCategory category, SortType sortType) {
 		return switch (category) {
-			case CAFE -> new LocalSearchRequest(query + SUFFIX_CAFE, sortType.type);
-			case RESTAURANT -> new LocalSearchRequest(query + SUFFIX_RESTAURANT, sortType.type);
+			case CAFE -> new LocalSearchRequest(query, category, query + SUFFIX_CAFE, sortType.type);
+			case RESTAURANT -> new LocalSearchRequest(query, category, query + SUFFIX_RESTAURANT, sortType.type);
+			default -> throw new IllegalArgumentException(
+				"PlaceCategory '%s' is invalid to generate LocalSearchRequest object.".formatted(category.toString())
+			);
 		};
 	}
 

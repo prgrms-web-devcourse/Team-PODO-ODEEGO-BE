@@ -29,7 +29,7 @@ public class NaverPlaceQueryService implements PlaceQueryService {
 	public PlaceQueryResponses getAll(String stationName, PlaceCategory category) {
 		stationFindService.verifyStationExists(stationName);
 
-		if (category == null) {
+		if (category.isAll()) {
 			return PlaceQueryResponses.from(localSearchClient.searchLocal(stationName));
 		}
 		return PlaceQueryResponses.from(localSearchClient.searchLocal(stationName, category));
