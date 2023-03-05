@@ -82,22 +82,6 @@ class MemberServiceTest {
 	}
 
 	@Test
-	@DisplayName("DB상에 존재하지 않는 역을 추가정보로 입력한 경우 실패합니다")
-	public void signUpFailedByDefaultStationName() {
-		//given
-		Member member = Member.ofNickname("닉네임", "testProvider", "1234");
-		Member savedMember = memberRepository.save(member);
-
-		//when
-		MemberSignUpRequest signUpRequest = new MemberSignUpRequest("닉네임", "없는역없는역");
-
-		//then
-		assertThatThrownBy(() -> memberService.signUp(savedMember.id(), signUpRequest))
-			.isInstanceOf(MemberNicknameDuplicatedException.class)
-			.hasMessage("Cannot sign up with duplicated nickname: %s".formatted("닉네임"));
-	}
-
-	@Test
 	@DisplayName("올바른 회원 ID로 회원 탈퇴를 할 경우 성공합니다.")
 	public void leaveSuccess() {
 		//given

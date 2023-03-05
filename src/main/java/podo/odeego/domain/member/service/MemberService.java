@@ -55,7 +55,6 @@ public class MemberService {
 
 	public void signUp(Long memberId, MemberSignUpRequest signUpRequest) {
 		verifyUniqueNickname(signUpRequest.nickname());
-		verifyStationExists(signUpRequest.defaultStationName());
 
 		Member member = memberRepository.findById(memberId)
 			.orElseThrow(() -> new MemberNotFoundException(
