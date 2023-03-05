@@ -2,9 +2,6 @@ package podo.odeego.infra.openapi.naver.localsearch.dto;
 
 import java.util.List;
 
-import podo.odeego.domain.place.dto.PlaceSimpleResponse;
-import podo.odeego.infra.openapi.naver.localsearch.util.PlaceDataParser;
-
 public record LocalSearchResponse(
 	String lastBuildDate,
 	int total,
@@ -25,13 +22,7 @@ public record LocalSearchResponse(
 			'}';
 	}
 
-	public List<PlaceSimpleResponse> getPlaces() {
-		return this.items.stream()
-			.map(item -> new PlaceSimpleResponse(PlaceDataParser.trimHtmlTags(item.title), item.roadAddress))
-			.toList();
-	}
-
-	private record LocalSearchItem(
+	public record LocalSearchItem(
 		String title,
 		String link,
 		String category,
