@@ -8,6 +8,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import podo.odeego.domain.util.JsonUtils;
+
 public record MidPointSearchRequest(
 
 	@NotNull
@@ -27,6 +29,10 @@ public record MidPointSearchRequest(
 		@DecimalMin("0.0")
 		double lng
 	) {
+		@Override
+		public String stationName() {
+			return JsonUtils.getStationNameWithoutLine(stationName);
+		}
 	}
 
 	public boolean isAllSameStart() {
