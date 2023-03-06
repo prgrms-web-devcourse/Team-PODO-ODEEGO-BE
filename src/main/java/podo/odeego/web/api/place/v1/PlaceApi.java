@@ -32,7 +32,7 @@ public class PlaceApi {
 		@RequestParam(name = "station-name") String stationName,
 		@RequestParam Optional<PlaceCategory> category
 	) {
-		PlaceQueryResponses response = placeQueryService.getAll(stationName, category.orElse(PlaceCategory.ALL));
+		PlaceQueryResponses response = placeQueryService.getAll(stationName.trim(), category.orElse(PlaceCategory.ALL));
 		return ResponseEntity.ok(response);
 	}
 }
