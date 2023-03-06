@@ -1,10 +1,9 @@
 package podo.odeego.domain.place.service;
 
-import podo.odeego.domain.place.domain.PlaceCategory;
-import podo.odeego.domain.place.dto.PlaceResponses;
-import podo.odeego.domain.station.dto.StationAddress;
+import podo.odeego.domain.place.dto.PlaceQueryResponses;
+import podo.odeego.domain.place.entity.PlaceCategory;
 
 public interface PlaceQueryService {
 
-	PlaceResponses getAll(StationAddress station, PlaceCategory placeCategory);
+	PlaceQueryResponses getAll(String stationName, PlaceCategory placeCategory);
 }

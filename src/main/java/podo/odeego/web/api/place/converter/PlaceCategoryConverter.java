@@ -2,7 +2,7 @@ package podo.odeego.web.api.place.converter;
 
 import org.springframework.core.convert.converter.Converter;
 
-import podo.odeego.domain.place.domain.PlaceCategory;
+import podo.odeego.domain.place.entity.PlaceCategory;
 
 public class PlaceCategoryConverter implements Converter<String, PlaceCategory> {
 

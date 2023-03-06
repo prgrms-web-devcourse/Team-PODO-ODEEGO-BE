@@ -1,4 +1,4 @@
-package podo.odeego.infra.openapi.naver.util;
+package podo.odeego.infra.openapi.naver.localsearch.util;
 
 public class PlaceDataParser {
 

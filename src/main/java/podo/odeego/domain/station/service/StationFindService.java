@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import podo.odeego.domain.station.dto.StationNameQueryDto;
 import podo.odeego.domain.station.entity.Station;
 import podo.odeego.domain.station.exception.StationNotFoundException;
 import podo.odeego.domain.station.repository.StationRepository;
@@ -37,5 +38,9 @@ public class StationFindService {
 		if (!stationRepository.existsByName(name)) {
 			throw new StationNotFoundException("Cannot find Station for name=%s.".formatted(name));
 		}
+	}
+
+	public List<StationNameQueryDto> getAllStationName() {
+		return StationNameQueryDto.from(stationRepository.findAllGroupByName());
 	}
 }

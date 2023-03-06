@@ -2,10 +2,23 @@ package podo.odeego.domain.place.dto;
 
 import java.util.Objects;
 
-public record SimplePlaceResponse(
-	String businessName,
-	String address
-) {
+public class PlaceQueryResponse {
+
+	private String businessName;
+	private String address;
+
+	public PlaceQueryResponse(String businessName, String address) {
+		this.businessName = businessName;
+		this.address = address;
+	}
+
+	public String getBusinessName() {
+		return businessName;
+	}
+
+	public String getAddress() {
+		return address;
+	}
 
 	@Override
 	public boolean equals(Object o) {
@@ -15,7 +28,7 @@ public record SimplePlaceResponse(
 		if (o == null || getClass() != o.getClass()) {
 			return false;
 		}
-		SimplePlaceResponse that = (SimplePlaceResponse)o;
+		PlaceQueryResponse that = (PlaceQueryResponse)o;
 		return Objects.equals(businessName, that.businessName) && Objects.equals(address, that.address);
 	}
 

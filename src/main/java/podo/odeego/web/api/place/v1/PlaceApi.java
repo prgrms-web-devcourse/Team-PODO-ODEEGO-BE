@@ -1,5 +1,7 @@
 package podo.odeego.web.api.place.v1;
 
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -9,10 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import podo.odeego.domain.place.domain.PlaceCategory;
-import podo.odeego.domain.place.dto.PlaceResponses;
+import podo.odeego.domain.place.dto.PlaceQueryResponses;
+import podo.odeego.domain.place.entity.PlaceCategory;
 import podo.odeego.domain.place.service.PlaceQueryService;
-import podo.odeego.domain.station.dto.StationAddress;
 
 @RestController
 @RequestMapping("/api/v1/places")
@@ -27,12 +28,11 @@ public class PlaceApi {
 	}
 
 	@GetMapping
-	public ResponseEntity<PlaceResponses> getAll(
+	public ResponseEntity<PlaceQueryResponses> getAll(
 		@RequestParam(name = "station-name") String stationName,
-		@RequestParam String address,
-		@RequestParam(required = false) PlaceCategory category
+		@RequestParam Optional<PlaceCategory> category
 	) {
-		PlaceResponses response = placeQueryService.getAll(new StationAddress(stationName, address), category);
+		PlaceQueryResponses response = placeQueryService.getAll(stationName, category.orElse(PlaceCategory.ALL));
 		return ResponseEntity.ok(response);
 	}
 }

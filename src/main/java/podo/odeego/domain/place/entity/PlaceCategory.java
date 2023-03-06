@@ -1,15 +1,21 @@
-package podo.odeego.domain.place.domain;
+package podo.odeego.domain.place.entity;
 
 import java.util.Arrays;
+import java.util.List;
 
 import podo.odeego.global.error.exception.InvalidValueException;
 
 public enum PlaceCategory {
 
+	ALL,
 	CAFE,
 	RESTAURANT;
 
 	public static PlaceCategory of(String category) {
+		if (category == null) {
+			return PlaceCategory.ALL;
+		}
+
 		return Arrays.stream(PlaceCategory.values())
 			.filter(value -> value.toString().equals(category))
 			.findAny()
@@ -20,5 +26,15 @@ public enum PlaceCategory {
 					)
 				);
 			});
+	}
+
+	public static List<PlaceCategory> getSpecifiedValues() {
+		return Arrays.stream(PlaceCategory.values())
+			.filter(category -> !category.isAll())
+			.toList();
+	}
+
+	public boolean isAll() {
+		return this == ALL;
 	}
 }
