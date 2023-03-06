@@ -38,7 +38,7 @@ public class Place {
 	@Enumerated(value = STRING)
 	private PlaceCategory category;
 
-	@OneToMany(mappedBy = "place", cascade = {PERSIST, REMOVE})
+	@OneToMany(mappedBy = "place", cascade = ALL, orphanRemoval = true)
 	private List<PlaceImage> images = new ArrayList<>();
 
 	protected Place() {
