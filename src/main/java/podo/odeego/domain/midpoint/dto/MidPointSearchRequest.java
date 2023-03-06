@@ -27,6 +27,14 @@ public record MidPointSearchRequest(
 		@DecimalMin("0.0")
 		double lng
 	) {
+		@Override
+		public String stationName() {
+			if (stationName.endsWith("호선")) {
+				return stationName.split(" ")[0];
+			}
+
+			return stationName;
+		}
 	}
 
 	public boolean isAllSameStart() {

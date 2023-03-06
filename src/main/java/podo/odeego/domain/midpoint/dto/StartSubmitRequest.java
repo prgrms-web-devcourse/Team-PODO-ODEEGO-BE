@@ -11,4 +11,13 @@ public record StartSubmitRequest(
 
 	double lng
 ) {
+
+	@Override
+	public String stationName() {
+		if (stationName.endsWith("호선")) {
+			return stationName.split(" ")[0];
+		}
+
+		return stationName;
+	}
 }
