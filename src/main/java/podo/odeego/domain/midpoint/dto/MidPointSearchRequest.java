@@ -8,6 +8,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import podo.odeego.domain.util.JsonUtils;
+
 public record MidPointSearchRequest(
 
 	@NotNull
@@ -29,11 +31,7 @@ public record MidPointSearchRequest(
 	) {
 		@Override
 		public String stationName() {
-			if (stationName.endsWith("호선")) {
-				return stationName.split(" ")[0];
-			}
-
-			return stationName;
+			return JsonUtils.getStationNameWithoutLine(stationName);
 		}
 	}
 

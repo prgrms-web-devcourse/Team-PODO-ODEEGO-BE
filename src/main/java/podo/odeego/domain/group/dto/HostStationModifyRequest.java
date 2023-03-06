@@ -2,6 +2,8 @@ package podo.odeego.domain.group.dto;
 
 import javax.validation.constraints.NotBlank;
 
+import podo.odeego.domain.util.JsonUtils;
+
 public record HostStationModifyRequest(
 
 	@NotBlank
@@ -14,10 +16,6 @@ public record HostStationModifyRequest(
 
 	@Override
 	public String stationName() {
-		if (stationName.endsWith("호선")) {
-			return stationName.split(" ")[0];
-		}
-
-		return stationName;
+		return JsonUtils.getStationNameWithoutLine(stationName);
 	}
 }
