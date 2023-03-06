@@ -1,13 +1,13 @@
 ### 장소 추천 API - 모든 장소
-GET http://localhost:8080/api/v1/places?station-name=강남역&address=서울 강남구 강남대로 396
+GET http://localhost:8080/api/v1/places?station-name=단대오거리역
 
 
 ### 장소 추천 API - 음식점
-GET http://localhost:8080/api/v1/places?station-name=강남역&address=서울 강남구 강남대로 396&category=RESTAURANT
+GET http://localhost:8080/api/v1/places?station-name=단대오거리역&category=RESTAURANT
 
 
 ### 장소 추천 API - 카페
-GET http://localhost:8080/api/v1/places?station-name=강남역&address=서울 강남구 강남대로 396&category=CAFE
+GET http://localhost:8080/api/v1/places?station-name=단대오거리역&category=CAFE
 
 
 ### 모임 생성 API
@@ -18,11 +18,8 @@ Content-Type: application/json
   "capacity": 2
 }
 
-<> 2023-03-01T144358.400.json
-
 ### 모임 단건 조회 API
 GET http://localhost:8080/api/v1/groups/{groupId}
-
 
 
 ### [TEST] 더미 회원 생성 API
@@ -38,14 +35,25 @@ POST http://localhost:8080/api/test/groups?member-id=1
 Content-Type: application/json
 
 {
-  "capacity": 2
+  "capacity": 4
 }
 
 
 ### [TEST] 모임 상세 조회 API
-GET http://localhost:8080/api/test/groups/aa9de2b4-5901-44ea-8bbd-a5cdd377c0c6
+GET http://localhost:8080/api/test/groups/e82c47b0-149f-4018-bf8d-52b2f4184eb1
 
 
 ### [TEST] 모임 삭제 API
 DELETE http://localhost:8080/api/test/groups/6b3543db-3a4e-4fbf-8839-696847576511
 
+
+### 모임 출발지 입력
+PATCH http://localhost:8080/api/v1/mid-points/starts?memberId=1
+Content-Type: application/json
+
+{
+  "groupId": "4b5377bf-e8c1-4882-9087-6890d18eaf15",
+  "stationName": "강남역",
+  "lat": 1.123123,
+  "lng": 11.123123
+}
