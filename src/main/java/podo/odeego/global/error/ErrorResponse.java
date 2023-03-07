@@ -25,8 +25,19 @@ public class ErrorResponse {
 		this.errors = errors;
 	}
 
+	private ErrorResponse(ErrorCode errorCode, String message) {
+		this.status = errorCode.status();
+		this.errorCode = errorCode.errorCode();
+		this.errorMessage = message;
+		this.errors = new ArrayList<>();
+	}
+
 	public static ErrorResponse of(ErrorCode errorCode) {
 		return new ErrorResponse(errorCode);
+	}
+
+	public static ErrorResponse of(ErrorCode errorCode, String message) {
+		return new ErrorResponse(errorCode, message);
 	}
 
 	public static ErrorResponse of(ErrorCode errorCode, List<FieldError> errors) {
