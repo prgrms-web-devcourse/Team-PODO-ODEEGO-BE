@@ -61,13 +61,19 @@ public class Place {
 	}
 
 	public void addImage(PlaceImage image) {
-		if (this.images.contains(image)) {
+		if (isImageDuplicated(image)) {
 			throw new PlaceImageDuplicatedException(
-				"Place '%d' is already containing '%s'".formatted(this.id, image.toString())
+				"Place '%d' is already containing '%s'".formatted(this.id, image.getUrl())
 			);
 		}
 		this.images.add(image);
 		image.AssignPlace(this);
+	}
+
+	private boolean isImageDuplicated(PlaceImage image) {
+		return this.images.stream()
+			.map(PlaceImage::image)
+			.anyMatch(existingImage -> existingImage.equals(image.image()));
 	}
 
 	public Long id() {
