@@ -1,8 +1,8 @@
-package podo.odeego.web.api.auth.dto;
+package podo.odeego.infra.openapi.kakao.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class GetMemberInfoResponse {
+public class GetUserInfoResponse {
 
 	private Long id;
 	private String connected_at;
@@ -10,7 +10,7 @@ public class GetMemberInfoResponse {
 	@JsonProperty("kakao_account")
 	private KakaoAccount kakao_account;
 
-	public GetMemberInfoResponse() {
+	public GetUserInfoResponse() {
 	}
 
 	public Long id() {
