@@ -33,7 +33,7 @@ public class GlobalExceptionHandler {
 	}
 
 	@ExceptionHandler(KakaoClientErrorException.class)
-	protected ResponseEntity<ErrorResponse> handleHttpClientErrorException(
+	protected ResponseEntity<ErrorResponse> handleKakaoClientErrorException(
 		KakaoClientErrorException e
 	) {
 		log.info("handleKakaoClientErrorException", e);
