@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import podo.odeego.web.api.auth.dto.MemberLoginResponse;
-import podo.odeego.web.security.service.AuthorizationComponent;
+import podo.odeego.web.security.AuthorizationComponent;
 
 @RestController
 @RequestMapping("/api/v1/auth")
