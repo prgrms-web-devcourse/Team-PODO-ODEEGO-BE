@@ -16,11 +16,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
 
 @Component
@@ -52,7 +51,6 @@ public class JwtProvider {
 		Date expiresIn = new Date(now + accessTokenExpirationMillis);
 		return Jwts.builder()
 			.claim(ID_KEY, memberId)
-			.claim(ROLE_KEY, "ROLE_MEMBER")
 			.setExpiration(expiresIn)
 			.signWith(key, SignatureAlgorithm.HS256)
 			.compact();
@@ -87,26 +85,27 @@ public class JwtProvider {
 	}
 
 	private Claims parseClaims(String accessToken) {
-		return Jwts.parserBuilder()
-			.setSigningKey(key)
-			.build()
+		return getJwtParser()
 			.parseClaimsJws(accessToken)
 			.getBody();
 	}
 
 	public boolean validateToken(String token) {
 		try {
-			Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
-			return true;
+			getJwtParser().parseClaimsJws(token);
 		} catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-			log.info("Invalid JWT Token", e);
-		} catch (ExpiredJwtException e) {
-			log.info("Expired JWT Token", e);
-		} catch (UnsupportedJwtException e) {
-			log.info("Unsupported JWT Token", e);
-		} catch (IllegalArgumentException e) {
-			log.info("JWT claims string is empty.", e);
+			return false;
+			// throw new InvalidJwtException("Invalid JWT: %s".formatted(token));
+		} catch (io.jsonwebtoken.ExpiredJwtException e) {
+			return false;
+			// throw new ExpiredJwtException("Expired JWT: %s".formatted(token));
 		}
-		return false;
+		return true;
+	}
+
+	private JwtParser getJwtParser() {
+		return Jwts.parserBuilder()
+			.setSigningKey(key)
+			.build();
 	}
 }
