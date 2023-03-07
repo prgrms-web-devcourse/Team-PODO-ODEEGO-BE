@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import podo.odeego.global.error.exception.BusinessException;
+import podo.odeego.global.error.exception.NonBusinessException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -41,6 +42,13 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(BusinessException.class)
 	protected ResponseEntity<ErrorResponse> handleBusinessException(BusinessException e) {
 		log.info("handleBusinessException", e);
+		ErrorResponse response = ErrorResponse.of(e.errorCode());
+		return newResponseEntity(response);
+	}
+
+	@ExceptionHandler(NonBusinessException.class)
+	protected ResponseEntity<ErrorResponse> handleNonBusinessException(NonBusinessException e) {
+		log.info("handleNonBusinessException", e);
 		ErrorResponse response = ErrorResponse.of(e.errorCode());
 		return newResponseEntity(response);
 	}
