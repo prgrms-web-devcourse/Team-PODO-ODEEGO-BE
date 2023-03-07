@@ -7,10 +7,17 @@ public enum ErrorCode {
 	// Common
 	INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, "400", "Invalid Input Value."),
 	INVALID_TYPE_VALUE(HttpStatus.BAD_REQUEST, "400", "Invalid Type Value."),
+	UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "401", "Unauthorized."),
 	FORBIDDEN(HttpStatus.FORBIDDEN, "403", "Forbidden."),
 	NOT_FOUND(HttpStatus.NOT_FOUND, "404", "Not Found."),
 	NOT_ACCEPTABLE(HttpStatus.NOT_ACCEPTABLE, "406", "Not Acceptable."),
 	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "500", "Internal Server Error."),
+
+	// Auth
+	TOKEN_NOT_FOUND(HttpStatus.UNAUTHORIZED, "A001", "Token not found in request header."),
+	NOT_GRANTED_TOKEN_TYPE(HttpStatus.UNAUTHORIZED, "A002", "Not granted token type."),
+	EXPIRED_JWT(HttpStatus.UNAUTHORIZED, "A003", "Jwt is expired."),
+	INVALID_JWT(HttpStatus.UNAUTHORIZED, "A004", "Invalid Jwt."),
 
 	// Member
 	MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "M001", "Member Not Found."),
