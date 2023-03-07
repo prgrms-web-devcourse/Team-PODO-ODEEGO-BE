@@ -84,8 +84,8 @@ public class Place {
 		return name;
 	}
 
-	public Address address() {
-		return address;
+	public String address() {
+		return address.address();
 	}
 
 	public String stationName() {
