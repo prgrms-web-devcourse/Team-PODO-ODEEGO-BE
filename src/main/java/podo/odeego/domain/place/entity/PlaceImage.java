@@ -50,33 +50,6 @@ public class PlaceImage {
 		return image;
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
-		PlaceImage that = (PlaceImage)o;
-		return Objects.equals(id(), that.id()) && Objects.equals(place(), that.place())
-			&& Objects.equals(image(), that.image());
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(id(), place(), image());
-	}
-
-	@Override
-	public String toString() {
-		return "PlaceImage{" +
-			"id=" + id +
-			", place=" + place +
-			", image=" + image.url() +
-			'}';
-	}
-
 	public void AssignPlace(Place place) {
 		this.place = place;
 	}
