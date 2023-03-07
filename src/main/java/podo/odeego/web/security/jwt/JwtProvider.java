@@ -1,8 +1,6 @@
 package podo.odeego.web.security.jwt;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
 
 import javax.crypto.SecretKey;
@@ -10,9 +8,6 @@ import javax.crypto.SecretKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
@@ -28,7 +23,6 @@ public class JwtProvider {
 
 	private static final String ID_KEY = "memberId";
 	private static final String ROLE_KEY = "role";
-	private static final String ROLES_SPLIT_REGEX = ",";
 
 	private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -70,28 +64,19 @@ public class JwtProvider {
 			.compact();
 	}
 
-	public Authentication getAuthentication(String jwtToken) {
-		Claims claims = parseClaims(jwtToken);
-		Collection<? extends GrantedAuthority> authorities =
-			Arrays.stream(claims.get(ROLE_KEY).toString().split(ROLES_SPLIT_REGEX))
-				.map(SimpleGrantedAuthority::new)
-				.toList();
-
-		JwtAuthenticationPrincipal principal = new JwtAuthenticationPrincipal(
-			jwtToken,
-			Long.parseLong(
-				String.valueOf(claims.get(ID_KEY))
-			)
-		);
-		return JwtAuthenticationToken.authenticated(principal, "", authorities);
-	}
-
 	private Claims parseClaims(String accessToken) {
 		return Jwts.parserBuilder()
 			.setSigningKey(key)
 			.build()
 			.parseClaimsJws(accessToken)
 			.getBody();
+	}
+
+	public Long getMemberId(String accessToken) {
+		Claims claims = parseClaims(accessToken);
+		return Long.parseLong(
+			String.valueOf(claims.get(ID_KEY))
+		);
 	}
 
 	public boolean validateToken(String token) {
