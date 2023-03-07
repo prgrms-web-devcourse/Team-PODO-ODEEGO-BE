@@ -35,49 +35,13 @@ public class AuthApi {
 
 	private final MemberService memberService;
 	private final JwtProvider jwtProvider;
-	private final String clientId;
-	private final String frontLocalHost;
-	private final String frontReleaseHost;
 
 	public AuthApi(
 		MemberService memberService,
-		JwtProvider jwtProvider,
-		@Value("${kakao.client.id}") String clientId,
-		@Value("${server.host.front.local}") String frontLocalHost,
-		@Value("${server.host.front.release}") String frontReleaseHost
+		JwtProvider jwtProvider
 	) {
 		this.memberService = memberService;
 		this.jwtProvider = jwtProvider;
-		this.clientId = clientId;
-		this.frontLocalHost = frontLocalHost;
-		this.frontReleaseHost = frontReleaseHost;
-	}
-
-	@GetMapping("/login/oauth2/callback/kakao")
-	public ResponseEntity<OAuth2GetTokenResponse> loginWithKakao(@RequestParam String code) {
-		log.info("AuthApi.loginWithKakao() called");
-		log.info("code = " + code);
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-		headers.add("Accept", "application/json");
-
-		LinkedMultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-		map.add("grant_type", "authorization_code");
-		map.add("client_id", clientId);
-		String redirect_uri = "%s/kakao".formatted(frontLocalHost);
-		log.info("redirect_uri: {}", redirect_uri);
-		map.add("redirect_uri", redirect_uri);
-		map.add("code", code);
-
-		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
-		RestTemplate restTemplate = new RestTemplate();
-		restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
-		ResponseEntity<OAuth2GetTokenResponse> response = restTemplate.postForEntity(
-			"https://kauth.kakao.com/oauth/token",
-			request, OAuth2GetTokenResponse.class);
-		OAuth2GetTokenResponse body = response.getBody();
-
-		return ResponseEntity.ok(body);
 	}
 
 	@PostMapping("/user/me")
