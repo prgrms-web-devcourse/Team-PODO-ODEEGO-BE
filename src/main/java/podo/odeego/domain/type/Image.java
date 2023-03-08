@@ -3,10 +3,12 @@ package podo.odeego.domain.type;
 import java.util.Objects;
 
 import javax.persistence.Embeddable;
+import javax.persistence.Lob;
 
 @Embeddable
 public class Image {
 
+	@Lob
 	private String url;
 
 	protected Image() {

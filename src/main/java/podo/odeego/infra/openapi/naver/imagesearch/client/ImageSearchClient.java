@@ -1,6 +1,7 @@
-package podo.odeego.infra.openapi.naver.imagesearch;
+package podo.odeego.infra.openapi.naver.imagesearch.client;
 
 import java.net.URI;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import podo.odeego.infra.openapi.naver.NaverClient;
+import podo.odeego.infra.openapi.naver.imagesearch.dto.ImageQueryDto;
 import podo.odeego.infra.openapi.naver.imagesearch.dto.ImageSearchRequest;
 import podo.odeego.infra.openapi.naver.imagesearch.dto.ImageSearchResponse;
 
@@ -20,6 +22,10 @@ public class ImageSearchClient extends NaverClient {
 
 	public ImageSearchClient(@Value("${naver.url.search.image}") String url) {
 		super(url);
+	}
+
+	public List<ImageQueryDto> queryImages(String query) {
+		return ImageQueryDto.from(callImageSearchApi(new ImageSearchRequest(query)));
 	}
 
 	public ImageSearchResponse callImageSearchApi(ImageSearchRequest request) {

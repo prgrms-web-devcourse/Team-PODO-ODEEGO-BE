@@ -4,6 +4,7 @@ import static javax.persistence.CascadeType.*;
 import static javax.persistence.EnumType.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -61,13 +62,19 @@ public class Place {
 	}
 
 	public void addImage(PlaceImage image) {
-		if (this.images.contains(image)) {
+		if (isImageDuplicated(image)) {
 			throw new PlaceImageDuplicatedException(
-				"Place '%d' is already containing '%s'".formatted(this.id, image.toString())
+				"Place '%d' is already containing '%s'".formatted(this.id, image.getUrl())
 			);
 		}
 		this.images.add(image);
 		image.AssignPlace(this);
+	}
+
+	private boolean isImageDuplicated(PlaceImage image) {
+		return this.images.stream()
+			.map(PlaceImage::image)
+			.anyMatch(existingImage -> existingImage.equals(image.image()));
 	}
 
 	public Long id() {
@@ -78,11 +85,15 @@ public class Place {
 		return name;
 	}
 
-	public Address address() {
-		return address;
+	public String address() {
+		return address.address();
 	}
 
 	public String stationName() {
 		return stationName;
+	}
+
+	public List<PlaceImage> images() {
+		return Collections.unmodifiableList(this.images);
 	}
 }
