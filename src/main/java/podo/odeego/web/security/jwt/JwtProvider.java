@@ -15,12 +15,13 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import podo.odeego.web.security.jwt.dto.GenerateTokenResponse;
+import podo.odeego.web.security.jwt.exception.ExpiredJwtException;
+import podo.odeego.web.security.jwt.exception.InvalidJwtException;
 
 @Component
 public class JwtProvider {
 
 	private static final String ID_KEY = "memberId";
-	private static final String ROLE_KEY = "role";
 
 	private final long accessTokenExpirationMillis;
 	private final long refreshTokenExpirationMillis;
@@ -49,7 +50,6 @@ public class JwtProvider {
 		Date expiresIn = new Date(now + accessTokenExpirationMillis);
 		return Jwts.builder()
 			.claim(ID_KEY, memberId)
-			.claim(ROLE_KEY, "ROLE_USER")
 			.setExpiration(expiresIn)
 			.signWith(key, SignatureAlgorithm.HS256)
 			.compact();
@@ -61,16 +61,9 @@ public class JwtProvider {
 		Date expiresIn = new Date(now + refreshTokenExpirationMillis);
 		return Jwts.builder()
 			.claim(ID_KEY, memberId)
-			.claim(ROLE_KEY, "ROLE_USER")
 			.setExpiration(expiresIn)
 			.signWith(key, SignatureAlgorithm.HS256)
 			.compact();
-	}
-
-	private Claims parseClaims(String accessToken) {
-		return getJwtParser()
-			.parseClaimsJws(accessToken)
-			.getBody();
 	}
 
 	public Long getMemberId(String accessToken) {
@@ -80,17 +73,20 @@ public class JwtProvider {
 		);
 	}
 
-	public boolean validateToken(String token) {
+	private Claims parseClaims(String accessToken) {
+		return getJwtParser()
+			.parseClaimsJws(accessToken)
+			.getBody();
+	}
+
+	public void validateToken(String token) {
 		try {
 			getJwtParser().parseClaimsJws(token);
 		} catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-			return false;
-			// throw new InvalidJwtException("Invalid JWT: %s".formatted(token));
+			throw new InvalidJwtException("Invalid JWT: %s".formatted(token));
 		} catch (io.jsonwebtoken.ExpiredJwtException e) {
-			return false;
-			// throw new ExpiredJwtException("Expired JWT: %s".formatted(token));
+			throw new ExpiredJwtException("Expired JWT: %s".formatted(token));
 		}
-		return true;
 	}
 
 	private JwtParser getJwtParser() {
