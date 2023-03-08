@@ -1,6 +1,6 @@
-package podo.odeego.web;
+package podo.odeego.web.auth;
 
-import static podo.odeego.web.interceptor.JwtAuthenticationInterceptor.*;
+import static podo.odeego.web.auth.JwtAuthenticationInterceptor.*;
 
 import java.util.Objects;
 
@@ -12,7 +12,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import podo.odeego.web.annotation.LoginMember;
+import podo.odeego.web.auth.config.LoginMember;
 
 public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolver {
 

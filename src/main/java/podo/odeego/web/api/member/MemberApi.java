@@ -12,7 +12,7 @@ import podo.odeego.domain.member.dto.MemberDefaultStationGetResponse;
 import podo.odeego.domain.member.dto.MemberSignUpRequest;
 import podo.odeego.domain.member.service.MemberFindService;
 import podo.odeego.domain.member.service.MemberService;
-import podo.odeego.web.annotation.LoginMember;
+import podo.odeego.web.auth.config.LoginMember;
 
 @RestController
 @RequestMapping("/api/v1/members")
@@ -27,7 +27,9 @@ public class MemberApi {
 	}
 
 	@GetMapping("/default-station")
-	public ResponseEntity<MemberDefaultStationGetResponse> getDefaultStation(@LoginMember Long memberId) {
+	public ResponseEntity<MemberDefaultStationGetResponse> getDefaultStation(
+		@LoginMember Long memberId
+	) {
 		return ResponseEntity.ok(memberFindService.findDefaultStation(memberId));
 	}
 

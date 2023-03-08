@@ -27,7 +27,7 @@ import podo.odeego.domain.group.service.GroupMemberModifyService;
 import podo.odeego.domain.group.service.GroupQueryService;
 import podo.odeego.domain.group.service.GroupRemoveService;
 import podo.odeego.domain.midpoint.dto.StartSubmitRequest;
-import podo.odeego.web.annotation.LoginMember;
+import podo.odeego.web.auth.config.LoginMember;
 
 @RestController
 @RequestMapping("/api/v1/groups")

@@ -1,4 +1,4 @@
-package podo.odeego.web.interceptor;
+package podo.odeego.web.auth;
 
 import static org.springframework.http.HttpHeaders.*;
 
@@ -11,9 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import podo.odeego.web.auth.jwt.JwtProvider;
-import podo.odeego.web.auth.jwt.exception.TokenNotFoundException;
-import podo.odeego.web.auth.jwt.exception.TokenTypeNotGrantedException;
+import podo.odeego.web.auth.exception.TokenNotFoundException;
+import podo.odeego.web.auth.exception.TokenTypeNotGrantedException;
 
 public class JwtAuthenticationInterceptor implements HandlerInterceptor {
 

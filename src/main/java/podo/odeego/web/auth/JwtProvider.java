@@ -1,4 +1,4 @@
-package podo.odeego.web.auth.jwt;
+package podo.odeego.web.auth;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
@@ -14,9 +14,9 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import podo.odeego.web.auth.jwt.dto.GenerateTokenResponse;
-import podo.odeego.web.auth.jwt.exception.ExpiredJwtException;
-import podo.odeego.web.auth.jwt.exception.InvalidJwtException;
+import podo.odeego.web.auth.dto.GenerateTokenResponse;
+import podo.odeego.web.auth.exception.ExpiredJwtException;
+import podo.odeego.web.auth.exception.InvalidJwtException;
 
 @Component
 public class JwtProvider {
