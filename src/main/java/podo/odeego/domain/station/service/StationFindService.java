@@ -41,6 +41,6 @@ public class StationFindService {
 	}
 
 	public List<StationNameQueryDto> getAllStationName() {
-		return StationNameQueryDto.from(stationRepository.findAllGroupByName());
+		return stationRepository.findAllGroupByName();
 	}
 }

@@ -22,7 +22,7 @@ public record ImageSearchResponse(
 			'}';
 	}
 
-	private record ImageSearchItem(
+	public record ImageSearchItem(
 		String title,
 		String link,
 		String thumbnail,
@@ -34,7 +34,7 @@ public record ImageSearchResponse(
 		public String toString() {
 			return System.lineSeparator() +
 				"		ImageSearchItem{" + System.lineSeparator() +
-				"			title='" + title + '\'' + "," + System.lineSeparator() +
+				"			source='" + title + '\'' + "," + System.lineSeparator() +
 				"			link='" + link + '\'' + "," + System.lineSeparator() +
 				"			thumbnail='" + thumbnail + '\'' + "," + System.lineSeparator() +
 				"			sizeheigt='" + sizeheigt + '\'' + "," + System.lineSeparator() +

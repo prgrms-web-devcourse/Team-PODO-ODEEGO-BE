@@ -35,7 +35,10 @@ public enum ErrorCode {
 	GROUP_MEMBER_STATION_ALREADY_DEFINED(HttpStatus.BAD_REQUEST, "G006", "Group Member's station is already defined."),
 
 	// Station
-	STATION_NOT_FOUND(HttpStatus.NOT_FOUND, "S001", "Station Not Found.");
+	STATION_NOT_FOUND(HttpStatus.NOT_FOUND, "S001", "Station Not Found."),
+
+	// Place
+	PlACE_NOT_FOUND(HttpStatus.NOT_FOUND, "P001", "Place Not Found.");
 
 	private final HttpStatus status;
 	private final String errorCode;
