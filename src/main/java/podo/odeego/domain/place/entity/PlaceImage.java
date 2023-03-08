@@ -2,8 +2,6 @@ package podo.odeego.domain.place.entity;
 
 import static javax.persistence.FetchType.*;
 
-import java.util.Objects;
-
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -11,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 
 import podo.odeego.domain.type.Image;
@@ -23,6 +22,9 @@ public class PlaceImage {
 	@Column(name = "place_image_id")
 	private Long id;
 
+	@Lob
+	private String source;
+
 	@ManyToOne(fetch = LAZY)
 	@JoinColumn(name = "place_id")
 	private Place place;
@@ -33,13 +35,21 @@ public class PlaceImage {
 	protected PlaceImage() {
 	}
 
-	public PlaceImage(Place place, Image image) {
-		this.place = place;
+	public PlaceImage(String source, Image image) {
+		this.source = source;
 		this.image = image;
+	}
+
+	public String getUrl() {
+		return this.image.url();
 	}
 
 	public Long id() {
 		return id;
+	}
+
+	public String title() {
+		return source;
 	}
 
 	public Place place() {
@@ -48,33 +58,6 @@ public class PlaceImage {
 
 	public Image image() {
 		return image;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
-		PlaceImage that = (PlaceImage)o;
-		return Objects.equals(id(), that.id()) && Objects.equals(place(), that.place())
-			&& Objects.equals(image(), that.image());
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(id(), place(), image());
-	}
-
-	@Override
-	public String toString() {
-		return "PlaceImage{" +
-			"id=" + id +
-			", place=" + place +
-			", image=" + image.url() +
-			'}';
 	}
 
 	public void AssignPlace(Place place) {
