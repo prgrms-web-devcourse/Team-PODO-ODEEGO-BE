@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import podo.odeego.global.error.exception.BusinessException;
+import podo.odeego.infra.openapi.kakao.exception.KakaoClientErrorException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -28,6 +29,15 @@ public class GlobalExceptionHandler {
 	) {
 		log.info("handleMethodArgumentTypeMismatchException", e);
 		final ErrorResponse response = ErrorResponse.of(e);
+		return newResponseEntity(response);
+	}
+
+	@ExceptionHandler(KakaoClientErrorException.class)
+	protected ResponseEntity<ErrorResponse> handleKakaoClientErrorException(
+		KakaoClientErrorException e
+	) {
+		log.info("handleKakaoClientErrorException", e);
+		final ErrorResponse response = ErrorResponse.of(ErrorCode.INVALID_INPUT_VALUE, e.getMessage());
 		return newResponseEntity(response);
 	}
 
