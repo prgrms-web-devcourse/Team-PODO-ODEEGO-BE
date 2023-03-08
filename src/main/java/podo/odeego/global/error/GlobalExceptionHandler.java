@@ -8,9 +8,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import podo.odeego.global.error.exception.AuthenticationException;
 import podo.odeego.global.error.exception.BusinessException;
-import podo.odeego.infra.openapi.kakao.exception.KakaoClientErrorException;
 import podo.odeego.global.error.exception.NonBusinessException;
+import podo.odeego.infra.openapi.kakao.exception.KakaoClientErrorException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -59,6 +60,13 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(NonBusinessException.class)
 	protected ResponseEntity<ErrorResponse> handleNonBusinessException(NonBusinessException e) {
 		log.info("handleNonBusinessException", e);
+		ErrorResponse response = ErrorResponse.of(e.errorCode());
+		return newResponseEntity(response);
+	}
+
+	@ExceptionHandler(AuthenticationException.class)
+	protected ResponseEntity<ErrorResponse> handleAuthenticationException(AuthenticationException e) {
+		log.info("handleAuthenticationException", e);
 		ErrorResponse response = ErrorResponse.of(e.errorCode());
 		return newResponseEntity(response);
 	}
