@@ -31,13 +31,15 @@ public class PlaceImageAddService {
 			.stream()
 			.limit(MAX_IMAGE_COUNT)
 			.forEach(createRequest -> addImage(place, createRequest));
+		log.info("Images are added for placeId=%d".formatted(request.placeId()));
 	}
 
 	private void addImage(Place place, PlaceImageCreateRequest createRequest) {
 		try {
 			place.addImage(new PlaceImage(createRequest.source(), new Image(createRequest.url())));
 		} catch (PlaceImageDuplicatedException e) {
-			log.info("PlaceImageDuplicatedException occurred for image url=%s".formatted(createRequest.url()));
+			log.info("PlaceImageDuplicatedException occurred for placeId=%d, image url=%s"
+				.formatted(place.id(), createRequest.url()));
 		}
 	}
 }

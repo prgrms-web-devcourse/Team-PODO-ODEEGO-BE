@@ -44,7 +44,9 @@ public class PlaceImageScraper {
 		log.info("Start scrap images for places. placeCount=%d".formatted(allPlaces.size()));
 
 		allPlaces.forEach(place -> {
-			List<ImageQueryDto> queryResult = imageSearchClient.queryImages(generateImageQuery(place));
+			String query = generateImageQuery(place);
+			log.info("Scrap images for query=%s".formatted(query));
+			List<ImageQueryDto> queryResult = imageSearchClient.queryImages(query);
 			saveImages(place, queryResult);
 			TimeSleeper.waitForWhile(200);
 		});
