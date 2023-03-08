@@ -7,39 +7,36 @@ import podo.odeego.domain.member.dto.MemberJoinResponse;
 import podo.odeego.domain.member.service.MemberService;
 import podo.odeego.infra.openapi.kakao.KakaoClient;
 import podo.odeego.infra.openapi.kakao.dto.KakaoProfileResponse;
-import podo.odeego.web.api.auth.dto.MemberLoginResponse;
-import podo.odeego.web.auth.jwt.JwtProvider;
 
 @Component
-public class AuthorizationComponent {
+public class MemberJoinManager {
 
 	private final KakaoClient kakaoClient;
 	private final MemberService memberService;
-	private final JwtProvider jwtProvider;
 	private final String provider;
 
-	public AuthorizationComponent(
+	public MemberJoinManager(
 		KakaoClient kakaoClient,
 		MemberService memberService,
-		JwtProvider jwtProvider,
 		@Value("${oauth2.client.provider.name}") String provider
 	) {
 		this.kakaoClient = kakaoClient;
 		this.memberService = memberService;
-		this.jwtProvider = jwtProvider;
 		this.provider = provider;
 	}
 
-	public MemberLoginResponse getMemberInfo(String oAuth2Token) {
-		KakaoProfileResponse kakaoProfile = kakaoClient.getUserInfo(oAuth2Token);
-		MemberJoinResponse joinResponse = memberService.join(
+	public MemberJoinResponse join(String oAuth2Token) {
+		return joinByKakaoProfile(getUserInfoFromKakao(oAuth2Token));
+	}
+
+	private MemberJoinResponse joinByKakaoProfile(KakaoProfileResponse kakaoProfile) {
+		return memberService.join(
 			kakaoProfile.profileImageUrl(),
 			provider,
 			kakaoProfile.providerId().toString());
+	}
 
-		return MemberLoginResponse.of(
-			jwtProvider.generateToken(joinResponse.id()),
-			joinResponse
-		);
+	private KakaoProfileResponse getUserInfoFromKakao(String oAuth2Token) {
+		return kakaoClient.getUserInfo(oAuth2Token);
 	}
 }
