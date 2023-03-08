@@ -23,7 +23,7 @@ public class PlaceApi {
 
 	private final PlaceQueryService placeQueryService;
 
-	public PlaceApi(@Qualifier("naverPlaceQueryService") PlaceQueryService placeQueryService) {
+	public PlaceApi(@Qualifier("placeQueryServiceImpl") PlaceQueryService placeQueryService) {
 		this.placeQueryService = placeQueryService;
 	}
 

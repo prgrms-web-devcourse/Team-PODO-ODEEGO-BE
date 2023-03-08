@@ -22,6 +22,7 @@ public class PlaceQueryResponse {
 	public static List<PlaceQueryResponse> from(List<Place> places) {
 		return places.stream()
 			.map(PlaceQueryResponse::from)
+			.distinct()
 			.toList();
 	}
 
