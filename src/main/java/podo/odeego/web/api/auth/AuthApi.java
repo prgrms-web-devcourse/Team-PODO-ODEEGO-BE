@@ -27,8 +27,7 @@ public class AuthApi {
 	}
 
 	@PostMapping("/user/me")
-	private ResponseEntity<MemberLoginResponse> getMemberInfo(HttpServletRequest request) {
-		log.info("AuthApi.getMemberInfo() called");
+	public ResponseEntity<MemberLoginResponse> getMemberInfo(HttpServletRequest request) {
 		String oAuth2Token = request.getHeader(AUTHORIZATION);
 		return ResponseEntity.ok(authorizationComponent.getMemberInfo(oAuth2Token));
 	}
