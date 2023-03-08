@@ -32,7 +32,7 @@ public class KakaoClient {
 	}
 
 	public KakaoProfileResponse getUserInfo(String oAuth2Token) {
-		HttpEntity<MultiValueMap<String, String>> apiRequest = generateRequest(oAuth2Token);
+		HttpEntity<Void> apiRequest = generateRequest(oAuth2Token);
 		ResponseEntity<GetUserInfoResponse> response = sendUserInfoRequest(apiRequest);
 
 		return KakaoProfileResponse.from(
@@ -40,7 +40,7 @@ public class KakaoClient {
 		);
 	}
 
-	private HttpEntity<MultiValueMap<String, String>> generateRequest(String oAuth2Token) {
+	private HttpEntity<Void> generateRequest(String oAuth2Token) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 		headers.add(AUTHORIZATION, oAuth2Token);
@@ -48,7 +48,7 @@ public class KakaoClient {
 	}
 
 	private ResponseEntity<GetUserInfoResponse> sendUserInfoRequest(
-		HttpEntity<MultiValueMap<String, String>> request
+		HttpEntity<Void> request
 	) {
 		RestTemplate restTemplate = new RestTemplate();
 		restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
