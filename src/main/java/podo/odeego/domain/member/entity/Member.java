@@ -158,4 +158,8 @@ public class Member extends BaseTime {
 	public MemberType type() {
 		return type;
 	}
+
+	public String profileImageUrl() {
+		return profileImageUrl;
+	}
 }

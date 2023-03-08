@@ -30,20 +30,19 @@ public class MemberService {
 		this.stationFindService = stationFindService;
 	}
 
-	public MemberJoinResponse join(String provider, String providerId, String profileImageUrl) {
+	public MemberJoinResponse join(String profileImageUrl, String provider, String providerId) {
 		return memberRepository.findByProviderAndProviderId(provider, providerId)
 			.map(member -> {
 				log.info("Member already exist: {} for provider: {}, providerId: {}, memberType: {}.", member, provider,
 					providerId, member.type());
-				return new MemberJoinResponse(member.id(),
-					member.type());
+				return new MemberJoinResponse(member.id(), member.profileImageUrl(), member.type());
 			})
 			.orElseGet(() -> {
 				log.info("New Member for provider: {}, providerId: {}.", provider, providerId);
 				Member savedMember = memberRepository.save(
 					new Member(profileImageUrl, MemberType.PRE, provider, providerId)
 				);
-				return new MemberJoinResponse(savedMember.id(), savedMember.type());
+				return new MemberJoinResponse(savedMember.id(), savedMember.profileImageUrl(), savedMember.type());
 			});
 	}
 
