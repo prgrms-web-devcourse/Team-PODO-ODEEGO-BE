@@ -1,14 +1,13 @@
 ### 장소 추천 API - 모든 장소
-GET http://localhost:8080/api/v1/places?station-name=단대오거리역
+GET http://localhost:8080/api/v1/places?station-name=강남역&page=0&size=3
 
 
 ### 장소 추천 API - 음식점
-GET http://localhost:8080/api/v1/places?station-name=단대오거리역&category=RESTAURANT
+GET http://localhost:8080/api/v1/places?station-name=강남역&category=RESTAURANT&page=0&size=3
 
 
 ### 장소 추천 API - 카페
-GET http://localhost:8080/api/v1/places?station-name=단대오거리역&category=CAFE
-
+GET http://localhost:8080/api/v1/places?station-name=강남역&category=CAFE&page=0&size=3
 
 ### 모임 생성 API
 POST http://localhost:8080/api/v1/groups?member-id={memberId}
