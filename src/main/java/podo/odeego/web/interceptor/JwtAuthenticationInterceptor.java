@@ -17,12 +17,13 @@ import podo.odeego.web.auth.jwt.exception.TokenTypeNotGrantedException;
 
 public class JwtAuthenticationInterceptor implements HandlerInterceptor {
 
-	private final Logger log = LoggerFactory.getLogger(getClass());
+	public static final String MEMBER_ID = "memberId";
 
 	private static final String OPTIONS = "OPTIONS";
 	private static final String BEARER_PREFIX = "Bearer";
 	private static final int SPLIT_AT = 7;
-	private static final String MEMBER_ID = "memberId";
+
+	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	private final JwtProvider jwtProvider;
 
