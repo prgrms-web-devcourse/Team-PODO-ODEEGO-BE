@@ -1,4 +1,4 @@
-package podo.odeego.web.api.member.v1;
+package podo.odeego.web.api.member;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,7 +15,6 @@ import podo.odeego.domain.member.dto.MemberDefaultStationGetResponse;
 import podo.odeego.domain.member.dto.MemberSignUpRequest;
 import podo.odeego.domain.member.service.MemberFindService;
 import podo.odeego.domain.member.service.MemberService;
-import podo.odeego.web.security.jwt.JwtAuthenticationPrincipal;
 
 @RestController
 @RequestMapping("/api/v1/members")
