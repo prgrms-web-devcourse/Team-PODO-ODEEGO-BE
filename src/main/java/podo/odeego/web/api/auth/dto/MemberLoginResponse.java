@@ -25,4 +25,20 @@ public class MemberLoginResponse {
 			joinResponse.profileImageUrl()
 		);
 	}
+
+	public String getAccessToken() {
+		return accessToken;
+	}
+
+	public String getRefreshToken() {
+		return refreshToken;
+	}
+
+	public MemberType getMemberType() {
+		return memberType;
+	}
+
+	public String getProfileImageUrl() {
+		return profileImageUrl;
+	}
 }
