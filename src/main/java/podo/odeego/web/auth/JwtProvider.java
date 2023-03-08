@@ -66,7 +66,7 @@ public class JwtProvider {
 			.compact();
 	}
 
-	public Long getMemberId(String accessToken) {
+	public Long extractMemberId(String accessToken) {
 		Claims claims = parseClaims(accessToken);
 		return Long.parseLong(
 			String.valueOf(claims.get(ID_KEY))

@@ -38,8 +38,8 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
 		String token = resolveToken(request);
 
 		jwtProvider.validateToken(token);
-		log.info("Verify Access Token. memberId: {}", jwtProvider.getMemberId(token));
-		request.setAttribute(MEMBER_ID, jwtProvider.getMemberId(token));
+		log.info("Verify Access Token. memberId: {}", jwtProvider.extractMemberId(token));
+		request.setAttribute(MEMBER_ID, jwtProvider.extractMemberId(token));
 		return true;
 	}
 
