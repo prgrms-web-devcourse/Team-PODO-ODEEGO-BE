@@ -4,6 +4,7 @@ import static javax.persistence.CascadeType.*;
 import static javax.persistence.EnumType.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -90,5 +91,9 @@ public class Place {
 
 	public String stationName() {
 		return stationName;
+	}
+
+	public List<PlaceImage> images() {
+		return Collections.unmodifiableList(this.images);
 	}
 }
