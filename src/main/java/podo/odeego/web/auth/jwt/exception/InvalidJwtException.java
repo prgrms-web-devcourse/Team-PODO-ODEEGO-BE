@@ -1,4 +1,4 @@
-package podo.odeego.web.security.jwt.exception;
+package podo.odeego.web.auth.jwt.exception;
 
 import podo.odeego.global.error.ErrorCode;
 import podo.odeego.global.error.exception.AuthenticationException;

@@ -24,11 +24,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
 		this.releaseOrigin = releaseOrigin;
 	}
 
-	//TODO: security 패키지를 auth 패키지로 변경 & AuthApi.getMemberInfo() 메서드에서 로그찍는거중에 memberId -> providerId로 수정
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/**")
-			.allowedOrigins(localOrigin, releaseOrigin)
+			.allowedOrigins(localOrigin, releaseOrigin, "http://localhost:3001")
 			.allowedMethods("*")
 			.allowedHeaders("*");
 	}

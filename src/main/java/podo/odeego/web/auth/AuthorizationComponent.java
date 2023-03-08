@@ -1,4 +1,4 @@
-package podo.odeego.web.security;
+package podo.odeego.web.auth;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -8,7 +8,7 @@ import podo.odeego.domain.member.service.MemberService;
 import podo.odeego.infra.openapi.kakao.KakaoClient;
 import podo.odeego.infra.openapi.kakao.dto.KakaoProfileResponse;
 import podo.odeego.web.api.auth.dto.MemberLoginResponse;
-import podo.odeego.web.security.jwt.JwtProvider;
+import podo.odeego.web.auth.jwt.JwtProvider;
 
 @Component
 public class AuthorizationComponent {

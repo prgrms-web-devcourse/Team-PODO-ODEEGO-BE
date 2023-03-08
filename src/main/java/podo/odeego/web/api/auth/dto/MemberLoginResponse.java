@@ -2,7 +2,7 @@ package podo.odeego.web.api.auth.dto;
 
 import podo.odeego.domain.member.dto.MemberJoinResponse;
 import podo.odeego.domain.member.entity.MemberType;
-import podo.odeego.web.security.jwt.dto.GenerateTokenResponse;
+import podo.odeego.web.auth.jwt.dto.GenerateTokenResponse;
 
 public class MemberLoginResponse {
 	private final String accessToken;

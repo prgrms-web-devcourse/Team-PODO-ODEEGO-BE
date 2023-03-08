@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import podo.odeego.web.security.jwt.JwtProvider;
+import podo.odeego.web.auth.jwt.JwtProvider;
 
 @RestController
 @RequestMapping("/api/hello/auth")

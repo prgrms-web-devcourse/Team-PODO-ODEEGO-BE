@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import podo.odeego.web.interceptor.JwtAuthenticationInterceptor;
 import podo.odeego.web.logging.ApiLogInterceptor;
-import podo.odeego.web.security.jwt.JwtProvider;
+import podo.odeego.web.auth.jwt.JwtProvider;
 
 @Configuration
 public class InterceptorConfig implements WebMvcConfigurer {
