@@ -52,7 +52,7 @@ class MemberServiceTest {
 	public void joinRegularMember() {
 		//given
 		stationRepository.save(
-			new Station("강남역", "서울특별시", 123.123, 123.123, "2호선"));
+			new Station("강남역", 123.123, 123.123, "2호선"));
 		MemberJoinResponse joinedMember = memberService.join("testProvider", "1234", "testUrl");
 
 		//when
@@ -86,7 +86,7 @@ class MemberServiceTest {
 	public void leaveSuccess() {
 		//given
 		stationRepository.save(
-			new Station("강남역", "서울특별시", 123.123, 123.123, "2호선"));
+			new Station("강남역", 123.123, 123.123, "2호선"));
 		MemberJoinResponse joinedMember = memberService.join("testProvider", "1234", "testUrl");
 		MemberSignUpRequest signUpRequest = new MemberSignUpRequest("닉네임", "강남역");
 		memberService.signUp(joinedMember.id(), signUpRequest);
@@ -104,7 +104,7 @@ class MemberServiceTest {
 	public void leaveFailedById() {
 		//given
 		stationRepository.save(
-			new Station("강남역", "서울특별시", 123.123, 123.123, "2호선"));
+			new Station("강남역", 123.123, 123.123, "2호선"));
 		MemberJoinResponse joinedMember = memberService.join("testProvider", "1234", "testUrl");
 		MemberSignUpRequest signUpRequest = new MemberSignUpRequest("닉네임", "강남역");
 		memberService.signUp(joinedMember.id(), signUpRequest);

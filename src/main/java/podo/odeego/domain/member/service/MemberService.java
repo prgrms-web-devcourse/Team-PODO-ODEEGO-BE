@@ -9,12 +9,9 @@ import podo.odeego.domain.member.dto.MemberJoinResponse;
 import podo.odeego.domain.member.dto.MemberSignUpRequest;
 import podo.odeego.domain.member.entity.Member;
 import podo.odeego.domain.member.entity.MemberType;
-import podo.odeego.domain.member.exception.DefaultStationNotExistsException;
 import podo.odeego.domain.member.exception.MemberNicknameDuplicatedException;
 import podo.odeego.domain.member.exception.MemberNotFoundException;
 import podo.odeego.domain.member.repository.MemberRepository;
-import podo.odeego.domain.station.exception.StationNotFoundException;
-import podo.odeego.domain.station.service.StationFindService;
 
 @Service
 @Transactional
@@ -22,12 +19,10 @@ public class MemberService {
 
 	private final Logger log = LoggerFactory.getLogger(getClass());
 
-	private final StationFindService stationFindService;
 	private final MemberRepository memberRepository;
 
-	public MemberService(MemberRepository memberRepository, StationFindService stationFindService) {
+	public MemberService(MemberRepository memberRepository) {
 		this.memberRepository = memberRepository;
-		this.stationFindService = stationFindService;
 	}
 
 	public MemberJoinResponse join(String profileImageUrl, String provider, String providerId) {
@@ -65,14 +60,6 @@ public class MemberService {
 		if (memberRepository.existsByNickname(nickname)) {
 			throw new MemberNicknameDuplicatedException(
 				"Cannot sign up with duplicated nickname: %s".formatted(nickname));
-		}
-	}
-
-	private void verifyStationExists(String stationName) {
-		try {
-			stationFindService.verifyStationExists(stationName);
-		} catch (StationNotFoundException e) {
-			throw new DefaultStationNotExistsException(e.getMessage());
 		}
 	}
 

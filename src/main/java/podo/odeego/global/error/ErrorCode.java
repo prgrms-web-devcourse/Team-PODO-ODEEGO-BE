@@ -13,6 +13,12 @@ public enum ErrorCode {
 	NOT_ACCEPTABLE(HttpStatus.NOT_ACCEPTABLE, "406", "Not Acceptable."),
 	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "500", "Internal Server Error."),
 
+	// Auth
+	TOKEN_NOT_FOUND(HttpStatus.UNAUTHORIZED, "A001", "Token not found in request header."),
+	NOT_GRANTED_TOKEN_TYPE(HttpStatus.UNAUTHORIZED, "A002", "Not granted token type."),
+	EXPIRED_JWT(HttpStatus.UNAUTHORIZED, "A003", "Jwt is expired."),
+	INVALID_JWT(HttpStatus.UNAUTHORIZED, "A004", "Invalid Jwt."),
+
 	// Member
 	MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "M001", "Member Not Found."),
 	MEMBER_NICKNAME_DUPLICATED(HttpStatus.BAD_REQUEST, "M002", "Member nickname is duplicated."),

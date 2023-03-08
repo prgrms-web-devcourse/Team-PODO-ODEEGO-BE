@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -28,6 +27,7 @@ import podo.odeego.domain.group.service.GroupMemberModifyService;
 import podo.odeego.domain.group.service.GroupQueryService;
 import podo.odeego.domain.group.service.GroupRemoveService;
 import podo.odeego.domain.midpoint.dto.StartSubmitRequest;
+import podo.odeego.web.auth.config.LoginMember;
 
 @RestController
 @RequestMapping("/api/v1/groups")
@@ -56,7 +56,7 @@ public class GroupApi {
 
 	@PostMapping
 	public ResponseEntity<Void> create(
-		@RequestParam(name = "member-id") Long memberId,
+		@LoginMember Long memberId,
 		@RequestBody @Valid GroupCreateRequest createRequest
 	) {
 		UUID groupId = createService.create(memberId, createRequest);
@@ -71,6 +71,7 @@ public class GroupApi {
 
 	@GetMapping("/{groupId}")
 	public ResponseEntity<GroupResponse> getOne(
+		@LoginMember Long memberId,
 		@PathVariable UUID groupId
 	) {
 		return ResponseEntity.ok()
@@ -79,7 +80,7 @@ public class GroupApi {
 
 	@GetMapping
 	public ResponseEntity<GroupResponses> getAll(
-		@RequestParam(name = "member-id") Long memberId
+		@LoginMember Long memberId
 	) {
 		return ResponseEntity.ok()
 			.body(queryService.getAll(memberId));
@@ -87,6 +88,7 @@ public class GroupApi {
 
 	@DeleteMapping("/{groupId}")
 	public ResponseEntity<GroupResponse> remove(
+		@LoginMember Long memberId,
 		@PathVariable UUID groupId
 	) {
 		removeService.remove(groupId);
@@ -96,8 +98,8 @@ public class GroupApi {
 
 	@PostMapping("/{group-id}/group-members")
 	public ResponseEntity<Void> submit(
+		@LoginMember Long memberId,
 		@PathVariable(value = "group-id") UUID groupId,
-		@RequestParam(value = "memberId") Long memberId,
 		@RequestBody @Valid StartSubmitRequest startSubmitRequest
 	) {
 		addService.add(groupId, memberId, startSubmitRequest);
@@ -106,8 +108,8 @@ public class GroupApi {
 
 	@PatchMapping("/{group-id}/host")
 	public ResponseEntity<Void> defineHostStation(
+		@LoginMember Long hostId,
 		@PathVariable(value = "group-id") UUID groupId,
-		@RequestParam(value = "memberId") Long hostId,
 		@RequestBody @Valid HostStationModifyRequest hostStationDefineRequest
 	) {
 		modifyService.define(groupId, hostId, hostStationDefineRequest);

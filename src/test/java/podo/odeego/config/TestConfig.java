@@ -37,10 +37,9 @@ public class TestConfig {
 
 	@Bean
 	public MemberService memberService(
-		MemberRepository memberRepository,
-		StationFindService stationFindService
+		MemberRepository memberRepository
 	) {
-		return new MemberService(memberRepository, stationFindService);
+		return new MemberService(memberRepository);
 	}
 
 	@Bean
