@@ -37,17 +37,9 @@ public class AuthorizationComponent {
 			provider,
 			kakaoProfile.providerId().toString());
 
-		return responseLoginSuccess(joinResponse);
-	}
-
-	private MemberLoginResponse responseLoginSuccess(MemberJoinResponse memberJoinResponse) {
-		String accessToken = jwtProvider.generateAccessToken(memberJoinResponse.id());
-		String refreshToken = jwtProvider.generateRefreshToken(memberJoinResponse.id());
-		return new MemberLoginResponse(
-			accessToken,
-			refreshToken,
-			memberJoinResponse.memberType(),
-			memberJoinResponse.profileImageUrl()
+		return MemberLoginResponse.of(
+			jwtProvider.generateToken(joinResponse.id()),
+			joinResponse
 		);
 	}
 }
