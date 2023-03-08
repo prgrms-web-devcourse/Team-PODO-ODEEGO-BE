@@ -57,7 +57,7 @@ class GroupMemberAddServiceTest {
 
 		Member savedMember = memberRepository.save(Member.ofNickname("test", "kakao", "12312412"));
 
-		Station savedStation = stationRepository.save(new Station("가양역", null, 127.12314, 37.123124, "9"));
+		Station savedStation = stationRepository.save(new Station("가양역", 127.12314, 37.123124, "9"));
 
 		StartSubmitRequest requestDto = new StartSubmitRequest(savedStation.name(), savedStation.latitude(),
 			savedStation.longitude());
@@ -84,7 +84,7 @@ class GroupMemberAddServiceTest {
 
 		Member savedMember = memberRepository.save(Member.ofNickname("test", "kakao", "1231qw2412"));
 
-		Station savedStation = stationRepository.save(new Station("가양역", null, 127.12314, 37.123124, "9"));
+		Station savedStation = stationRepository.save(new Station("가양역", 127.12314, 37.123124, "9"));
 
 		StartSubmitRequest requestDto = new StartSubmitRequest(savedStation.name(), savedStation.latitude(),
 			savedStation.longitude());

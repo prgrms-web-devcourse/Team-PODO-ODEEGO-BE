@@ -17,8 +17,6 @@ public class Station {
 	@Column(nullable = false, length = 15)
 	private String name;
 
-	private String address;
-
 	private double latitude;
 
 	private double longitude;
@@ -29,10 +27,8 @@ public class Station {
 	protected Station() {
 	}
 
-	public Station(String name, String address, double latitude, double longitude, String line) {
-		this.id = id;
+	public Station(String name, double latitude, double longitude, String line) {
 		this.name = name;
-		this.address = address;
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.line = line;
@@ -44,10 +40,6 @@ public class Station {
 
 	public String name() {
 		return name;
-	}
-
-	public String address() {
-		return address;
 	}
 
 	public double latitude() {

@@ -34,7 +34,7 @@ class MemberFindServiceTest {
 	@Test
 	void findDefaultStation() {
 		// given
-		Station savedStation = stationRepository.save(new Station("강남역", "어디로", 123.123, 12.231, "9호선"));
+		Station savedStation = stationRepository.save(new Station("강남역", 123.123, 12.231, "9호선"));
 		Member savedMember = memberRepository.save(
 			Member.ofStationName("test", savedStation.name(), "kakao", "123124123"));
 
