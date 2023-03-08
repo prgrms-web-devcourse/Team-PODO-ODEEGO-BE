@@ -39,7 +39,7 @@ class GroupMemberTest {
 		Group savedGroup = groupRepository.save(new Group(new GroupCapacity(2L), LocalTime.of(1, 0)));
 		GroupMember groupHost = groupMemberRepository.save(new GroupMember(savedGroup, host, ParticipantType.HOST));
 
-		Station savedStation = stationRepository.save(new Station("가양역", null, 127.12314, 37.123124, "9"));
+		Station savedStation = stationRepository.save(new Station("가양역", 127.12314, 37.123124, "9"));
 
 		// when
 		groupHost.defineStation(savedStation);

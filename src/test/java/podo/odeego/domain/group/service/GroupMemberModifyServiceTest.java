@@ -53,7 +53,7 @@ class GroupMemberModifyServiceTest {
 		Group savedGroup = groupRepository.save(new Group(new GroupCapacity(2L), LocalTime.of(1, 0)));
 		savedGroup.addGroupMember(new GroupMember(savedGroup, host, ParticipantType.HOST));
 
-		Station savedStation = stationRepository.save(new Station("가양역", null, 127.12314, 37.123124, "9"));
+		Station savedStation = stationRepository.save(new Station("가양역", 127.12314, 37.123124, "9"));
 
 		HostStationModifyRequest request = new HostStationModifyRequest(savedStation.name(), savedStation.latitude(),
 			savedStation.longitude());

@@ -41,7 +41,7 @@ class GroupTest {
 		Group savedGroup = groupRepository.save(new Group(new GroupCapacity(2L), LocalTime.of(1, 0)));
 		savedGroup.addGroupMember(new GroupMember(savedGroup, host, ParticipantType.HOST));
 
-		Station savedStation = stationRepository.save(new Station("가양역", null, 127.12314, 37.123124, "9"));
+		Station savedStation = stationRepository.save(new Station("가양역", 127.12314, 37.123124, "9"));
 
 		// when
 		savedGroup.defineHostStation(savedStation);
@@ -62,7 +62,7 @@ class GroupTest {
 	void undefinedGroupHost() {
 		// given
 		Group savedGroup = groupRepository.save(new Group(new GroupCapacity(2L), LocalTime.of(1, 0)));
-		Station station = stationRepository.save(new Station("가양역", null, 127.12314, 37.123124, "9"));
+		Station station = stationRepository.save(new Station("가양역", 127.12314, 37.123124, "9"));
 
 		// when && then
 		assertThatThrownBy(() -> savedGroup.defineHostStation(station))
@@ -75,10 +75,10 @@ class GroupTest {
 		// given
 		Member host = memberRepository.save(Member.ofNickname("host", "kakao", "12312123412"));
 		Group savedGroup = groupRepository.save(new Group(new GroupCapacity(2L), LocalTime.of(1, 0)));
-		Station definedStation = stationRepository.save(new Station("가양역", null, 127.12314, 37.123124, "9"));
+		Station definedStation = stationRepository.save(new Station("가양역", 127.12314, 37.123124, "9"));
 		savedGroup.addGroupMember(new GroupMember(savedGroup, host, definedStation, ParticipantType.HOST));
 
-		Station redefinedStation = stationRepository.save(new Station("마두역", null, 127.12314, 37.123124, "3"));
+		Station redefinedStation = stationRepository.save(new Station("마두역", 127.12314, 37.123124, "3"));
 
 		// when && then
 		assertThatThrownBy(() -> savedGroup.defineHostStation(redefinedStation))

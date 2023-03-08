@@ -8,7 +8,6 @@ import podo.odeego.domain.station.entity.Station;
 
 public record MidPointResponse(
 	String stationName,
-	String address,
 	Double lat,
 	Double lng,
 	String line,
@@ -16,7 +15,7 @@ public record MidPointResponse(
 	List<PathResponse> path
 ) {
 	public MidPointResponse(Station station, List<PathResponse> pathResponses) {
-		this(station.name(), station.address(), station.latitude(), station.longitude(), station.line(), station.id(),
+		this(station.name(), station.latitude(), station.longitude(), station.line(), station.id(),
 			pathResponses);
 	}
 
