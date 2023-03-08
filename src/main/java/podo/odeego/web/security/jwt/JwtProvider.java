@@ -55,6 +55,7 @@ public class JwtProvider {
 		Date expiresIn = new Date(now + accessTokenExpirationMillis);
 		return Jwts.builder()
 			.claim(ID_KEY, memberId)
+			.claim(ROLE_KEY, "ROLE_USER")
 			.setExpiration(expiresIn)
 			.signWith(key, SignatureAlgorithm.HS256)
 			.compact();
@@ -66,6 +67,7 @@ public class JwtProvider {
 		Date expiresIn = new Date(now + refreshTokenExpirationMillis);
 		return Jwts.builder()
 			.claim(ID_KEY, memberId)
+			.claim(ROLE_KEY, "ROLE_USER")
 			.setExpiration(expiresIn)
 			.signWith(key, SignatureAlgorithm.HS256)
 			.compact();
