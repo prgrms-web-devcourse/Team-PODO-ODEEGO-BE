@@ -23,7 +23,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
 		registry.addInterceptor(new ApiLogInterceptor())
 			.addPathPatterns("/**/api/**");
 		registry.addInterceptor(jwtAuthenticationInterceptor())
-			.addPathPatterns("/**/api/v2/members/my-page"); //TODO: 인증이 필요한 url 매핑해야함
+			.addPathPatterns("/**/api/v1/members/**", "/**/api/v1/groups/**");
 	}
 
 	@Bean
