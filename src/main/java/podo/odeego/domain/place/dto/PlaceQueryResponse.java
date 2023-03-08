@@ -1,5 +1,6 @@
 package podo.odeego.domain.place.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -9,14 +10,20 @@ public class PlaceQueryResponse {
 
 	private String businessName;
 	private String address;
+	private List<PlaceImageUrl> images;
 
 	public PlaceQueryResponse(String businessName, String address) {
+		this(businessName, address, new ArrayList<>());
+	}
+
+	public PlaceQueryResponse(String businessName, String address, List<PlaceImageUrl> images) {
 		this.businessName = businessName;
 		this.address = address;
+		this.images = images;
 	}
 
 	public static PlaceQueryResponse from(Place place) {
-		return new PlaceQueryResponse(place.name(), place.address());
+		return new PlaceQueryResponse(place.name(), place.address(), PlaceImageUrl.from(place.images()));
 	}
 
 	public static List<PlaceQueryResponse> from(List<Place> places) {
@@ -32,6 +39,10 @@ public class PlaceQueryResponse {
 
 	public String getAddress() {
 		return address;
+	}
+
+	public List<PlaceImageUrl> getImages() {
+		return images;
 	}
 
 	@Override
