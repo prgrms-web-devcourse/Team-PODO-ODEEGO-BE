@@ -2,24 +2,24 @@ package podo.odeego.web.api.place.v1;
 
 import java.util.Optional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import podo.odeego.domain.place.dto.PlaceQueryResponses;
+import podo.odeego.domain.place.dto.PlaceQueryResponse;
 import podo.odeego.domain.place.entity.PlaceCategory;
 import podo.odeego.domain.place.service.PlaceQueryService;
 
 @RestController
 @RequestMapping("/api/v1/places")
 public class PlaceApi {
-
-	private final Logger log = LoggerFactory.getLogger(this.getClass());
 
 	private final PlaceQueryService placeQueryService;
 
@@ -28,11 +28,17 @@ public class PlaceApi {
 	}
 
 	@GetMapping
-	public ResponseEntity<PlaceQueryResponses> getAll(
+	public ResponseEntity<Page<PlaceQueryResponse>> getAll(
 		@RequestParam(name = "station-name") String stationName,
-		@RequestParam Optional<PlaceCategory> category
+		@RequestParam Optional<PlaceCategory> category,
+		@PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable
 	) {
-		PlaceQueryResponses response = placeQueryService.getAll(stationName.trim(), category.orElse(PlaceCategory.ALL));
-		return ResponseEntity.ok(response);
+		return ResponseEntity.ok(
+			placeQueryService.getAll(
+				stationName.trim(),
+				category.orElse(PlaceCategory.ALL),
+				pageable
+			)
+		);
 	}
 }

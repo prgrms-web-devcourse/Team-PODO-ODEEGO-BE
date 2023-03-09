@@ -12,6 +12,8 @@ import podo.odeego.domain.group.service.GroupQueryService;
 import podo.odeego.domain.member.repository.MemberRepository;
 import podo.odeego.domain.member.service.MemberFindService;
 import podo.odeego.domain.member.service.MemberService;
+import podo.odeego.domain.place.repository.PlaceRepository;
+import podo.odeego.domain.place.service.PlaceQueryServiceImpl;
 import podo.odeego.domain.station.repository.StationRepository;
 import podo.odeego.domain.station.service.StationFindService;
 
@@ -74,5 +76,12 @@ public class TestConfig {
 		GroupMemberValidateService groupMemberValidateService
 	) {
 		return new GroupMemberModifyService(groupMemberValidateService);
+	}
+
+	@Bean
+	public PlaceQueryServiceImpl placeQueryServiceImpl(
+		PlaceRepository placeRepository
+	) {
+		return new PlaceQueryServiceImpl(placeRepository);
 	}
 }

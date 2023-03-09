@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.springframework.data.domain.Page;
+
 import podo.odeego.domain.place.entity.Place;
 
 public class PlaceQueryResponse {
@@ -26,11 +28,8 @@ public class PlaceQueryResponse {
 		return new PlaceQueryResponse(place.name(), place.address(), PlaceImageUrl.from(place.images()));
 	}
 
-	public static List<PlaceQueryResponse> from(List<Place> places) {
-		return places.stream()
-			.map(PlaceQueryResponse::from)
-			.distinct()
-			.toList();
+	public static Page<PlaceQueryResponse> from(Page<Place> places) {
+		return places.map(PlaceQueryResponse::from);
 	}
 
 	public String getBusinessName() {
