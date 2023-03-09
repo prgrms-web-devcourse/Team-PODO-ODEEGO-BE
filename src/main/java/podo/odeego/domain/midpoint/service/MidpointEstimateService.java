@@ -8,8 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import podo.odeego.domain.midpoint.dto.MidPointResponse;
 import podo.odeego.domain.midpoint.dto.PathsByEnd;
+import podo.odeego.domain.path.dto.PathInfo;
 import podo.odeego.domain.path.dto.PathStatistics;
-import podo.odeego.domain.path.entity.Path;
 
 @Service
 @Transactional(readOnly = true)
@@ -23,7 +23,7 @@ public class MidpointEstimateService {
 		this.midPointConvertService = midPointConvertService;
 	}
 
-	public List<MidPointResponse> determine(List<Path> allPathsByStart) {
+	public List<MidPointResponse> determine(List<PathInfo> allPathsByStart) {
 		List<PathStatistics> resolvedPathStatistics = PathsByEnd.from(allPathsByStart)
 			.stream()
 			.map(PathStatistics::from)

@@ -1,6 +1,5 @@
 package podo.odeego.domain.path.entity;
 
-import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -47,10 +46,6 @@ public class Path {
 
 	public boolean isEnd(Station station) {
 		return Objects.equals(endStation, station.name());
-	}
-
-	public List<String> getStations() {
-		return List.of(stations.split("-"));
 	}
 
 	public String startStation() {

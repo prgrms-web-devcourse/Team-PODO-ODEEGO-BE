@@ -4,11 +4,10 @@ import java.util.Comparator;
 import java.util.List;
 
 import podo.odeego.domain.midpoint.dto.PathsByEnd;
-import podo.odeego.domain.path.entity.Path;
 
 public record PathStatistics(
 	String end,
-	List<Path> pathsToEnd,
+	List<PathInfo> pathsToEnd,
 	Double average,
 	Double standardDeviation
 ) {
@@ -26,7 +25,7 @@ public record PathStatistics(
 	private static double getAverage(PathsByEnd paths) {
 		return paths.paths()
 			.stream()
-			.mapToDouble(Path::requiredTime)
+			.mapToDouble(PathInfo::requiredTime)
 			.summaryStatistics()
 			.getAverage();
 	}
