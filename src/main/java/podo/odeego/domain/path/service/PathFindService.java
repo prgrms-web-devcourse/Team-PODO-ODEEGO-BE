@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import podo.odeego.domain.path.entity.Path;
 import podo.odeego.domain.path.repository.PathRepository;
-import podo.odeego.domain.station.entity.Station;
+import podo.odeego.domain.station.dto.StationInfo;
 import podo.odeego.domain.station.service.StationFindService;
 
 @Service
@@ -24,14 +24,14 @@ public class PathFindService {
 		this.stationFindService = stationFindService;
 	}
 
-	private List<Station> findAllStationsInPath(Path path) {
+	private List<StationInfo> findAllStationsInPath(Path path) {
 		return path.getStations()
 			.stream()
 			.map(stationFindService::findByName)
 			.toList();
 	}
 
-	public List<Path> findAllByStarts(List<Station> starts) {
+	public List<Path> findAllByStarts(List<StationInfo> starts) {
 		return starts.stream()
 			.map(station -> pathRepository.findAllByStartStation(station.name()))
 			.flatMap(Collection::stream)
