@@ -1,13 +1,12 @@
 package podo.odeego.domain.place.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import podo.odeego.domain.place.dto.PlaceQueryResponse;
-import podo.odeego.domain.place.dto.PlaceQueryResponses;
 import podo.odeego.domain.place.entity.Place;
 import podo.odeego.domain.place.entity.PlaceCategory;
 import podo.odeego.domain.place.exception.PlaceNotFoundException;
@@ -25,21 +24,25 @@ public class PlaceQueryServiceImpl implements PlaceQueryService {
 	}
 
 	@Override
-	public PlaceQueryResponses getAll(String stationName, PlaceCategory placeCategory) {
+	public Page<PlaceQueryResponse> getAll(String stationName, PlaceCategory placeCategory, Pageable pageable) {
 		if (placeCategory.isAll()) {
-			return getAllByStationName(stationName);
+			return getAllByStationName(stationName, pageable);
 		}
-		return getAllByStationNameAndCategory(stationName, placeCategory);
+		return getAllByStationNameAndCategory(stationName, placeCategory, pageable);
 	}
 
-	private PlaceQueryResponses getAllByStationName(String stationName) {
-		List<Place> findPlaces = placeRepository.findPlacesByStationName(stationName);
-		return PlaceQueryResponses.from(PlaceQueryResponse.from(findPlaces));
+	private Page<PlaceQueryResponse> getAllByStationName(String stationName, Pageable pageable) {
+		return PlaceQueryResponse.from(placeRepository.findPlacesByStationName(stationName, pageable));
 	}
 
-	private PlaceQueryResponses getAllByStationNameAndCategory(String stationName, PlaceCategory category) {
-		List<Place> findPlaces = placeRepository.findPlacesByStationNameAndCategory(stationName, category);
-		return PlaceQueryResponses.from(PlaceQueryResponse.from(findPlaces));
+	private Page<PlaceQueryResponse> getAllByStationNameAndCategory(
+		String stationName,
+		PlaceCategory category,
+		Pageable pageable
+	) {
+		return PlaceQueryResponse.from(
+			placeRepository.findPlacesByStationNameAndCategory(stationName, category, pageable)
+		);
 	}
 
 	public Place findById(Long placeId) {

@@ -1,7 +1,7 @@
 package podo.odeego.domain.place.repository;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import podo.odeego.domain.place.entity.Place;
@@ -9,7 +9,7 @@ import podo.odeego.domain.place.entity.PlaceCategory;
 
 public interface PlaceRepository extends JpaRepository<Place, Long> {
 
-	List<Place> findPlacesByStationName(String stationName);
+	Page<Place> findPlacesByStationName(String stationName, Pageable pageable);
 
-	List<Place> findPlacesByStationNameAndCategory(String stationName, PlaceCategory category);
+	Page<Place> findPlacesByStationNameAndCategory(String stationName, PlaceCategory category, Pageable pageable);
 }
