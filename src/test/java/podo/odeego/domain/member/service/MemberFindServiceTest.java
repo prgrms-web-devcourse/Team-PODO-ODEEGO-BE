@@ -13,6 +13,7 @@ import podo.odeego.config.TestConfig;
 import podo.odeego.domain.member.dto.MemberDefaultStationGetResponse;
 import podo.odeego.domain.member.entity.Member;
 import podo.odeego.domain.member.repository.MemberRepository;
+import podo.odeego.domain.station.dto.StationInfo;
 import podo.odeego.domain.station.entity.Station;
 import podo.odeego.domain.station.repository.StationRepository;
 
@@ -38,7 +39,7 @@ class MemberFindServiceTest {
 		Member savedMember = memberRepository.save(
 			Member.ofStationName("test", savedStation.name(), "kakao", "123124123"));
 
-		MemberDefaultStationGetResponse expect = new MemberDefaultStationGetResponse(savedStation);
+		MemberDefaultStationGetResponse expect = new MemberDefaultStationGetResponse(new StationInfo(savedStation));
 
 		// when
 		MemberDefaultStationGetResponse actual = memberFindService.findDefaultStation(savedMember.id());

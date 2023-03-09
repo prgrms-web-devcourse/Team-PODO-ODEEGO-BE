@@ -10,7 +10,7 @@ import podo.odeego.domain.midpoint.dto.MidPointSearchRequest;
 import podo.odeego.domain.midpoint.dto.MidPointSearchResponse;
 import podo.odeego.domain.path.entity.Path;
 import podo.odeego.domain.path.service.PathFindService;
-import podo.odeego.domain.station.entity.Station;
+import podo.odeego.domain.station.dto.StationInfo;
 import podo.odeego.domain.station.service.StationFindService;
 
 @Service
@@ -34,11 +34,11 @@ public class MidPointQueryService {
 	public MidPointSearchResponse search(MidPointSearchRequest midPointSearchRequest) {
 
 		if (midPointSearchRequest.isAllSameStart()) {
-			Station start = stationFindService.findByName(midPointSearchRequest.getFirstStart());
+			StationInfo start = stationFindService.findByName(midPointSearchRequest.getFirstStart());
 			return MidPointSearchResponse.fromOne(start);
 		}
 
-		List<Station> starts = stationFindService.findAllByNames(midPointSearchRequest.getStartNames());
+		List<StationInfo> starts = stationFindService.findAllByNames(midPointSearchRequest.getStartNames());
 
 		List<Path> allPathsByStart = pathFindService.findAllByStarts(starts);
 

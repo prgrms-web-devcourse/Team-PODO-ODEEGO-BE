@@ -28,6 +28,11 @@ public class Station {
 	}
 
 	public Station(String name, double latitude, double longitude, String line) {
+		this(null, name, latitude, longitude, line);
+	}
+
+	public Station(Long id, String name, double latitude, double longitude, String line) {
+		this.id = id;
 		this.name = name;
 		this.latitude = latitude;
 		this.longitude = longitude;
