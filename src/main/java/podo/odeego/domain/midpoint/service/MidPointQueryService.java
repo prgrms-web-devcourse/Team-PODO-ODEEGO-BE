@@ -38,6 +38,8 @@ public class MidPointQueryService {
 			return MidPointSearchResponse.fromOne(start);
 		}
 
+		stationFindService.verifyStationsExists(midPointSearchRequest.getStartNames());
+
 		List<Path> allPathsByStart = pathFindService.findAllByStarts(midPointSearchRequest.getStartNames());
 
 		List<MidPointResponse> midPointResponses = midpointEstimateService.determine(allPathsByStart);

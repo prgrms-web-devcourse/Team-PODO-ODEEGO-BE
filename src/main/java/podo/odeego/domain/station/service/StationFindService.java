@@ -43,4 +43,8 @@ public class StationFindService {
 	public List<StationNameQueryDto> getAllStationName() {
 		return stationRepository.findAllGroupByName();
 	}
+
+	public void verifyStationsExists(List<String> stations) {
+		stations.forEach(this::verifyStationExists);
+	}
 }
