@@ -7,8 +7,8 @@ import podo.odeego.domain.group.exception.GroupCapacityOutOfBoundsException;
 @Embeddable
 public class GroupCapacity {
 
-	private static final int MIN_CAPACITY = 2;
-	private static final int MAX_CAPACITY = 4;
+	public static final Long MIN_CAPACITY = 2L;
+	public static final Long MAX_CAPACITY = 4L;
 
 	private Long capacity;
 
