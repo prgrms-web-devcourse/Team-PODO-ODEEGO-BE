@@ -29,8 +29,9 @@ public class StationFindService {
 	}
 
 	public List<StationInfo> findAllByNames(List<String> stationNames) {
-		return stationNames.stream()
-			.map(this::findByName)
+		return stationRepository.findAllByNameIn(stationNames)
+			.stream()
+			.map(StationInfo::new)
 			.toList();
 	}
 
