@@ -31,9 +31,9 @@ public class PathFindService {
 			.toList();
 	}
 
-	public List<Path> findAllByStarts(List<StationInfo> starts) {
-		return starts.stream()
-			.map(station -> pathRepository.findAllByStartStation(station.name()))
+	public List<Path> findAllByStarts(List<String> startNames) {
+		return startNames.stream()
+			.map(pathRepository::findAllByStartStation)
 			.flatMap(Collection::stream)
 			.toList();
 	}

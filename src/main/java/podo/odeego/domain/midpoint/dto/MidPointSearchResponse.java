@@ -9,11 +9,14 @@ public record MidPointSearchResponse(
 	List<StationResponse> start,
 	List<MidPointResponse> midPointResponses
 ) {
-	public static MidPointSearchResponse from(List<StationInfo> stations, List<MidPointResponse> midPointResponses) {
-		List<StationResponse> start = stations.stream()
-			.map(StationResponse::new)
+	public static MidPointSearchResponse from(MidPointSearchRequest midPointSearchRequest,
+		List<MidPointResponse> midPointResponses) {
+		List<StationResponse> startResponses = midPointSearchRequest.stations()
+			.stream()
+			.map(StationResponse::fromStart)
 			.toList();
-		return new MidPointSearchResponse(start, midPointResponses);
+
+		return new MidPointSearchResponse(startResponses, midPointResponses);
 	}
 
 	public static MidPointSearchResponse fromOne(StationInfo start) {
