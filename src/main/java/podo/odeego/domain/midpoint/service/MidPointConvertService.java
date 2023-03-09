@@ -9,7 +9,7 @@ import podo.odeego.domain.midpoint.dto.MidPointResponse;
 import podo.odeego.domain.path.dto.PathResponse;
 import podo.odeego.domain.path.dto.PathStatistics;
 import podo.odeego.domain.path.service.PathConvertService;
-import podo.odeego.domain.station.entity.Station;
+import podo.odeego.domain.station.dto.StationInfo;
 import podo.odeego.domain.station.service.StationFindService;
 
 @Service
@@ -25,8 +25,8 @@ public class MidPointConvertService {
 	}
 
 	private MidPointResponse convert(PathStatistics pathStatistics) {
-		Station midPointStation = stationFindService.findByName(pathStatistics.end());
-		List<PathResponse> pathResponses = pathStatistics.PathsToEnd()
+		StationInfo midPointStation = stationFindService.findByName(pathStatistics.end());
+		List<PathResponse> pathResponses = pathStatistics.pathsToEnd()
 			.stream()
 			.map(pathConvertService::convert)
 			.toList();
