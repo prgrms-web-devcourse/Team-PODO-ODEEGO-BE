@@ -33,6 +33,7 @@ public enum ErrorCode {
 	GROUP_HOST_ABSENT(HttpStatus.INTERNAL_SERVER_ERROR, "G004", "Group host is absent."),
 	GROUP_CAPACITY_OUT_OF_BOUNDS(HttpStatus.BAD_REQUEST, "G005", "Group capacity is out of bounds."),
 	GROUP_MEMBER_STATION_ALREADY_DEFINED(HttpStatus.BAD_REQUEST, "G006", "Group Member's station is already defined."),
+	GROUP_HOST_NOT_MATCH(HttpStatus.FORBIDDEN, "G007", "Group host not matched."),
 
 	// Station
 	STATION_NOT_FOUND(HttpStatus.NOT_FOUND, "S001", "Station Not Found."),

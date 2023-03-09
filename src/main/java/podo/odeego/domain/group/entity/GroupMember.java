@@ -62,6 +62,10 @@ public class GroupMember extends BaseTime {
 		this.station = Objects.requireNonNull(station);
 	}
 
+	public boolean isMemberIdMatches(Long memberId) {
+		return Objects.equals(getMemberId(), memberId);
+	}
+
 	public boolean hasStation() {
 		return station != null;
 	}
