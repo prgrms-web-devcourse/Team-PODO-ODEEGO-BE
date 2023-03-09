@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import podo.odeego.domain.midpoint.dto.MidPointResponse;
 import podo.odeego.domain.midpoint.dto.MidPointSearchRequest;
 import podo.odeego.domain.midpoint.dto.MidPointSearchResponse;
-import podo.odeego.domain.path.entity.Path;
+import podo.odeego.domain.path.dto.PathInfo;
 import podo.odeego.domain.path.service.PathFindService;
 import podo.odeego.domain.station.dto.StationInfo;
 import podo.odeego.domain.station.service.StationFindService;
@@ -40,7 +40,7 @@ public class MidPointQueryService {
 
 		stationFindService.verifyStationsExists(midPointSearchRequest.getStartNames());
 
-		List<Path> allPathsByStart = pathFindService.findAllByStarts(midPointSearchRequest.getStartNames());
+		List<PathInfo> allPathsByStart = pathFindService.findAllByStarts(midPointSearchRequest.getStartNames());
 
 		List<MidPointResponse> midPointResponses = midpointEstimateService.determine(allPathsByStart);
 

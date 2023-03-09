@@ -1,12 +1,11 @@
 package podo.odeego.domain.path.service;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import podo.odeego.domain.path.entity.Path;
+import podo.odeego.domain.path.dto.PathInfo;
 import podo.odeego.domain.path.repository.PathRepository;
 import podo.odeego.domain.station.service.StationFindService;
 
@@ -23,11 +22,10 @@ public class PathFindService {
 		this.stationFindService = stationFindService;
 	}
 
-	public List<Path> findAllByStarts(List<String> startNames) {
-
-		return startNames.stream()
-			.map(pathRepository::findAllByStartStation)
-			.flatMap(Collection::stream)
+	public List<PathInfo> findAllByStarts(List<String> startNames) {
+		return pathRepository.findAllByStartStationIn(startNames)
+			.stream()
+			.map(PathInfo::new)
 			.toList();
 	}
 
