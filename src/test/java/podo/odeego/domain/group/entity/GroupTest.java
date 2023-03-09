@@ -38,22 +38,24 @@ class GroupTest {
 	void defineHostStation() {
 		// given
 		Member host = memberRepository.save(Member.ofNickname("host", "kakao", "12312123412"));
-		Group savedGroup = groupRepository.save(new Group(new GroupCapacity(2L), LocalTime.of(1, 0)));
-		savedGroup.addGroupMember(new GroupMember(savedGroup, host, ParticipantType.HOST));
+		Group group = new Group(new GroupCapacity(2L), LocalTime.of(1, 0));
+		GroupMember groupHost = GroupMember.newInstance(host, ParticipantType.HOST);
+		group.addGroupMember(groupHost);
+		groupRepository.save(group);
 
 		Station savedStation = stationRepository.save(new Station("가양역", 127.12314, 37.123124, "9"));
 
 		// when
-		savedGroup.defineHostStation(savedStation);
+		group.defineHostStation(savedStation);
 
 		// then
-		GroupMember groupHost = groupMemberRepository.findGroupMembersByGroup(savedGroup)
+		GroupMember actualGroupHost = groupMemberRepository.findGroupMembersByGroup(group)
 			.stream()
 			.filter(GroupMember::isHost)
 			.findAny()
 			.get();
 
-		assertThat(groupHost.station().id())
+		assertThat(actualGroupHost.station().id())
 			.isEqualTo(savedStation.id());
 	}
 
@@ -74,9 +76,12 @@ class GroupTest {
 	void alreadyDefinedStation() {
 		// given
 		Member host = memberRepository.save(Member.ofNickname("host", "kakao", "12312123412"));
-		Group savedGroup = groupRepository.save(new Group(new GroupCapacity(2L), LocalTime.of(1, 0)));
+		Group group = new Group(new GroupCapacity(2L), LocalTime.of(1, 0));
+
 		Station definedStation = stationRepository.save(new Station("가양역", 127.12314, 37.123124, "9"));
-		savedGroup.addGroupMember(new GroupMember(savedGroup, host, definedStation, ParticipantType.HOST));
+		GroupMember groupHost = GroupMember.newInstance(host, definedStation, ParticipantType.HOST);
+		group.addGroupMember(groupHost);
+		Group savedGroup = groupRepository.save(group);
 
 		Station redefinedStation = stationRepository.save(new Station("마두역", 127.12314, 37.123124, "3"));
 

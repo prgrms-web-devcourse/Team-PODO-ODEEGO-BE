@@ -36,8 +36,10 @@ class GroupMemberTest {
 	void defineStation() {
 		// given
 		Member host = memberRepository.save(Member.ofNickname("host", "kakao", "12312123412"));
-		Group savedGroup = groupRepository.save(new Group(new GroupCapacity(2L), LocalTime.of(1, 0)));
-		GroupMember groupHost = groupMemberRepository.save(new GroupMember(savedGroup, host, ParticipantType.HOST));
+		Group group = new Group(new GroupCapacity(2L), LocalTime.of(1, 0));
+		GroupMember groupHost = GroupMember.newInstance(host, ParticipantType.HOST);
+		group.addGroupMember(groupHost);
+		groupRepository.save(group);
 
 		Station savedStation = stationRepository.save(new Station("가양역", 127.12314, 37.123124, "9"));
 
@@ -57,8 +59,11 @@ class GroupMemberTest {
 	void defineNullStation() {
 		// given
 		Member host = memberRepository.save(Member.ofNickname("host", "kakao", "12312123412"));
-		Group savedGroup = groupRepository.save(new Group(new GroupCapacity(2L), LocalTime.of(1, 0)));
-		GroupMember groupHost = groupMemberRepository.save(new GroupMember(savedGroup, host, ParticipantType.HOST));
+		Group group = new Group(new GroupCapacity(2L), LocalTime.of(1, 0));
+		GroupMember groupHost = GroupMember.newInstance(host, ParticipantType.HOST);
+		group.addGroupMember(groupHost);
+
+		groupRepository.save(group);
 
 		// when && then
 		assertThatThrownBy(() -> groupHost.defineStation(null))

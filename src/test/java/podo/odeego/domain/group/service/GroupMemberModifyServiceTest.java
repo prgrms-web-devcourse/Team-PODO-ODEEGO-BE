@@ -50,8 +50,10 @@ class GroupMemberModifyServiceTest {
 	void define() {
 		// given
 		Member host = memberRepository.save(Member.ofNickname("host", "kakao", "12312123412"));
-		Group savedGroup = groupRepository.save(new Group(new GroupCapacity(2L), LocalTime.of(1, 0)));
-		savedGroup.addGroupMember(new GroupMember(savedGroup, host, ParticipantType.HOST));
+		Group group = new Group(new GroupCapacity(2L), LocalTime.of(1, 0));
+		GroupMember groupHost = GroupMember.newInstance(host, ParticipantType.HOST);
+		group.addGroupMember(groupHost);
+		Group savedGroup = groupRepository.save(group);
 
 		Station savedStation = stationRepository.save(new Station("가양역", 127.12314, 37.123124, "9"));
 
@@ -62,13 +64,13 @@ class GroupMemberModifyServiceTest {
 		modifyService.define(savedGroup.id(), host.id(), request);
 
 		// then
-		GroupMember groupHost = groupMemberRepository.findGroupMembersByGroup(savedGroup)
+		GroupMember actualGroupHost = groupMemberRepository.findGroupMembersByGroup(savedGroup)
 			.stream()
 			.filter(GroupMember::isHost)
 			.findAny()
 			.get();
 
-		assertThat(groupHost.station().id())
+		assertThat(actualGroupHost.station().id())
 			.isEqualTo(savedStation.id());
 	}
 }

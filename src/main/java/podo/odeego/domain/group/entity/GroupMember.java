@@ -46,16 +46,24 @@ public class GroupMember extends BaseTime {
 	protected GroupMember() {
 	}
 
-	public GroupMember(Group group, Member member, ParticipantType type) {
-		this(group, member, null, type);
-	}
-
-	public GroupMember(Group group, Member member, Station station, ParticipantType type) {
-		this.group = group;
+	private GroupMember(Member member, Station station, ParticipantType type) {
 		this.member = member;
-		member.addGroupMember(this);
 		this.station = station;
 		this.type = type;
+	}
+
+	public static GroupMember newInstance(Member member, ParticipantType type) {
+		return newInstance(member, null, type);
+	}
+
+	public static GroupMember newInstance(Member member, Station station, ParticipantType type) {
+		GroupMember groupMember = new GroupMember(member, station, type);
+		member.addGroupMember(groupMember);
+		return groupMember;
+	}
+
+	public void assignGroup(Group group) {
+		this.group = group;
 	}
 
 	public void defineStation(Station station) {

@@ -12,6 +12,6 @@ public record GroupMemberStation(
 	Station station
 ) {
 	public GroupMember toGuestEntity() {
-		return new GroupMember(group, member, station, ParticipantType.GUEST);
+		return GroupMember.newInstance(member, station, ParticipantType.GUEST);
 	}
 }
