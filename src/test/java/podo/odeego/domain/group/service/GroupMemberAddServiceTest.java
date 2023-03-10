@@ -53,9 +53,9 @@ class GroupMemberAddServiceTest {
 		// given
 		Member host = memberRepository.save(Member.ofNickname("host", "kakao", "12312123412"));
 		Group savedGroup = groupRepository.save(new Group(new GroupCapacity(2L), LocalTime.of(1, 0)));
-		savedGroup.addGroupMember(new GroupMember(savedGroup, host, ParticipantType.HOST));
+		savedGroup.addGroupMember(GroupMember.newInstance(host, ParticipantType.HOST));
 
-		Member savedMember = memberRepository.save(Member.ofNickname("test", "kakao", "12312412"));
+		Member guest = memberRepository.save(Member.ofNickname("test", "kakao", "12312412"));
 
 		Station savedStation = stationRepository.save(new Station("가양역", 127.12314, 37.123124, "9"));
 
@@ -63,9 +63,11 @@ class GroupMemberAddServiceTest {
 			savedStation.longitude());
 
 		// when
-		groupMemberAddService.add(savedGroup.id(), savedMember.id(), requestDto);
+		groupMemberAddService.add(savedGroup.id(), guest.id(), requestDto);
 
 		List<GroupMember> actualGroupMembers = groupMemberRepository.findGroupMembersByGroup(savedGroup);
+
+		System.out.println("actualGroupMembers = " + actualGroupMembers);
 
 		// then
 		assertThat(actualGroupMembers.size())
@@ -79,8 +81,8 @@ class GroupMemberAddServiceTest {
 		Member host = memberRepository.save(Member.ofNickname("host", "kakao", "1231asf2123412"));
 		Member guest = memberRepository.save(Member.ofNickname("guest", "kakao", "12312123wer412"));
 		Group savedGroup = groupRepository.save(new Group(new GroupCapacity(2L), LocalTime.of(1, 0)));
-		savedGroup.addGroupMember(new GroupMember(savedGroup, host, ParticipantType.HOST));
-		savedGroup.addGroupMember(new GroupMember(savedGroup, guest, ParticipantType.GUEST));
+		savedGroup.addGroupMember(GroupMember.newInstance(host, ParticipantType.HOST));
+		savedGroup.addGroupMember(GroupMember.newInstance(guest, ParticipantType.GUEST));
 
 		Member savedMember = memberRepository.save(Member.ofNickname("test", "kakao", "1231qw2412"));
 

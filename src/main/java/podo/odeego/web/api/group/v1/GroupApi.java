@@ -75,7 +75,7 @@ public class GroupApi {
 		@PathVariable UUID groupId
 	) {
 		return ResponseEntity.ok()
-			.body(queryService.getOne(groupId));
+			.body(queryService.getOne(memberId, groupId));
 	}
 
 	@GetMapping
@@ -91,7 +91,7 @@ public class GroupApi {
 		@LoginMember Long memberId,
 		@PathVariable UUID groupId
 	) {
-		removeService.remove(groupId);
+		removeService.remove(memberId, groupId);
 		return ResponseEntity.ok()
 			.build();
 	}

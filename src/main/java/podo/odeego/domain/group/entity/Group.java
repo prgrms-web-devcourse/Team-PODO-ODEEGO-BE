@@ -25,7 +25,9 @@ import org.slf4j.LoggerFactory;
 import podo.odeego.domain.group.exception.GroupAlreadyContainsException;
 import podo.odeego.domain.group.exception.GroupAlreadyFullException;
 import podo.odeego.domain.group.exception.GroupHostAbsentException;
+import podo.odeego.domain.group.exception.GroupHostNotMatchException;
 import podo.odeego.domain.group.exception.GroupMemberStationAlreadyDefinedException;
+import podo.odeego.domain.member.entity.Member;
 import podo.odeego.domain.station.entity.Station;
 import podo.odeego.domain.type.BaseTime;
 import podo.odeego.domain.util.TimeUtils;
@@ -73,14 +75,12 @@ public class Group extends BaseTime {
 					groupMember.member().id()));
 		}
 
+		groupMember.assignGroup(this);
 		this.groupMembers.add(groupMember);
 	}
 
 	public void defineHostStation(Station station) {
-		GroupMember host = groupMembers.stream()
-			.filter(GroupMember::isHost)
-			.findAny()
-			.orElseThrow(() -> new GroupHostAbsentException("Can't find group host."));
+		GroupMember host = findHost();
 
 		if (host.hasStation()) {
 			throw new GroupMemberStationAlreadyDefinedException(
@@ -117,6 +117,24 @@ public class Group extends BaseTime {
 		log.info("Group.getExpireTime(): expireDateTime={}", expireDateTime);
 
 		return expireDateTime;
+	}
+
+	public void verifyHostMatches(Member member) {
+		GroupMember host = findHost();
+
+		if (!host.isMemberIdMatches(member.id())) {
+			throw new GroupHostNotMatchException(
+				"Group host not matched. Group '%s''s hostId is '%d' but access memberId is '%d'."
+					.formatted(this.id.toString(), host.getMemberId(), member.id())
+			);
+		}
+	}
+
+	private GroupMember findHost() {
+		return groupMembers.stream()
+			.filter(GroupMember::isHost)
+			.findAny()
+			.orElseThrow(() -> new GroupHostAbsentException("Can't find group host."));
 	}
 
 	public UUID id() {

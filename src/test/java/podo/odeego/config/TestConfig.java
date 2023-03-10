@@ -9,6 +9,7 @@ import podo.odeego.domain.group.service.GroupMemberAddService;
 import podo.odeego.domain.group.service.GroupMemberModifyService;
 import podo.odeego.domain.group.service.GroupMemberValidateService;
 import podo.odeego.domain.group.service.GroupQueryService;
+import podo.odeego.domain.group.service.GroupRemoveService;
 import podo.odeego.domain.member.repository.MemberRepository;
 import podo.odeego.domain.member.service.MemberFindService;
 import podo.odeego.domain.member.service.MemberService;
@@ -20,6 +21,7 @@ import podo.odeego.domain.station.service.StationFindService;
 @TestConfiguration
 public class TestConfig {
 
+	// Station
 	@Bean
 	public StationFindService stationFindService(
 		StationRepository stationRepository
@@ -27,6 +29,7 @@ public class TestConfig {
 		return new StationFindService(stationRepository);
 	}
 
+	// Member
 	@Bean
 	public MemberFindService memberFindService(
 		MemberRepository memberRepository,
@@ -42,6 +45,7 @@ public class TestConfig {
 		return new MemberService(memberRepository);
 	}
 
+	// Group
 	@Bean
 	public GroupQueryService groupQueryService(
 		GroupRepository groupRepository,
@@ -49,6 +53,15 @@ public class TestConfig {
 		MemberFindService memberFindService
 	) {
 		return new GroupQueryService(groupRepository, groupMemberRepository, memberFindService);
+	}
+
+	@Bean
+	public GroupRemoveService groupRemoveService(
+		MemberFindService memberFindService,
+		GroupRepository groupRepository,
+		GroupQueryService groupQueryService
+	) {
+		return new GroupRemoveService(memberFindService, groupRepository, groupQueryService);
 	}
 
 	@Bean
@@ -78,6 +91,7 @@ public class TestConfig {
 		return new GroupMemberModifyService(groupMemberValidateService);
 	}
 
+	// Place
 	@Bean
 	public PlaceQueryServiceImpl placeQueryServiceImpl(
 		PlaceRepository placeRepository

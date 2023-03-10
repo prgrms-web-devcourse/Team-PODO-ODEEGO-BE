@@ -40,10 +40,9 @@ public class GroupCreateService {
 		findMember.verifyNonOfGroupParticipating();
 
 		Group group = new Group(new GroupCapacity(createRequest.capacity()), Group.GROUP_VALID_TIME);
-		GroupMember groupMember = new GroupMember(group, findMember, ParticipantType.HOST);
+		group.addGroupMember(GroupMember.newInstance(findMember, ParticipantType.HOST));
 
 		groupRepository.save(group);
-		groupMemberRepository.save(groupMember);
 
 		return group.id();
 	}

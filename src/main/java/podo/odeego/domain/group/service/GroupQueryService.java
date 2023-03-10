@@ -35,8 +35,12 @@ public class GroupQueryService {
 		this.memberFindService = memberFindService;
 	}
 
-	public GroupResponse getOne(UUID groupId) {
+	public GroupResponse getOne(Long memberId, UUID groupId) {
+		Member findMember = memberFindService.findById(memberId);
 		Group findGroup = findById(groupId);
+
+		findGroup.verifyHostMatches(findMember);
+
 		List<GroupMember> findGroupMembers = groupMemberRepository.findGroupMembersByGroup(findGroup);
 		return GroupResponse.from(findGroup, Participants.from(findGroupMembers));
 	}
