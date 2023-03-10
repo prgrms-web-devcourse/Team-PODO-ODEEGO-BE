@@ -6,10 +6,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import podo.odeego.domain.midpoint.dto.MidPointResponse;
+import podo.odeego.domain.midpoint.dto.NormalizedPathsToEnd;
 import podo.odeego.domain.path.dto.PathResponse;
-import podo.odeego.domain.path.dto.PathStatistics;
 import podo.odeego.domain.path.service.PathConvertService;
-import podo.odeego.domain.station.entity.Station;
+import podo.odeego.domain.station.dto.StationInfo;
 import podo.odeego.domain.station.service.StationFindService;
 
 @Service
@@ -24,9 +24,9 @@ public class MidPointConvertService {
 		this.pathConvertService = pathMapService;
 	}
 
-	private MidPointResponse convert(PathStatistics pathStatistics) {
-		Station midPointStation = stationFindService.findByName(pathStatistics.end());
-		List<PathResponse> pathResponses = pathStatistics.PathsToEnd()
+	private MidPointResponse convert(NormalizedPathsToEnd normalizedPathsToEnd) {
+		StationInfo midPointStation = stationFindService.findByName(normalizedPathsToEnd.end());
+		List<PathResponse> pathResponses = normalizedPathsToEnd.pathInfos()
 			.stream()
 			.map(pathConvertService::convert)
 			.toList();
@@ -34,7 +34,7 @@ public class MidPointConvertService {
 		return new MidPointResponse(midPointStation, pathResponses);
 	}
 
-	public List<MidPointResponse> convert(List<PathStatistics> resolvedPathStatistics) {
+	public List<MidPointResponse> convert(List<NormalizedPathsToEnd> resolvedPathStatistics) {
 		return resolvedPathStatistics.stream()
 			.map(this::convert)
 			.toList();

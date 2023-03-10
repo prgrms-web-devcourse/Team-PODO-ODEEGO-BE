@@ -23,6 +23,6 @@ public class GroupMemberModifyService {
 			hostStationModifyRequest.stationName());
 
 		groupMemberStation.group()
-			.defineHostStation(groupMemberStation.station());
+			.defineHostStation(groupMemberStation.getStationEntity());
 	}
 }

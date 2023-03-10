@@ -22,6 +22,7 @@ import podo.odeego.domain.group.repository.GroupRepository;
 import podo.odeego.domain.member.entity.Member;
 import podo.odeego.domain.member.exception.MemberNotFoundException;
 import podo.odeego.domain.member.repository.MemberRepository;
+import podo.odeego.domain.station.dto.StationInfo;
 import podo.odeego.domain.station.entity.Station;
 import podo.odeego.domain.station.exception.StationNotFoundException;
 import podo.odeego.domain.station.repository.StationRepository;
@@ -49,7 +50,8 @@ class GroupMemberValidateServiceTest {
 		// given
 		Member host = memberRepository.save(Member.ofNickname("host", "kakao", "12312123412"));
 		Group savedGroup = groupRepository.save(new Group(new GroupCapacity(2L), LocalTime.of(1, 0)));
-		Station savedStation = stationRepository.save(new Station("가양역", 127.12314, 37.123124, "9"));
+		StationInfo savedStation = new StationInfo(
+			stationRepository.save(new Station("가양역", 127.12314, 37.123124, "9")));
 
 		GroupMemberStation expect = new GroupMemberStation(savedGroup, host, savedStation);
 
