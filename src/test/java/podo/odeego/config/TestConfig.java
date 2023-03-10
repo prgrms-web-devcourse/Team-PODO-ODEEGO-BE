@@ -40,9 +40,14 @@ public class TestConfig {
 
 	@Bean
 	public MemberService memberService(
-		MemberRepository memberRepository
+		MemberRepository memberRepository,
+		GroupRemoveService groupRemoveService,
+		GroupQueryService groupQueryService,
+		GroupMemberRepository groupMemberRepository,
+		GroupRepository groupRepository
 	) {
-		return new MemberService(memberRepository);
+		return new MemberService(memberRepository, groupRemoveService, groupQueryService, groupMemberRepository,
+			groupRepository);
 	}
 
 	// Group

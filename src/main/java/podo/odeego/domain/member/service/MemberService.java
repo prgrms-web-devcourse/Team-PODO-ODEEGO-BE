@@ -1,10 +1,18 @@
 package podo.odeego.domain.member.service;
 
+import java.util.UUID;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import podo.odeego.domain.group.dto.response.GroupResponses;
+import podo.odeego.domain.group.entity.Group;
+import podo.odeego.domain.group.repository.GroupMemberRepository;
+import podo.odeego.domain.group.repository.GroupRepository;
+import podo.odeego.domain.group.service.GroupQueryService;
+import podo.odeego.domain.group.service.GroupRemoveService;
 import podo.odeego.domain.member.dto.MemberJoinResponse;
 import podo.odeego.domain.member.dto.MemberSignUpRequest;
 import podo.odeego.domain.member.entity.Member;
@@ -20,9 +28,21 @@ public class MemberService {
 	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	private final MemberRepository memberRepository;
+	private final GroupRemoveService groupRemoveService;
+	private final GroupQueryService groupQueryService;
+	private final GroupMemberRepository groupMemberRepository;
+	private final GroupRepository groupRepository;
 
-	public MemberService(MemberRepository memberRepository) {
+	public MemberService(
+		MemberRepository memberRepository,
+		GroupRemoveService groupRemoveService,
+		GroupQueryService groupQueryService,
+		GroupMemberRepository groupMemberRepository, GroupRepository groupRepository) {
 		this.memberRepository = memberRepository;
+		this.groupRemoveService = groupRemoveService;
+		this.groupQueryService = groupQueryService;
+		this.groupMemberRepository = groupMemberRepository;
+		this.groupRepository = groupRepository;
 	}
 
 	public MemberJoinResponse join(String profileImageUrl, String provider, String providerId) {
@@ -67,6 +87,24 @@ public class MemberService {
 		Member member = memberRepository.findById(memberId)
 			.orElseThrow(() -> new MemberNotFoundException(
 				"Cannot find Member for memberId=%d.".formatted(memberId)));
+
+		GroupResponses groupResponses = groupQueryService.getAll(memberId);
+
+		if (isGroupExists(groupResponses)) {
+			UUID groupId = groupResponses.getGroups().get(0).getGroupId();
+			Group group = groupRepository.findById(groupId).get();
+
+			if (group.isGroupHost(member)) {
+				groupRemoveService.remove(member.id(), groupId);
+			} else { // participating as guest
+				groupMemberRepository.deleteById(member.getGroupMembers().get(0).id());
+			}
+		}
+
 		memberRepository.delete(member);
+	}
+
+	private boolean isGroupExists(GroupResponses groupResponses) {
+		return groupResponses.getGroups().size() != 0;
 	}
 }
