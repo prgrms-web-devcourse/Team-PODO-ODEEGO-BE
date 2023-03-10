@@ -13,7 +13,7 @@ public record GroupMemberStation(
 	StationInfo station
 ) {
 	public GroupMember toGuestEntity() {
-		return GroupMember.newInstance(member, station, ParticipantType.GUEST);
+		return GroupMember.newInstance(member, getStationEntity(), ParticipantType.GUEST);
 	}
 
 	public Station getStationEntity() {
