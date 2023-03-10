@@ -9,6 +9,7 @@ import podo.odeego.domain.group.service.GroupMemberAddService;
 import podo.odeego.domain.group.service.GroupMemberModifyService;
 import podo.odeego.domain.group.service.GroupMemberValidateService;
 import podo.odeego.domain.group.service.GroupQueryService;
+import podo.odeego.domain.group.service.GroupRemoveService;
 import podo.odeego.domain.member.repository.MemberRepository;
 import podo.odeego.domain.member.service.MemberFindService;
 import podo.odeego.domain.member.service.MemberService;
@@ -37,9 +38,14 @@ public class TestConfig {
 
 	@Bean
 	public MemberService memberService(
-		MemberRepository memberRepository
+		MemberRepository memberRepository,
+		GroupRemoveService groupRemoveService,
+		GroupQueryService groupQueryService,
+		GroupMemberRepository groupMemberRepository,
+		GroupRepository groupRepository
 	) {
-		return new MemberService(memberRepository);
+		return new MemberService(memberRepository, groupRemoveService, groupQueryService, groupMemberRepository,
+			groupRepository);
 	}
 
 	@Bean
