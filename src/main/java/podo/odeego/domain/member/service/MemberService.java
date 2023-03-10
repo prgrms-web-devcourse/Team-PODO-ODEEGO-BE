@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import podo.odeego.domain.group.dto.response.GroupResponses;
 import podo.odeego.domain.group.entity.Group;
+import podo.odeego.domain.group.entity.GroupMember;
 import podo.odeego.domain.group.repository.GroupMemberRepository;
 import podo.odeego.domain.group.repository.GroupRepository;
 import podo.odeego.domain.group.service.GroupQueryService;
@@ -97,7 +98,10 @@ public class MemberService {
 			if (group.isGroupHost(member)) {
 				groupRemoveService.remove(member.id(), groupId);
 			} else { // participating as guest
-				groupMemberRepository.deleteById(member.getGroupMembers().get(0).id());
+				GroupMember groupMember = member.getGroupMembers().get(0);
+				group.removeGroupMember(groupMember);
+				// Long groupMemberId = groupMember.id();
+				// groupMemberRepository.deleteById(groupMemberId);
 			}
 		}
 

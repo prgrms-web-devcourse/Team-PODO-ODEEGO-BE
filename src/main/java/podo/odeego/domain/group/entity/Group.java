@@ -53,7 +53,7 @@ public class Group extends BaseTime {
 	@Column(nullable = false)
 	private LocalTime validTime;
 
-	@OneToMany(mappedBy = "group", cascade = {REMOVE, PERSIST, MERGE})
+	@OneToMany(mappedBy = "group", cascade = {REMOVE, PERSIST, MERGE}, orphanRemoval = true)
 	private List<GroupMember> groupMembers = new ArrayList<>();
 
 	protected Group() {
@@ -154,5 +154,9 @@ public class Group extends BaseTime {
 
 	public List<GroupMember> groupMembers() {
 		return Collections.unmodifiableList(this.groupMembers);
+	}
+
+	public void removeGroupMember(GroupMember groupMember) {
+		this.groupMembers.remove(groupMember);
 	}
 }
