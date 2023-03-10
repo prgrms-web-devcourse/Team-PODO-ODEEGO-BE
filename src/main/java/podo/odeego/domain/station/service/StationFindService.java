@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import podo.odeego.domain.station.dto.StationInfo;
 import podo.odeego.domain.station.dto.StationNameQueryDto;
-import podo.odeego.domain.station.entity.Station;
 import podo.odeego.domain.station.exception.StationNotFoundException;
 import podo.odeego.domain.station.repository.StationRepository;
 
@@ -20,17 +20,18 @@ public class StationFindService {
 		this.stationRepository = stationRepository;
 	}
 
-	public Station findByName(String name) {
+	public StationInfo findByName(String name) {
 		return stationRepository.findAllByName(name)
 			.stream()
 			.findAny()
+			.map(StationInfo::new)
 			.orElseThrow(() -> new StationNotFoundException("Can not found Station by %s".formatted(name)));
 	}
 
-	// TODO: 중복된 역이 들어올 때 DB 에서 가져오지 않게 짜기
-	public List<Station> findAllByNames(List<String> names) {
-		return names.stream()
-			.map(this::findByName)
+	public List<StationInfo> findAllByNames(List<String> stationNames) {
+		return stationRepository.findAllByNameIn(stationNames)
+			.stream()
+			.map(StationInfo::new)
 			.toList();
 	}
 
@@ -42,5 +43,9 @@ public class StationFindService {
 
 	public List<StationNameQueryDto> getAllStationName() {
 		return stationRepository.findAllGroupByName();
+	}
+
+	public void verifyStationsExists(List<String> stations) {
+		stations.forEach(this::verifyStationExists);
 	}
 }

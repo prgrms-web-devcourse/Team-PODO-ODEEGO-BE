@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import podo.odeego.domain.path.dto.PathResponse;
-import podo.odeego.domain.station.entity.Station;
+import podo.odeego.domain.station.dto.StationInfo;
 
 public record MidPointResponse(
 	String stationName,
@@ -14,12 +14,12 @@ public record MidPointResponse(
 	Long id,
 	List<PathResponse> path
 ) {
-	public MidPointResponse(Station station, List<PathResponse> pathResponses) {
+	public MidPointResponse(StationInfo station, List<PathResponse> pathResponses) {
 		this(station.name(), station.latitude(), station.longitude(), station.line(), station.id(),
 			pathResponses);
 	}
 
-	public static MidPointResponse fromSame(Station start) {
+	public static MidPointResponse fromSame(StationInfo start) {
 		return new MidPointResponse(start, Collections.EMPTY_LIST);
 	}
 }

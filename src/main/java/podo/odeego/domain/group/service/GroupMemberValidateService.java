@@ -9,7 +9,7 @@ import podo.odeego.domain.group.dto.GroupMemberStation;
 import podo.odeego.domain.group.entity.Group;
 import podo.odeego.domain.member.entity.Member;
 import podo.odeego.domain.member.service.MemberFindService;
-import podo.odeego.domain.station.entity.Station;
+import podo.odeego.domain.station.dto.StationInfo;
 import podo.odeego.domain.station.service.StationFindService;
 
 @Service
@@ -32,7 +32,7 @@ public class GroupMemberValidateService {
 
 		Group savedGroup = groupQueryService.findById(groupId);
 
-		Station memberStation = stationFindService.findByName(stationName);
+		StationInfo memberStation = stationFindService.findByName(stationName);
 
 		return new GroupMemberStation(savedGroup, authorizedMember, memberStation);
 	}
