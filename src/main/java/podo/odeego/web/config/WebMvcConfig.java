@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -19,7 +18,6 @@ import podo.odeego.web.auth.LoginMemberArgumentResolver;
 import podo.odeego.web.logging.ApiLogInterceptor;
 
 @Configuration
-@EnableWebMvc
 public class WebMvcConfig implements WebMvcConfigurer {
 
 	private final String localOrigin;
@@ -29,7 +27,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	public WebMvcConfig(
 		@Value("${server.host.front.local}") String localOrigin,
 		@Value("${server.host.front.release}") String releaseOrigin,
-		JwtProvider jwtProvider) {
+		JwtProvider jwtProvider
+	) {
 		this.localOrigin = localOrigin;
 		this.releaseOrigin = releaseOrigin;
 		this.jwtProvider = jwtProvider;
