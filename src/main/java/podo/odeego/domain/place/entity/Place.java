@@ -34,6 +34,8 @@ public class Place {
 	@Embedded
 	private Address address;
 
+	private String shareUrl;
+
 	private String stationName;
 
 	@Enumerated(value = STRING)
@@ -91,6 +93,10 @@ public class Place {
 
 	public String stationName() {
 		return stationName;
+	}
+
+	public String shareUrl() {
+		return shareUrl;
 	}
 
 	public List<PlaceImage> images() {

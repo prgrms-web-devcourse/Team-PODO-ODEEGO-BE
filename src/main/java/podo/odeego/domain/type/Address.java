@@ -2,11 +2,13 @@ package podo.odeego.domain.type;
 
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
 public class Address {
 
+	@Column(nullable = false)
 	private String address;
 
 	public Address() {
