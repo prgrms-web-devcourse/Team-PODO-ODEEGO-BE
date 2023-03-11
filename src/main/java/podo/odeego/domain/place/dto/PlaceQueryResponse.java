@@ -10,22 +10,31 @@ import podo.odeego.domain.place.entity.Place;
 
 public class PlaceQueryResponse {
 
+	private static final String EMPTY_STRING = "";
+
 	private String businessName;
 	private String address;
+	private String shareUrl;
 	private List<PlaceImageUrl> images;
 
 	public PlaceQueryResponse(String businessName, String address) {
-		this(businessName, address, new ArrayList<>());
+		this(businessName, address, EMPTY_STRING, new ArrayList<>());
 	}
 
-	public PlaceQueryResponse(String businessName, String address, List<PlaceImageUrl> images) {
+	public PlaceQueryResponse(String businessName, String address, String shareUrl, List<PlaceImageUrl> images) {
 		this.businessName = businessName;
 		this.address = address;
+		this.shareUrl = shareUrl;
 		this.images = images;
 	}
 
 	public static PlaceQueryResponse from(Place place) {
-		return new PlaceQueryResponse(place.name(), place.address(), PlaceImageUrl.from(place.images()));
+		return new PlaceQueryResponse(
+			place.name(),
+			place.address(),
+			place.shareUrl(),
+			PlaceImageUrl.from(place.images())
+		);
 	}
 
 	public static Page<PlaceQueryResponse> from(Page<Place> places) {
@@ -38,6 +47,10 @@ public class PlaceQueryResponse {
 
 	public String getAddress() {
 		return address;
+	}
+
+	public String getShareUrl() {
+		return shareUrl;
 	}
 
 	public List<PlaceImageUrl> getImages() {
