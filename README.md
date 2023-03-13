@@ -56,23 +56,17 @@
 
 <br>
 
-### API 명세서
-
-- [노션]()
-
-<br>
-
-### ERD
-
-<br>
-
-### CI/CD 파이프라인
+## 🌎 Infrastructure
+---
 
 ![image](https://user-images.githubusercontent.com/65555299/216760484-b76226b3-547f-4e6e-ba8f-8254bee1f783.png)
 
-<br>
+## 📝 WIKI
 
-## 🫐 프로젝트 페이지
+ - [프로젝트 홈](https://backend-devcourse.notion.site/01-3041cf2d11094df09a63261351a3a1d0)
+ - [기획서](https://backend-devcourse.notion.site/d9cef28a48ed409ca6f5367fbcad54cb)
+ - [API 명세서](https://backend-devcourse.notion.site/API-92d7b8d46608455485ca50aea8d3eae3)
+ - [트러블 슈팅](https://github.com/prgrms-web-devcourse/Team-PODO-ODEEGO-BE/wiki)
+ - [회고록](https://www.notion.so/backend-devcourse/01-3041cf2d11094df09a63261351a3a1d0?p=ab7341a4921a49fb85615d04f333b813&pm=s)
 
-- 프로젝트 홈
-- 회고
+## 💾 ERD
