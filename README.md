@@ -57,9 +57,9 @@
 <br>
 
 ## 🌎 Infrastructure
----
+![기술스택-페이지-5 drawio](https://user-images.githubusercontent.com/35731532/224756229-7498bfed-7fd0-41dc-ac3a-26d48d9b7074.png)
 
-![image](https://user-images.githubusercontent.com/65555299/216760484-b76226b3-547f-4e6e-ba8f-8254bee1f783.png)
+---
 
 ## 📝 WIKI
 
@@ -70,3 +70,4 @@
  - [회고록](https://www.notion.so/backend-devcourse/01-3041cf2d11094df09a63261351a3a1d0?p=ab7341a4921a49fb85615d04f333b813&pm=s)
 
 ## 💾 ERD
+![ODEEGO ERD](https://user-images.githubusercontent.com/35731532/224753349-569e73f9-8a4d-4753-a186-1d537530aca9.png)
