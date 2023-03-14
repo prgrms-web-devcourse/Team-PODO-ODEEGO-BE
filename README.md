@@ -1,16 +1,16 @@
-# 🍣 오디고 (ODEEGO)
-TODO: 로고 추가 필요
-### 합리적인 약속장소 추천 서비스, ODEEGO
-TODO: 추가내용 입력 필요
-<br>
+# 🧭 오디고 (ODEEGO)
 
-[ODEEGO 서비스 이용하러 가기](https://odeego.vercel.app)
+<img max-width="326" alt="ODEEGO_LOGO" src="https://user-images.githubusercontent.com/35731532/224637921-a6419a7e-2586-4610-81c7-28c68966698b.png">
 
-<br>
+### ✨합리적인 약속장소 추천 서비스, ODEEGO✨
 
-## 📌 프로젝트 목표
-TODO: 입력 필요
-- 
+#### 🚃 약속을 잡은 사람들의 출발 지하철 역으로 합리적인 중간지점을 찾아봐요. 소요시간을 기준으로 중간지점을 추천해줍니다!
+
+#### 👩‍👧‍👦 회원가입을 하면 그룹을 생성해서 자신의 출발역을 입력할 수 있어요. 편하게 출발역을 취합해봐요!
+
+#### 🍱 모일 역을 정했다면 역 주변의 약속장소를 정할 수 있어요. 마음에 드는 장소를 친구들에게 공유해봐요!
+
+#### 👉🏻 [ODEEGO 서비스 이용하러 가기](https://odeego.vercel.app)
 
 <br>
 
@@ -56,23 +56,18 @@ TODO: 입력 필요
 
 <br>
 
-### API 명세서
+## 🌎 Infrastructure
+![기술스택-페이지-5 drawio](https://user-images.githubusercontent.com/35731532/224756229-7498bfed-7fd0-41dc-ac3a-26d48d9b7074.png)
 
-- [노션]()
+---
 
-<br>
+## 📝 WIKI
 
-### ERD
+ - [프로젝트 홈](https://backend-devcourse.notion.site/01-3041cf2d11094df09a63261351a3a1d0)
+ - [기획서](https://backend-devcourse.notion.site/d9cef28a48ed409ca6f5367fbcad54cb)
+ - [API 명세서](https://backend-devcourse.notion.site/API-92d7b8d46608455485ca50aea8d3eae3)
+ - [트러블 슈팅](https://github.com/prgrms-web-devcourse/Team-PODO-ODEEGO-BE/wiki)
+ - [회고록](https://www.notion.so/backend-devcourse/01-3041cf2d11094df09a63261351a3a1d0?p=ab7341a4921a49fb85615d04f333b813&pm=s)
 
-<br>
-
-### CI/CD 파이프라인
-
-![image](https://user-images.githubusercontent.com/65555299/216760484-b76226b3-547f-4e6e-ba8f-8254bee1f783.png)
-
-<br>
-
-## 🫐 프로젝트 페이지
-
-- 프로젝트 홈
-- 회고
+## 💾 ERD
+![ODEEGO ERD](https://user-images.githubusercontent.com/35731532/224753349-569e73f9-8a4d-4753-a186-1d537530aca9.png)
