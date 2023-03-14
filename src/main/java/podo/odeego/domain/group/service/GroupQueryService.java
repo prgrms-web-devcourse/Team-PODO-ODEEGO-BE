@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import podo.odeego.domain.group.dto.GroupMemberExistResponse;
 import podo.odeego.domain.group.dto.Participants;
 import podo.odeego.domain.group.dto.response.GroupResponse;
 import podo.odeego.domain.group.dto.response.GroupResponses;
@@ -67,5 +68,17 @@ public class GroupQueryService {
 		if (!groupRepository.existsById(groupId)) {
 			throw new GroupNotFoundException("Cannot find group for groupId=%s".formatted(groupId.toString()));
 		}
+	}
+
+	public GroupMemberExistResponse isSubmitted(UUID groupId, Long memberId) {
+		Group group = groupRepository.findFetchById(groupId)
+			.orElseThrow(
+				() -> new GroupNotFoundException("Cannot find group for groupId=%s".formatted(groupId.toString())));
+		
+		return new GroupMemberExistResponse(
+			group.groupMembers()
+				.stream()
+				.anyMatch(groupMember -> groupMember.getMemberId().equals(memberId))
+		);
 	}
 }
