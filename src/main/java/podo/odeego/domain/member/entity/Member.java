@@ -19,7 +19,6 @@ import podo.odeego.domain.group.exception.AlreadyParticipatingGroupException;
 import podo.odeego.domain.member.exception.MemberNicknameOutOfBoundsException;
 import podo.odeego.domain.member.exception.MemberNicknameUnformattedException;
 import podo.odeego.domain.type.BaseTime;
-import podo.odeego.global.error.exception.InvalidValueException;
 
 @Entity
 public class Member extends BaseTime {
@@ -93,7 +92,7 @@ public class Member extends BaseTime {
 
 	private void verifyMemberType() {
 		if (MemberType.REGULAR.equals(type)) {
-			throw new InvalidValueException(
+			throw new MemberAlreadyRegularException(
 				"Can't signUp this member because member's type is %s".formatted(type.toString()));
 		}
 	}
