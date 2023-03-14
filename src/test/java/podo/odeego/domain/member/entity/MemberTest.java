@@ -68,7 +68,7 @@ class MemberTest {
 
 		//when & then
 		assertThatThrownBy(() -> member.signUp("닉네임123", "테스트역"))
-			.isInstanceOf(InvalidValueException.class)
+			.isInstanceOf(MemberAlreadyRegularException.class)
 			.hasMessage(
 				"Can't signUp this member because member's type is %s".formatted(MemberType.REGULAR.toString()));
 	}

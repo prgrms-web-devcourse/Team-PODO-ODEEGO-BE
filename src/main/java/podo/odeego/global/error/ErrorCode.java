@@ -25,6 +25,7 @@ public enum ErrorCode {
 	MEMBER_NICKNAME_OUT_OF_BOUNDS(HttpStatus.BAD_REQUEST, "M003", "Member nickname length is out of bounds."),
 	MEMBER_NICKNAME_UNFORMATTED(HttpStatus.BAD_REQUEST, "M004", "Member nickname is unformatted."),
 	DEFAULT_STATION_NOT_EXISTS(HttpStatus.BAD_REQUEST, "M005", "Station doesn't exists in our service."),
+	MEMBER_ALREADY_REGULAR(HttpStatus.BAD_REQUEST, "M006", "Member type is already REGULAR"),
 
 	// Group
 	GROUP_NOT_FOUND(HttpStatus.NOT_FOUND, "G001", "Group Not Found."),
