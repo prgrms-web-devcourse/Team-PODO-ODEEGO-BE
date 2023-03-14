@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import podo.odeego.config.TestConfig;
+import podo.odeego.domain.group.dto.GroupMemberExistResponse;
 import podo.odeego.domain.group.dto.response.GroupResponse;
 import podo.odeego.domain.group.entity.Group;
 import podo.odeego.domain.group.entity.GroupCapacity;
@@ -69,5 +70,44 @@ class GroupQueryServiceTest {
 		// when & then
 		assertThatThrownBy(() -> groupQueryService.getOne(nonGroupHost.id(), savedGroup.id()))
 			.isInstanceOf(GroupHostNotMatchException.class);
+	}
+
+	@DisplayName("멤버는 그룹에 속해있는지 확인할 수 있다.")
+	@Test
+	void isSubmitted() {
+		// given
+		Member host = memberRepository.save(Member.ofNickname("groupHost", "provider", "provider-id1"));
+		Member member = memberRepository.save(Member.ofNickname("groupMember", "provider", "provider-id2"));
+		Group group = groupRepository.save(
+			new Group(new GroupCapacity(GroupCapacity.MAX_CAPACITY), Group.GROUP_VALID_TIME));
+		group.addGroupMember(GroupMember.newInstance(host, ParticipantType.HOST));
+		group.addGroupMember(GroupMember.newInstance(member, ParticipantType.GUEST));
+
+		GroupMemberExistResponse expect = new GroupMemberExistResponse(true);
+		// when
+		GroupMemberExistResponse actual = groupQueryService.isSubmitted(group.id(), member.id());
+
+		// then
+		assertThat(actual)
+			.isEqualTo(expect);
+	}
+
+	@DisplayName("멤버는 그룹에 속해있지 않은지 확인할 수 있다.")
+	@Test
+	void isNotSubmitted() {
+		// given
+		Member host = memberRepository.save(Member.ofNickname("groupHost", "provider", "provider-id1"));
+		Member member = memberRepository.save(Member.ofNickname("groupMember", "provider", "provider-id2"));
+		Group group = groupRepository.save(
+			new Group(new GroupCapacity(GroupCapacity.MAX_CAPACITY), Group.GROUP_VALID_TIME));
+		group.addGroupMember(GroupMember.newInstance(host, ParticipantType.HOST));
+
+		GroupMemberExistResponse expect = new GroupMemberExistResponse(false);
+		// when
+		GroupMemberExistResponse actual = groupQueryService.isSubmitted(group.id(), member.id());
+
+		// then
+		assertThat(actual)
+			.isEqualTo(expect);
 	}
 }
