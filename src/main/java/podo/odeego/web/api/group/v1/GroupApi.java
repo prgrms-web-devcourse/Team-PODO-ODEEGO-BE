@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import podo.odeego.domain.group.dto.GroupMemberExistResponse;
 import podo.odeego.domain.group.dto.HostStationModifyRequest;
 import podo.odeego.domain.group.dto.request.GroupCreateRequest;
 import podo.odeego.domain.group.dto.response.GroupResponse;
@@ -114,5 +115,13 @@ public class GroupApi {
 	) {
 		modifyService.define(groupId, hostId, hostStationDefineRequest);
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	@GetMapping("/{group-id}/group-members/submit-status")
+	public ResponseEntity<GroupMemberExistResponse> isSubmitted(
+		@PathVariable(value = "group-id") UUID groupId,
+		@LoginMember Long memberId
+	) {
+		return ResponseEntity.ok(queryService.isSubmitted(groupId, memberId));
 	}
 }
