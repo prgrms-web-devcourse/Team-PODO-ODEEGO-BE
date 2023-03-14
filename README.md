@@ -1,6 +1,8 @@
 # 🧭 오디고 (ODEEGO)
 
-<img max-width="326" alt="ODEEGO_LOGO" src="https://user-images.githubusercontent.com/35731532/224637921-a6419a7e-2586-4610-81c7-28c68966698b.png">
+<div align="center">
+  <img src="https://user-images.githubusercontent.com/59648372/224749371-b7df11f3-8e6d-49e7-8118-661597e55e9d.png" />
+</div>
 
 ### ✨합리적인 약속장소 추천 서비스, ODEEGO✨
 
@@ -44,7 +46,7 @@
 
 ## 🍎 설계 및 문서
 
-### 주요 기능
+### 📋 주요 기능
 
 - 회원가입, 로그인
 - 약속 인원들이 모일 중간 지점 검색
@@ -53,21 +55,24 @@
 - 중간 지점의 주변 장소 추천
 - 장소 공유
 
+<br>
+
+### 🌎 Infrastructure
+
+![기술스택-페이지-5 drawio](https://user-images.githubusercontent.com/35731532/224756229-7498bfed-7fd0-41dc-ac3a-26d48d9b7074.png)
 
 <br>
 
-## 🌎 Infrastructure
-![기술스택-페이지-5 drawio](https://user-images.githubusercontent.com/35731532/224756229-7498bfed-7fd0-41dc-ac3a-26d48d9b7074.png)
+### 💾 ERD
+
+![ODEEGO ERD](https://user-images.githubusercontent.com/35731532/224753349-569e73f9-8a4d-4753-a186-1d537530aca9.png)
 
 ---
 
 ## 📝 WIKI
 
- - [프로젝트 홈](https://backend-devcourse.notion.site/01-3041cf2d11094df09a63261351a3a1d0)
- - [기획서](https://backend-devcourse.notion.site/d9cef28a48ed409ca6f5367fbcad54cb)
- - [API 명세서](https://backend-devcourse.notion.site/API-92d7b8d46608455485ca50aea8d3eae3)
- - [트러블 슈팅](https://github.com/prgrms-web-devcourse/Team-PODO-ODEEGO-BE/wiki)
- - [회고록](https://www.notion.so/backend-devcourse/01-3041cf2d11094df09a63261351a3a1d0?p=ab7341a4921a49fb85615d04f333b813&pm=s)
-
-## 💾 ERD
-![ODEEGO ERD](https://user-images.githubusercontent.com/35731532/224753349-569e73f9-8a4d-4753-a186-1d537530aca9.png)
+- [프로젝트 홈](https://backend-devcourse.notion.site/01-3041cf2d11094df09a63261351a3a1d0)
+- [기획서](https://backend-devcourse.notion.site/d9cef28a48ed409ca6f5367fbcad54cb)
+- [API 명세서](https://backend-devcourse.notion.site/API-92d7b8d46608455485ca50aea8d3eae3)
+- [트러블 슈팅](https://github.com/prgrms-web-devcourse/Team-PODO-ODEEGO-BE/wiki)
+- [회고록](https://www.notion.so/backend-devcourse/01-3041cf2d11094df09a63261351a3a1d0?p=ab7341a4921a49fb85615d04f333b813&pm=s)
