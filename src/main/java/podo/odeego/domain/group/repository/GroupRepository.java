@@ -13,9 +13,10 @@ import podo.odeego.domain.group.entity.Group;
 public interface GroupRepository extends JpaRepository<Group, UUID> {
 
 	@Query("""
-		select distinct g
+		select g
 		from Group g
 		join fetch 	g.groupMembers
+		where g.id = :groupId
 		""")
 	Optional<Group> findFetchById(UUID groupId);
 }
