@@ -74,11 +74,7 @@ public class GroupQueryService {
 		Group group = groupRepository.findFetchById(groupId)
 			.orElseThrow(
 				() -> new GroupNotFoundException("Cannot find group for groupId=%s".formatted(groupId.toString())));
-		
-		return new GroupMemberExistResponse(
-			group.groupMembers()
-				.stream()
-				.anyMatch(groupMember -> groupMember.getMemberId().equals(memberId))
-		);
+
+		return new GroupMemberExistResponse(group.isGroupMemberSubmitted(memberId));
 	}
 }

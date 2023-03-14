@@ -137,6 +137,12 @@ public class Group extends BaseTime {
 			.orElseThrow(() -> new GroupHostAbsentException("Can't find group host."));
 	}
 
+	public boolean isGroupMemberSubmitted(Long memberId) {
+		return this.groupMembers()
+			.stream()
+			.anyMatch(groupMember -> groupMember.getMemberId().equals(memberId));
+	}
+
 	public UUID id() {
 		return id;
 	}
