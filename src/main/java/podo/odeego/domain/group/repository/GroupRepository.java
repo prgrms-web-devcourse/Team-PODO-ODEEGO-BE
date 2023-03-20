@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import podo.odeego.domain.group.entity.Group;
@@ -18,5 +19,5 @@ public interface GroupRepository extends JpaRepository<Group, UUID> {
 		join fetch 	g.groupMembers
 		where g.id = :groupId
 		""")
-	Optional<Group> findFetchById(UUID groupId);
+	Optional<Group> findFetchById(@Param(value = "groupId") UUID groupId);
 }
