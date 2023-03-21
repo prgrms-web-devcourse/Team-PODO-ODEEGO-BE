@@ -57,11 +57,12 @@ public class TestConfig {
 
 	@Bean
 	public GroupRemoveService groupRemoveService(
-		MemberFindService memberFindService,
 		GroupRepository groupRepository,
-		GroupQueryService groupQueryService
+		GroupMemberRepository groupMemberRepository,
+		GroupQueryService groupQueryService,
+		MemberFindService memberFindService
 	) {
-		return new GroupRemoveService(memberFindService, groupRepository, groupQueryService);
+		return new GroupRemoveService(groupRepository, groupMemberRepository, groupQueryService, memberFindService);
 	}
 
 	@Bean
