@@ -2,6 +2,8 @@ package podo.odeego.domain.member.service;
 
 import static org.assertj.core.api.Assertions.*;
 
+import javax.persistence.EntityManager;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,6 +13,12 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import podo.odeego.config.TestConfig;
+import podo.odeego.domain.group.entity.Group;
+import podo.odeego.domain.group.entity.GroupCapacity;
+import podo.odeego.domain.group.entity.GroupMember;
+import podo.odeego.domain.group.entity.ParticipantType;
+import podo.odeego.domain.group.repository.GroupMemberRepository;
+import podo.odeego.domain.group.repository.GroupRepository;
 import podo.odeego.domain.member.dto.MemberJoinResponse;
 import podo.odeego.domain.member.dto.MemberSignUpRequest;
 import podo.odeego.domain.member.entity.Member;
@@ -33,7 +41,16 @@ class MemberServiceTest {
 	private StationRepository stationRepository;
 
 	@Autowired
+	private GroupRepository groupRepository;
+
+	@Autowired
+	private GroupMemberRepository groupMemberRepository;
+
+	@Autowired
 	private MemberService memberService;
+
+	@Autowired
+	private EntityManager em;
 
 	@Test
 	@DisplayName("서비스에 최초로 로그인한 사용자일 경우 준회원으로 회원가입됩니다")
@@ -116,5 +133,63 @@ class MemberServiceTest {
 		assertThatThrownBy(() -> memberService.leave(wrongId))
 			.isInstanceOf(MemberNotFoundException.class)
 			.hasMessage("Cannot find Member for memberId=%d.".formatted(wrongId));
+	}
+
+	@Test
+	@DisplayName("회원이 그룹에 호스트로 참여 중이면, 회원 탈퇴 시 그룹 또한 삭제된다.")
+	void group_is_deleted_if_member_participates_as_host_when_member_leaves() {
+		// given
+		Member hostMember =
+			memberRepository.save(Member.ofNickname("host", "provider", "providerId"));
+
+		GroupMember groupMemberAsGuest = GroupMember.newInstance(hostMember, ParticipantType.HOST);
+		Group group = new Group(new GroupCapacity(GroupCapacity.MAX_CAPACITY), Group.GROUP_VALID_TIME);
+		group.addGroupMember(groupMemberAsGuest);
+		groupRepository.save(group);
+
+		// when
+		memberService.leave(hostMember.id());
+
+		// then
+		int actualAllMemberSize = memberRepository.findAll()
+			.size();
+		assertThat(actualAllMemberSize).isZero();
+
+		int actualAllGroupSize = groupRepository.findAll()
+			.size();
+		assertThat(actualAllGroupSize).isZero();
+
+		int actualAllGroupMemberSize = groupMemberRepository.findAll()
+			.size();
+		assertThat(actualAllGroupMemberSize).isZero();
+	}
+
+	@Test
+	@DisplayName("회원이 그룹에 게스트로 참여 중이면, 회원 탈퇴 시 그룹은 삭제되지 않고 그룹멤버만 삭제된다.")
+	void only_groupMember_is_deleted_if_member_participates_as_host_when_member_leaves() {
+		// given
+		Member guestMember =
+			memberRepository.save(Member.ofNickname("guest", "provider", "providerId"));
+
+		GroupMember groupMemberAsGuest = GroupMember.newInstance(guestMember, ParticipantType.GUEST);
+		Group group = new Group(new GroupCapacity(GroupCapacity.MAX_CAPACITY), Group.GROUP_VALID_TIME);
+		group.addGroupMember(groupMemberAsGuest);
+		groupRepository.save(group);
+
+		// when
+		memberService.leave(guestMember.id());
+
+		// then
+		int actualAllMemberSize = memberRepository.findAll()
+			.size();
+		assertThat(actualAllMemberSize).isZero();
+
+		int actualAllGroupSize = groupRepository.findAll()
+			.size();
+		assertThat(actualAllGroupSize).isNotZero();
+
+		int actualAllGroupMemberSize = groupMemberRepository.findAll()
+			.size();
+		assertThat(actualAllGroupMemberSize).isZero();
 	}
 }
