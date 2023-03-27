@@ -24,25 +24,15 @@ public class PlaceQueryServiceImpl implements PlaceQueryService {
 	}
 
 	@Override
-	public Page<PlaceQueryResponse> getAll(String stationName, PlaceCategory placeCategory, Pageable pageable) {
-		if (placeCategory.isAll()) {
-			return getAllByStationName(stationName, pageable);
-		}
-		return getAllByStationNameAndCategory(stationName, placeCategory, pageable);
+	public Page<PlaceQueryResponse> getAll(String stationName, Pageable pageable) {
+		Page<Place> findPlaces = placeRepository.findPlacesByStationName(stationName, pageable);
+		return PlaceQueryResponse.from(findPlaces);
 	}
 
-	private Page<PlaceQueryResponse> getAllByStationName(String stationName, Pageable pageable) {
-		return PlaceQueryResponse.from(placeRepository.findPlacesByStationName(stationName, pageable));
-	}
-
-	private Page<PlaceQueryResponse> getAllByStationNameAndCategory(
-		String stationName,
-		PlaceCategory category,
-		Pageable pageable
-	) {
-		return PlaceQueryResponse.from(
-			placeRepository.findPlacesByStationNameAndCategory(stationName, category, pageable)
-		);
+	@Override
+	public Page<PlaceQueryResponse> getAll(String stationName, PlaceCategory category, Pageable pageable) {
+		Page<Place> findPlaces = placeRepository.findPlacesByStationNameAndCategory(stationName, category, pageable);
+		return PlaceQueryResponse.from(findPlaces);
 	}
 
 	public Place findById(Long placeId) {

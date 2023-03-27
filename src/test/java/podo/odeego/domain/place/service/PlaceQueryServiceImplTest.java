@@ -43,12 +43,12 @@ class PlaceQueryServiceImplTest {
 		String gangnamStationName = "강남역";
 		placeRepository.saveAll(
 			List.of(
-				Place.of("음식점1", new Address("음식점1 주소"), gangnamStationName, PlaceCategory.RESTAURANT),
-				Place.of("음식점2", new Address("음식점2 주소"), gangnamStationName, PlaceCategory.RESTAURANT),
-				Place.of("음식점3", new Address("음식점3 주소"), gangnamStationName, PlaceCategory.RESTAURANT),
-				Place.of("카페1", new Address("카페1 주소"), gangnamStationName, PlaceCategory.CAFE),
-				Place.of("카페2", new Address("카페2 주소"), gangnamStationName, PlaceCategory.CAFE),
-				Place.of("카페3", new Address("카페3 주소"), gangnamStationName, PlaceCategory.CAFE)
+				new Place("음식점1", new Address("음식점1 주소"), gangnamStationName, PlaceCategory.RESTAURANT),
+				new Place("음식점2", new Address("음식점2 주소"), gangnamStationName, PlaceCategory.RESTAURANT),
+				new Place("음식점3", new Address("음식점3 주소"), gangnamStationName, PlaceCategory.RESTAURANT),
+				new Place("카페1", new Address("카페1 주소"), gangnamStationName, PlaceCategory.CAFE),
+				new Place("카페2", new Address("카페2 주소"), gangnamStationName, PlaceCategory.CAFE),
+				new Place("카페3", new Address("카페3 주소"), gangnamStationName, PlaceCategory.CAFE)
 			)
 		);
 

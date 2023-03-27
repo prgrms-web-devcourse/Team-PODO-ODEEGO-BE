@@ -33,12 +33,10 @@ public class PlaceApi {
 		@RequestParam Optional<PlaceCategory> category,
 		@PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable
 	) {
-		return ResponseEntity.ok(
-			placeQueryService.getAll(
-				stationName.trim(),
-				category.orElse(PlaceCategory.ALL),
-				pageable
-			)
-		);
+		Page<PlaceQueryResponse> response = category
+			.map(placeCategory -> placeQueryService.getAll(stationName, placeCategory, pageable))
+			.orElseGet(() -> placeQueryService.getAll(stationName, pageable));
+
+		return ResponseEntity.ok(response);
 	}
 }

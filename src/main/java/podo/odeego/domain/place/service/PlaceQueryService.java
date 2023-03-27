@@ -8,5 +8,7 @@ import podo.odeego.domain.place.entity.PlaceCategory;
 
 public interface PlaceQueryService {
 
-	Page<PlaceQueryResponse> getAll(String stationName, PlaceCategory placeCategory, Pageable pageable);
+	Page<PlaceQueryResponse> getAll(String stationName, Pageable pageable);
+
+	Page<PlaceQueryResponse> getAll(String stationName, PlaceCategory category, Pageable pageable);
 }
