@@ -27,8 +27,6 @@ import podo.odeego.domain.station.service.StationFindService;
 import podo.odeego.web.auth.JwtProvider;
 import podo.odeego.web.auth.dto.GenerateTokenResponse;
 
-// @RunWith(SpringRunner.class)
-// @WebMvcTest
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
