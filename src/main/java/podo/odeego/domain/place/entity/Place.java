@@ -16,7 +16,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import podo.odeego.domain.place.exception.PlaceCategoryNotValidException;
 import podo.odeego.domain.place.exception.PlaceImageDuplicatedException;
 import podo.odeego.domain.type.Address;
 
@@ -42,25 +41,16 @@ public class Place {
 	private PlaceCategory category;
 
 	@OneToMany(mappedBy = "place", cascade = ALL, orphanRemoval = true)
-	private List<PlaceImage> images = new ArrayList<>();
+	private final List<PlaceImage> images = new ArrayList<>();
 
 	protected Place() {
 	}
 
-	private Place(String name, Address address, String stationName, PlaceCategory category) {
+	public Place(String name, Address address, String stationName, PlaceCategory category) {
 		this.name = name;
 		this.address = address;
 		this.stationName = stationName;
 		this.category = category;
-	}
-
-	public static Place of(String name, Address address, String stationName, PlaceCategory category) {
-		if (category.isAll()) {
-			throw new PlaceCategoryNotValidException(
-				"PlaceCategory '%s' is invalid for create Place object.".formatted(category.toString())
-			);
-		}
-		return new Place(name, address, stationName, category);
 	}
 
 	public void addImage(PlaceImage image) {
