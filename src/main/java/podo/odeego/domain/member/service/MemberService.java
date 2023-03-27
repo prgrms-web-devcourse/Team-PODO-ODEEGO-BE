@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import podo.odeego.domain.group.service.GroupRemoveService;
 import podo.odeego.domain.member.dto.MemberJoinResponse;
 import podo.odeego.domain.member.dto.MemberSignUpRequest;
 import podo.odeego.domain.member.entity.Member;
@@ -20,9 +21,17 @@ public class MemberService {
 	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	private final MemberRepository memberRepository;
+	private final MemberFindService memberFindService;
+	private final GroupRemoveService groupRemoveService;
 
-	public MemberService(MemberRepository memberRepository) {
+	public MemberService(
+		MemberRepository memberRepository,
+		MemberFindService memberFindService,
+		GroupRemoveService groupRemoveService
+	) {
 		this.memberRepository = memberRepository;
+		this.memberFindService = memberFindService;
+		this.groupRemoveService = groupRemoveService;
 	}
 
 	public MemberJoinResponse join(String profileImageUrl, String provider, String providerId) {
@@ -64,9 +73,10 @@ public class MemberService {
 	}
 
 	public void leave(Long memberId) {
-		Member member = memberRepository.findById(memberId)
-			.orElseThrow(() -> new MemberNotFoundException(
-				"Cannot find Member for memberId=%d.".formatted(memberId)));
-		memberRepository.delete(member);
+		Member findMember = memberFindService.findById(memberId);
+
+		groupRemoveService.deleteGroupInfoByParticipantType(memberId);
+
+		memberRepository.delete(findMember);
 	}
 }

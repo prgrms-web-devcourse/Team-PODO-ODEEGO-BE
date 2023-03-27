@@ -54,7 +54,7 @@ public class Group extends BaseTime {
 	private LocalTime validTime;
 
 	@OneToMany(mappedBy = "group", cascade = {REMOVE, PERSIST, MERGE})
-	private List<GroupMember> groupMembers = new ArrayList<>();
+	private final List<GroupMember> groupMembers = new ArrayList<>();
 
 	protected Group() {
 	}
@@ -77,6 +77,10 @@ public class Group extends BaseTime {
 
 		groupMember.assignGroup(this);
 		this.groupMembers.add(groupMember);
+	}
+
+	public void removeGroupMember(GroupMember groupMember) {
+		this.groupMembers.remove(groupMember);
 	}
 
 	public void defineHostStation(Station station) {
@@ -120,14 +124,17 @@ public class Group extends BaseTime {
 	}
 
 	public void verifyHostMatches(Member member) {
-		GroupMember host = findHost();
-
-		if (!host.isMemberIdMatches(member.id())) {
+		if (!isGroupHost(member)) {
 			throw new GroupHostNotMatchException(
-				"Group host not matched. Group '%s''s hostId is '%d' but access memberId is '%d'."
-					.formatted(this.id.toString(), host.getMemberId(), member.id())
+				"Group host not matched. Member for memberId=%d is not host of Group for groupId=%s."
+					.formatted(member.id(), this.id.toString())
 			);
 		}
+	}
+
+	public boolean isGroupHost(Member member) {
+		GroupMember host = findHost();
+		return host.isMemberIdMatches(member.id());
 	}
 
 	private GroupMember findHost() {
