@@ -23,10 +23,7 @@ public class PathFindService {
 	}
 
 	public List<PathInfo> findAllByStarts(List<String> startNames) {
-		return pathRepository.findAllByStartStationIn(startNames)
-			.stream()
-			.map(PathInfo::new)
-			.toList();
+		return pathRepository.findAllByStartStationIn(startNames);
 	}
 
 }
