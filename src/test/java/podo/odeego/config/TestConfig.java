@@ -40,9 +40,15 @@ public class TestConfig {
 
 	@Bean
 	public MemberService memberService(
-		MemberRepository memberRepository
+		MemberRepository memberRepository,
+		MemberFindService memberFindService,
+		GroupRemoveService groupRemoveService
 	) {
-		return new MemberService(memberRepository);
+		return new MemberService(
+			memberRepository,
+			memberFindService,
+			groupRemoveService
+		);
 	}
 
 	// Group
@@ -57,11 +63,12 @@ public class TestConfig {
 
 	@Bean
 	public GroupRemoveService groupRemoveService(
-		MemberFindService memberFindService,
 		GroupRepository groupRepository,
-		GroupQueryService groupQueryService
+		GroupMemberRepository groupMemberRepository,
+		GroupQueryService groupQueryService,
+		MemberFindService memberFindService
 	) {
-		return new GroupRemoveService(memberFindService, groupRepository, groupQueryService);
+		return new GroupRemoveService(groupRepository, groupMemberRepository, groupQueryService, memberFindService);
 	}
 
 	@Bean

@@ -35,10 +35,6 @@ public class NaverPlaceQueryService {
 	@Deprecated
 	public PlaceQueryResponses getAll(String stationName, PlaceCategory category, Pageable pageable) {
 		stationFindService.verifyStationExists(stationName);
-
-		if (category.isAll()) {
-			return PlaceQueryResponses.from(queryAllPlaces(stationName));
-		}
 		return PlaceQueryResponses.from(queryPlacesByCategory(stationName, category));
 	}
 

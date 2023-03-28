@@ -20,6 +20,6 @@ public record PlaceCreateRequest(
 	}
 
 	public Place toEntity() {
-		return Place.of(name, new Address(address), stationName, category);
+		return new Place(name, new Address(address), stationName, category);
 	}
 }
