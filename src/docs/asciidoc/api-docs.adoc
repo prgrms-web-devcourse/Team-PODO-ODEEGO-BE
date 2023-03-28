@@ -1,0 +1,10 @@
+= ODEEGO API Docs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+== Member
+
+=== 기본 지하철역 조회
+
+operation::get-default-station[snippets='http-request,request-headers,http-response,response-fields']
