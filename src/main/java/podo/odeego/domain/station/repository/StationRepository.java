@@ -23,7 +23,7 @@ public interface StationRepository extends JpaRepository<Station, Long> {
 	List<Station> findAllByNameIn(List<String> stationNames);
 
 	@Query("""
-			select s.name
+			select distinct s.name
 			from Station s
 		""")
 	List<String> findAllStationNames();

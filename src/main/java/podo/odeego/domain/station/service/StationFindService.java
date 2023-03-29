@@ -48,8 +48,4 @@ public class StationFindService {
 	public void verifyStationsExists(List<String> stations) {
 		stations.forEach(this::verifyStationExists);
 	}
-
-	public List<String> findAllStationNames() {
-		return stationRepository.findAllStationNames();
-	}
 }
