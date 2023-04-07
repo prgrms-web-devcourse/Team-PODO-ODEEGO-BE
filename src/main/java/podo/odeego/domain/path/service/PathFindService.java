@@ -7,26 +7,23 @@ import org.springframework.transaction.annotation.Transactional;
 
 import podo.odeego.domain.path.dto.PathInfo;
 import podo.odeego.domain.path.repository.PathRepository;
-import podo.odeego.domain.station.service.StationFindService;
+import podo.odeego.domain.station.repository.StationRepository;
 
 @Service
 @Transactional(readOnly = true)
 public class PathFindService {
 
 	private final PathRepository pathRepository;
-	private final StationFindService stationFindService;
+	private final StationRepository stationRepository;
 
-	public PathFindService(PathRepository pathRepository,
-		StationFindService stationFindService) {
+	public PathFindService(PathRepository pathRepository, StationRepository stationRepository) {
 		this.pathRepository = pathRepository;
-		this.stationFindService = stationFindService;
+		this.stationRepository = stationRepository;
 	}
 
 	public List<PathInfo> findAllByStarts(List<String> startNames) {
-		return pathRepository.findAllByStartStationIn(startNames)
-			.stream()
-			.map(PathInfo::new)
-			.toList();
+		List<String> endNames = stationRepository.findAllStationNames();
+		return pathRepository.findAllByStartStationIn(startNames, endNames);
 	}
 
 }

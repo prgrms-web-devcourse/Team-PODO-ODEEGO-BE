@@ -21,4 +21,10 @@ public interface StationRepository extends JpaRepository<Station, Long> {
 	List<StationNameQueryDto> findAllGroupByName();
 
 	List<Station> findAllByNameIn(List<String> stationNames);
+
+	@Query("""
+			select distinct s.name
+			from Station s
+		""")
+	List<String> findAllStationNames();
 }

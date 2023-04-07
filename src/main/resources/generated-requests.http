@@ -56,3 +56,27 @@ Content-Type: application/json
   "lat": 1.123123,
   "lng": 11.123123
 }
+
+### 중간 역 찾기
+POST http://localhost:8080/api/v1/mid-points/search
+Content-Type: application/json
+
+{
+  "stations": [
+    {
+      "stationName": "마두역",
+      "lat": 1.2312314,
+      "lng": 2.1231241
+    },
+    {
+      "stationName": "단대오거리역",
+      "lat": 1.2312314,
+      "lng": 2.1231241
+    },
+    {
+      "stationName": "모란역",
+      "lat": 1.2312314,
+      "lng": 2.1231241
+    }
+  ]
+}
