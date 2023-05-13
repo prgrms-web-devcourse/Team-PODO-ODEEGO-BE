@@ -16,6 +16,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.BatchSize;
+
 import podo.odeego.domain.place.exception.PlaceImageDuplicatedException;
 import podo.odeego.domain.type.Address;
 
@@ -40,6 +42,7 @@ public class Place {
 	@Enumerated(value = STRING)
 	private PlaceCategory category;
 
+	@BatchSize(size = 100)
 	@OneToMany(mappedBy = "place", cascade = ALL, orphanRemoval = true)
 	private final List<PlaceImage> images = new ArrayList<>();
 
@@ -47,8 +50,13 @@ public class Place {
 	}
 
 	public Place(String name, Address address, String stationName, PlaceCategory category) {
+		this(name, address, null, stationName, category);
+	}
+
+	public Place(String name, Address address, String shareUrl, String stationName, PlaceCategory category) {
 		this.name = name;
 		this.address = address;
+		this.shareUrl = shareUrl;
 		this.stationName = stationName;
 		this.category = category;
 	}
@@ -87,6 +95,10 @@ public class Place {
 
 	public String shareUrl() {
 		return shareUrl;
+	}
+
+	public PlaceCategory category() {
+		return category;
 	}
 
 	public List<PlaceImage> images() {
