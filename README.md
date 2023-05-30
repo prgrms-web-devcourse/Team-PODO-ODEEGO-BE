@@ -74,5 +74,4 @@
 - [프로젝트 홈](https://backend-devcourse.notion.site/01-3041cf2d11094df09a63261351a3a1d0)
 - [기획서](https://backend-devcourse.notion.site/d9cef28a48ed409ca6f5367fbcad54cb)
 - [API 명세서](https://backend-devcourse.notion.site/API-92d7b8d46608455485ca50aea8d3eae3)
-- [트러블 슈팅](https://github.com/prgrms-web-devcourse/Team-PODO-ODEEGO-BE/wiki)
-- [회고록](https://www.notion.so/backend-devcourse/01-3041cf2d11094df09a63261351a3a1d0?p=ab7341a4921a49fb85615d04f333b813&pm=s)
+- [회고록](https://backend-devcourse.notion.site/1-7554fd9e66a14deaa22b86ed374fe4c6)
