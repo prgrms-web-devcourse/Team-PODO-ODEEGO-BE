@@ -24,11 +24,16 @@ class RefreshTokenRepositoryTest {
 	@Test
 	@DisplayName("RefreshToken을 저장할 수 있습니다.")
 	public void saveRefreshToken() {
+		//given
 		String actualUUID = UUID.randomUUID().toString();
+
+		//when
 		RefreshToken refreshToken = RefreshToken.of(actualUUID, 1L);
 		refreshTokenRepository.save(refreshToken);
 		String expectedUUID = refreshTokenRepository.findById(refreshToken.token())
 			.get().token();
+
+		//then
 		assertThat(expectedUUID).isEqualTo(actualUUID);
 	}
 }

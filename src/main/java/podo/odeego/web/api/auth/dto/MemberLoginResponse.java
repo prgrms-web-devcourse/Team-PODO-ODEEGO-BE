@@ -17,10 +17,19 @@ public class MemberLoginResponse {
 		this.profileImageUrl = profileImageUrl;
 	}
 
-	public static MemberLoginResponse of(GenerateTokenResponse tokenResponse, MemberJoinResponse joinResponse){
+	public static MemberLoginResponse of(GenerateTokenResponse tokenResponse, MemberJoinResponse joinResponse) {
 		return new MemberLoginResponse(
 			tokenResponse.accessToken(),
 			tokenResponse.refreshToken(),
+			joinResponse.memberType(),
+			joinResponse.profileImageUrl()
+		);
+	}
+
+	public static MemberLoginResponse of(String accessToken, String refreshToken, MemberJoinResponse joinResponse) {
+		return new MemberLoginResponse(
+			accessToken,
+			refreshToken,
 			joinResponse.memberType(),
 			joinResponse.profileImageUrl()
 		);
