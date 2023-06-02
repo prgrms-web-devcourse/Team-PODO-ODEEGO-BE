@@ -19,6 +19,6 @@ public class HelloAuthApi {
 
 	@PostMapping("/login")
 	public String login(@RequestParam Long memberId) {
-		return jwtProvider.generateToken(memberId).accessToken();
+		return jwtProvider.generateAccessToken(memberId);
 	}
 }

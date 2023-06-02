@@ -14,7 +14,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import podo.odeego.web.auth.dto.GenerateTokenResponse;
 import podo.odeego.web.auth.exception.ExpiredJwtException;
 import podo.odeego.web.auth.exception.InvalidJwtException;
 
@@ -24,41 +23,20 @@ public class JwtProvider {
 	private static final String ID_KEY = "memberId";
 
 	private final long accessTokenExpirationMillis;
-	private final long refreshTokenExpirationMillis;
 	private final SecretKey key;
 
 	public JwtProvider(
 		@Value("${jwt.secret}") String key,
-		@Value("${jwt.expiration.access-token}") long accessTokenExpirationMillis,
-		@Value("${jwt.expiration.refresh-token}") long refreshTokenExpirationMillis
+		@Value("${jwt.expiration.access-token}") long accessTokenExpirationMillis
 	) {
 		this.key = Keys.hmacShaKeyFor(key.getBytes(StandardCharsets.UTF_8));
 		this.accessTokenExpirationMillis = accessTokenExpirationMillis;
-		this.refreshTokenExpirationMillis = refreshTokenExpirationMillis;
 	}
 
-	public GenerateTokenResponse generateToken(Long memberId){
-		return new GenerateTokenResponse(
-			generateAccessToken(memberId),
-			generateRefreshToken(memberId)
-		);
-	}
-
-	private String generateAccessToken(Long memberId) {
+	public String generateAccessToken(Long memberId) {
 		long now = (new Date()).getTime();
 
 		Date expiresIn = new Date(now + accessTokenExpirationMillis);
-		return Jwts.builder()
-			.claim(ID_KEY, memberId)
-			.setExpiration(expiresIn)
-			.signWith(key, SignatureAlgorithm.HS256)
-			.compact();
-	}
-
-	private String generateRefreshToken(Long memberId) {
-		long now = (new Date()).getTime();
-
-		Date expiresIn = new Date(now + refreshTokenExpirationMillis);
 		return Jwts.builder()
 			.claim(ID_KEY, memberId)
 			.setExpiration(expiresIn)
