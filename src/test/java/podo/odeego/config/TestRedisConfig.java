@@ -3,12 +3,16 @@ package podo.odeego.config;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.TestConfiguration;
 
 import redis.embedded.RedisServer;
 
 @TestConfiguration
 public class TestRedisConfig {
+
+	Logger log = LoggerFactory.getLogger(TestRedisConfig.class);
 
 	private final RedisServer redisServer;
 
@@ -18,7 +22,11 @@ public class TestRedisConfig {
 
 	@PostConstruct
 	public void redisServer() {
-		redisServer.start();
+		try {
+			redisServer.start();
+		} catch (RuntimeException e) {
+			log.warn("RedisServer already created");
+		}
 	}
 
 	@PreDestroy
