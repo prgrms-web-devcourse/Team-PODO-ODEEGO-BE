@@ -18,6 +18,8 @@ public enum ErrorCode {
 	NOT_GRANTED_TOKEN_TYPE(HttpStatus.UNAUTHORIZED, "A002", "Not granted token type."),
 	EXPIRED_JWT(HttpStatus.UNAUTHORIZED, "A003", "Jwt is expired."),
 	INVALID_JWT(HttpStatus.UNAUTHORIZED, "A004", "Invalid Jwt."),
+	WRONG_REFRESH_TOKEN(HttpStatus.BAD_REQUEST, "A005",
+		"Wrong Refresh Token. Maybe refresh token is not found or expired"),
 
 	// Member
 	MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "M001", "Member Not Found."),
