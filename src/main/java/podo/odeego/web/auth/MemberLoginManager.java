@@ -25,7 +25,7 @@ public class MemberLoginManager {
 
 		return MemberLoginResponse.of(
 			jwtProvider.generateAccessToken(joinResponse.id()),
-			refreshTokenService.save(joinResponse.id()),
+			refreshTokenService.create(joinResponse.id()),
 			joinResponse
 		);
 	}

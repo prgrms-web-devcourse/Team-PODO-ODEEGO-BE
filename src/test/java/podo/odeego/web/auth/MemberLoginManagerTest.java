@@ -44,7 +44,7 @@ class MemberLoginManagerTest {
 
 		String refreshToken = "refreshToken";
 		doReturn(refreshToken).when(refreshTokenService)
-			.save(joinResponse.id());
+			.create(joinResponse.id());
 
 		//when
 		MemberLoginResponse loginResponse = memberLoginManager.login("oAuth2Token");

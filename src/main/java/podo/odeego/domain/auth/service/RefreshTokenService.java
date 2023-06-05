@@ -1,11 +1,10 @@
 package podo.odeego.domain.auth.service;
 
-import java.util.Optional;
-
 import org.springframework.stereotype.Service;
 
 import podo.odeego.domain.auth.entity.RefreshToken;
 import podo.odeego.domain.auth.repository.RefreshTokenRepository;
+import podo.odeego.web.auth.exception.WrongRefreshTokenException;
 
 @Service
 public class RefreshTokenService {
@@ -16,13 +15,14 @@ public class RefreshTokenService {
 		this.refreshTokenRepository = refreshTokenRepository;
 	}
 
-	public String save(Long memberId) {
+	public String create(Long memberId) {
 		RefreshToken refreshToken = RefreshToken.randomUUID(memberId);
 		refreshTokenRepository.save(refreshToken);
 		return refreshToken.token();
 	}
 
-	public Optional<RefreshToken> findById(String refreshToken) { // DTO 고민
-		return refreshTokenRepository.findById(refreshToken);
+	public RefreshToken findById(String refreshToken) {
+		return refreshTokenRepository.findById(refreshToken)
+			.orElseThrow(() -> new WrongRefreshTokenException("Wrong RefreshToken: %s".formatted(refreshToken)));
 	}
 }
