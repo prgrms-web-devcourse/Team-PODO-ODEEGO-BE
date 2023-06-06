@@ -1,5 +1,7 @@
 package podo.odeego.web.auth.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import podo.odeego.domain.auth.entity.RefreshToken;
@@ -9,6 +11,8 @@ import podo.odeego.web.auth.dto.ReissueResponse;
 
 @Service
 public class AuthService {
+
+	private final Logger log = LoggerFactory.getLogger(AuthService.class);
 
 	private final RefreshTokenService refreshTokenService;
 
@@ -21,6 +25,7 @@ public class AuthService {
 
 	public ReissueResponse reissue(String refreshToken) {
 		RefreshToken foundToken = refreshTokenService.findById(refreshToken);
+		log.info("Refresh Token found: {}", foundToken);
 
 		String accessToken = jwtProvider.generateAccessToken(foundToken.memberId());
 		return new ReissueResponse(accessToken, refreshToken);

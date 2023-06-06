@@ -16,6 +16,10 @@ public class KakaoProfileResponse {
 		);
 	}
 
+	public static KakaoProfileResponse forTest(Long providerId, String profileImageUrl) {
+		return new KakaoProfileResponse(providerId, profileImageUrl);
+	}
+
 	public Long providerId() {
 		return providerId;
 	}

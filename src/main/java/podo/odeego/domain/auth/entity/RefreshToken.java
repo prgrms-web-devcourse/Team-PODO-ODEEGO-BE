@@ -30,4 +30,12 @@ public class RefreshToken {
 	public Long memberId() {
 		return memberId;
 	}
+
+	@Override
+	public String toString() {
+		return "RefreshToken{" +
+			"token='" + token + '\'' +
+			", memberId=" + memberId +
+			'}';
+	}
 }

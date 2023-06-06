@@ -5,12 +5,16 @@ import podo.odeego.domain.member.entity.MemberType;
 import podo.odeego.web.auth.dto.GenerateTokenResponse;
 
 public class MemberLoginResponse {
-	private final String accessToken;
-	private final String refreshToken;
-	private final MemberType memberType;
-	private final String profileImageUrl;
+	private String accessToken;
+	private String refreshToken;
+	private MemberType memberType;
+	private String profileImageUrl;
 
-	private MemberLoginResponse(String accessToken, String refreshToken, MemberType memberType, String profileImageUrl) {
+	private MemberLoginResponse() {
+	}
+
+	private MemberLoginResponse(String accessToken, String refreshToken, MemberType memberType,
+		String profileImageUrl) {
 		this.accessToken = accessToken;
 		this.refreshToken = refreshToken;
 		this.memberType = memberType;
