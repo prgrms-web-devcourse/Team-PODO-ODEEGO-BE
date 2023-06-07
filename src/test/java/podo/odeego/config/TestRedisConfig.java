@@ -23,9 +23,10 @@ public class TestRedisConfig {
 	@PostConstruct
 	public void redisServer() {
 		try {
+			log.info("Embedded RedisServer started");
 			redisServer.start();
 		} catch (RuntimeException e) {
-			log.warn("RedisServer already created");
+			log.warn("Embedded RedisServer already created");
 		}
 	}
 
