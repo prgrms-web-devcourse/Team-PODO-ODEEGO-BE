@@ -26,10 +26,10 @@ import podo.odeego.infra.openapi.kakao.KakaoClient;
 import podo.odeego.infra.openapi.kakao.dto.KakaoProfileResponse;
 import podo.odeego.web.api.auth.dto.MemberLoginResponse;
 
-@ActiveProfiles("auth-test")
+@ActiveProfiles("reissue-test")
 @SpringBootTest(classes = TestRedisConfig.class)
 @AutoConfigureMockMvc
-class AuthApiScenarioTest {
+class ReissueScenarioTest {
 
 	@Autowired
 	private MockMvc mockMvc;

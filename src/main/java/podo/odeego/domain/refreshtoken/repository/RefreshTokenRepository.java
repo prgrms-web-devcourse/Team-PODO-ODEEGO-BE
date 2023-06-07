@@ -1,28 +1,34 @@
-package podo.odeego.domain.auth.repository;
+package podo.odeego.domain.refreshtoken.repository;
 
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Repository;
 
-import podo.odeego.domain.auth.entity.RefreshToken;
+import podo.odeego.domain.refreshtoken.entity.RefreshToken;
 
 @Repository
 public class RefreshTokenRepository {
 
 	private final RedisTemplate<String, Long> template;
+	private final long refreshTokenExpirationMillis;
 
-	public RefreshTokenRepository(RedisTemplate<String, Long> template) {
+	public RefreshTokenRepository(
+		@Value("${refresh-token.expiration}") long refreshTokenExpirationMillis,
+		RedisTemplate<String, Long> template
+	) {
+		this.refreshTokenExpirationMillis = refreshTokenExpirationMillis;
 		this.template = template;
 	}
 
 	public void save(RefreshToken refreshToken) {
 		ValueOperations<String, Long> valueOperations = template.opsForValue();
 		valueOperations.set(refreshToken.token(), refreshToken.memberId());
-		template.expire(refreshToken.token(), 60L, TimeUnit.SECONDS);
+		template.expire(refreshToken.token(), refreshTokenExpirationMillis, TimeUnit.SECONDS);
 	}
 
 	public Optional<RefreshToken> findById(String refreshToken) {
