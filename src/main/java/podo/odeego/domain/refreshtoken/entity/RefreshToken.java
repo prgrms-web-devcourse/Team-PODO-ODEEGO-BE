@@ -1,8 +1,8 @@
-package podo.odeego.domain.auth.entity;
+package podo.odeego.domain.refreshtoken.entity;
 
 import java.util.UUID;
 
-import javax.persistence.Id;
+import org.springframework.data.annotation.Id;
 
 public class RefreshToken {
 

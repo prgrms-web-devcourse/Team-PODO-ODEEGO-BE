@@ -4,8 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import podo.odeego.domain.auth.entity.RefreshToken;
-import podo.odeego.domain.auth.service.RefreshTokenService;
+import podo.odeego.domain.refreshtoken.entity.RefreshToken;
+import podo.odeego.domain.refreshtoken.service.RefreshTokenService;
 import podo.odeego.web.auth.JwtProvider;
 import podo.odeego.web.auth.dto.ReissueResponse;
 

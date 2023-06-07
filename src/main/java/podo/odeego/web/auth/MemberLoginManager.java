@@ -2,8 +2,8 @@ package podo.odeego.web.auth;
 
 import org.springframework.stereotype.Component;
 
-import podo.odeego.domain.auth.service.RefreshTokenService;
 import podo.odeego.domain.member.dto.MemberJoinResponse;
+import podo.odeego.domain.refreshtoken.service.RefreshTokenService;
 import podo.odeego.web.api.auth.dto.MemberLoginResponse;
 
 @Component

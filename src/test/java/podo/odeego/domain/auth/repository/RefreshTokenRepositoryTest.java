@@ -6,15 +6,13 @@ import java.util.UUID;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import podo.odeego.config.TestRedisConfig;
-import podo.odeego.domain.auth.entity.RefreshToken;
+import podo.odeego.domain.refreshtoken.entity.RefreshToken;
+import podo.odeego.domain.refreshtoken.repository.RefreshTokenRepository;
 
-@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = TestRedisConfig.class)
 class RefreshTokenRepositoryTest {
 

@@ -1,4 +1,4 @@
-package podo.odeego.domain.auth.repository.config;
+package podo.odeego.domain.refreshtoken.repository.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,12 +10,12 @@ import org.springframework.data.redis.core.RedisTemplate;
 public class RedisConfig {
 
 	@Bean
-	LettuceConnectionFactory redisConnectionFactory() {
+	public LettuceConnectionFactory redisConnectionFactory() {
 		return new LettuceConnectionFactory();
 	}
 
 	@Bean
-	RedisTemplate<String, Long> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
+	public RedisTemplate<String, Long> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
 		RedisTemplate<String, Long> template = new RedisTemplate<>();
 		template.setConnectionFactory(redisConnectionFactory);
 		return template;

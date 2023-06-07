@@ -10,9 +10,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import podo.odeego.domain.auth.service.RefreshTokenService;
 import podo.odeego.domain.member.dto.MemberJoinResponse;
 import podo.odeego.domain.member.entity.MemberType;
+import podo.odeego.domain.refreshtoken.service.RefreshTokenService;
 import podo.odeego.web.api.auth.dto.MemberLoginResponse;
 
 @ExtendWith(MockitoExtension.class)

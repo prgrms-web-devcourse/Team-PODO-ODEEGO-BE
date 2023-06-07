@@ -10,8 +10,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import podo.odeego.domain.auth.entity.RefreshToken;
-import podo.odeego.domain.auth.service.RefreshTokenService;
+import podo.odeego.domain.refreshtoken.entity.RefreshToken;
+import podo.odeego.domain.refreshtoken.service.RefreshTokenService;
 import podo.odeego.web.auth.JwtProvider;
 import podo.odeego.web.auth.dto.ReissueResponse;
 

@@ -1,9 +1,9 @@
-package podo.odeego.domain.auth.service;
+package podo.odeego.domain.refreshtoken.service;
 
 import org.springframework.stereotype.Service;
 
-import podo.odeego.domain.auth.entity.RefreshToken;
-import podo.odeego.domain.auth.repository.RefreshTokenRepository;
+import podo.odeego.domain.refreshtoken.entity.RefreshToken;
+import podo.odeego.domain.refreshtoken.repository.RefreshTokenRepository;
 import podo.odeego.web.auth.exception.WrongRefreshTokenException;
 
 @Service
