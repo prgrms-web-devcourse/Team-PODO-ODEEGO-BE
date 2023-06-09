@@ -1,0 +1,7 @@
+jwt:
+  secret: iAfCR8rRx1uAUqRWMInLSrZL9LdYolVxe53eKoj7hSTYEhwZRuw3SmU6kU
+  expiration:
+    access-token: 0
+
+refresh-token:
+  expiration: 10000

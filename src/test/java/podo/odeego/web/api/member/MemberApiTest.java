@@ -25,7 +25,6 @@ import podo.odeego.domain.station.dto.StationInfo;
 import podo.odeego.domain.station.entity.Station;
 import podo.odeego.domain.station.service.StationFindService;
 import podo.odeego.web.auth.JwtProvider;
-import podo.odeego.web.auth.dto.GenerateTokenResponse;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -50,7 +49,7 @@ class MemberApiTest {
 		//given
 		MemberJoinResponse joinedMember = memberService.join("profileImageUrl", "provider", "providerId");
 		memberService.signUp(joinedMember.id(), new MemberSignUpRequest("사용자123", "강남역"));
-		GenerateTokenResponse generateTokenResponse = jwtProvider.generateToken(joinedMember.id());
+		String accessToken = jwtProvider.generateAccessToken(joinedMember.id());
 
 		given(stationFindService.findByName("강남역"))
 			.willReturn(new StationInfo(new Station("강남역", 37.123, 127.123, "2")));
@@ -58,7 +57,7 @@ class MemberApiTest {
 		//when
 		ResultActions result = mockMvc.perform(
 			get("/api/v1/members/default-station")
-				.header(AUTHORIZATION, "Bearer %s".formatted(generateTokenResponse.accessToken()))
+				.header(AUTHORIZATION, "Bearer %s".formatted(accessToken))
 		);
 
 		//then
