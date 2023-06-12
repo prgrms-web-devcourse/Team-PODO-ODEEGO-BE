@@ -51,11 +51,11 @@ class GroupMemberAddServiceTest {
 	@Test
 	void add() {
 		// given
-		Member host = memberRepository.save(Member.ofNickname("host", "kakao", "12312123412"));
+		Member host = memberRepository.save(Member.ofNickname("host"));
 		Group savedGroup = groupRepository.save(new Group(new GroupCapacity(2L), LocalTime.of(1, 0)));
 		savedGroup.addGroupMember(GroupMember.newInstance(host, ParticipantType.HOST));
 
-		Member guest = memberRepository.save(Member.ofNickname("test", "kakao", "12312412"));
+		Member guest = memberRepository.save(Member.ofNickname("test"));
 
 		Station savedStation = stationRepository.save(new Station("가양역", 127.12314, 37.123124, "9"));
 
@@ -78,13 +78,13 @@ class GroupMemberAddServiceTest {
 	@Test
 	void add_in_full_group() {
 		// given
-		Member host = memberRepository.save(Member.ofNickname("host", "kakao", "1231asf2123412"));
-		Member guest = memberRepository.save(Member.ofNickname("guest", "kakao", "12312123wer412"));
+		Member host = memberRepository.save(Member.ofNickname("host"));
+		Member guest = memberRepository.save(Member.ofNickname("guest"));
 		Group savedGroup = groupRepository.save(new Group(new GroupCapacity(2L), LocalTime.of(1, 0)));
 		savedGroup.addGroupMember(GroupMember.newInstance(host, ParticipantType.HOST));
 		savedGroup.addGroupMember(GroupMember.newInstance(guest, ParticipantType.GUEST));
 
-		Member savedMember = memberRepository.save(Member.ofNickname("test", "kakao", "1231qw2412"));
+		Member savedMember = memberRepository.save(Member.ofNickname("test"));
 
 		Station savedStation = stationRepository.save(new Station("가양역", 127.12314, 37.123124, "9"));
 

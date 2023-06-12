@@ -37,7 +37,7 @@ class GroupTest {
 	@Test
 	void defineHostStation() {
 		// given
-		Member host = memberRepository.save(Member.ofNickname("host", "kakao", "12312123412"));
+		Member host = memberRepository.save(Member.ofNickname("host"));
 		Group group = new Group(new GroupCapacity(2L), LocalTime.of(1, 0));
 		GroupMember groupHost = GroupMember.newInstance(host, ParticipantType.HOST);
 		group.addGroupMember(groupHost);
@@ -75,7 +75,7 @@ class GroupTest {
 	@Test
 	void alreadyDefinedStation() {
 		// given
-		Member host = memberRepository.save(Member.ofNickname("host", "kakao", "12312123412"));
+		Member host = memberRepository.save(Member.ofNickname("host"));
 		Group group = new Group(new GroupCapacity(2L), LocalTime.of(1, 0));
 
 		Station definedStation = stationRepository.save(new Station("가양역", 127.12314, 37.123124, "9"));

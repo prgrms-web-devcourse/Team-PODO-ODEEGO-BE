@@ -49,7 +49,7 @@ class GroupRemoveServiceTest {
 	@DisplayName("그룹의 호스트만 그룹을 삭제할 수 있다.")
 	void only_group_host_can_delete_group() {
 		// given
-		Member groupHost = memberRepository.save(Member.ofNickname("host", "provider", "provider-id"));
+		Member groupHost = memberRepository.save(Member.ofNickname("host"));
 		Group group = new Group(new GroupCapacity(GroupCapacity.MAX_CAPACITY), Group.GROUP_VALID_TIME);
 		group.addGroupMember(GroupMember.newInstance(groupHost, ParticipantType.HOST));
 
@@ -67,12 +67,12 @@ class GroupRemoveServiceTest {
 	@DisplayName("그룹의 호스트가 아닌 회원이 그룹을 삭제할 때 예외가 발생한다.")
 	void throws_exception_when_delete_group_except_host() {
 		// given
-		Member groupHost = memberRepository.save(Member.ofNickname("groupHost", "provider", "provider-id"));
+		Member groupHost = memberRepository.save(Member.ofNickname("groupHost"));
 		Group group = new Group(new GroupCapacity(GroupCapacity.MAX_CAPACITY), Group.GROUP_VALID_TIME);
 		group.addGroupMember(GroupMember.newInstance(groupHost, ParticipantType.HOST));
 		Group savedGroup = groupRepository.save(group);
 
-		Member nonGroupHost = memberRepository.save(Member.ofNickname("nonGroupHost", "provider", "provider-id"));
+		Member nonGroupHost = memberRepository.save(Member.ofNickname("nonGroupHost"));
 
 		// when & then
 		assertThatThrownBy(() -> groupRemoveService.remove(nonGroupHost.id(), savedGroup.id()))
@@ -84,7 +84,7 @@ class GroupRemoveServiceTest {
 	void group_should_be_deleted_if_member_participates_as_host() {
 		// given
 		Member hostMember =
-			memberRepository.save(Member.ofNickname("host", "provider", "providerId"));
+			memberRepository.save(Member.ofNickname("host"));
 
 		GroupMember groupMemberAsHost = GroupMember.newInstance(hostMember, ParticipantType.HOST);
 		Group group = new Group(new GroupCapacity(GroupCapacity.MAX_CAPACITY), Group.GROUP_VALID_TIME);
@@ -109,7 +109,7 @@ class GroupRemoveServiceTest {
 	void only_groupMember_is_deleted_if_member_participates_as_guest() {
 		// given
 		Member guestMember =
-			memberRepository.save(Member.ofNickname("guest", "provider", "providerId"));
+			memberRepository.save(Member.ofNickname("guest"));
 
 		GroupMember groupMemberAsGuest = GroupMember.newInstance(guestMember, ParticipantType.GUEST);
 		Group group = new Group(new GroupCapacity(GroupCapacity.MAX_CAPACITY), Group.GROUP_VALID_TIME);

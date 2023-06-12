@@ -86,7 +86,7 @@ class MemberServiceTest {
 	@DisplayName("중복된 닉네임으로 추가정보를 입력할 경우 실패합니다.")
 	public void signUpFailedByNickname() {
 		//given
-		Member member = Member.ofNickname("중복된닉네임", "testProvider", "1234");
+		Member member = Member.ofNickname("중복된닉네임");
 		Member existMember = memberRepository.save(member);
 
 		//when
@@ -140,7 +140,7 @@ class MemberServiceTest {
 	void group_is_deleted_if_member_participates_as_host_when_member_leaves() {
 		// given
 		Member hostMember =
-			memberRepository.save(Member.ofNickname("host", "provider", "providerId"));
+			memberRepository.save(Member.ofNickname("host"));
 
 		GroupMember groupMemberAsGuest = GroupMember.newInstance(hostMember, ParticipantType.HOST);
 		Group group = new Group(new GroupCapacity(GroupCapacity.MAX_CAPACITY), Group.GROUP_VALID_TIME);
@@ -169,7 +169,7 @@ class MemberServiceTest {
 	void only_groupMember_is_deleted_if_member_participates_as_host_when_member_leaves() {
 		// given
 		Member guestMember =
-			memberRepository.save(Member.ofNickname("guest", "provider", "providerId"));
+			memberRepository.save(Member.ofNickname("guest"));
 
 		GroupMember groupMemberAsGuest = GroupMember.newInstance(guestMember, ParticipantType.GUEST);
 		Group group = new Group(new GroupCapacity(GroupCapacity.MAX_CAPACITY), Group.GROUP_VALID_TIME);

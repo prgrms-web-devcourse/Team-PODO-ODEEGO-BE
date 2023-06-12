@@ -40,7 +40,7 @@ class GroupQueryServiceTest {
 	@DisplayName("그룹의 호스트만 그룹의 상세정보를 조회할 수 있다.")
 	void only_group_host_can_query_group_details() {
 		// given
-		Member groupHost = memberRepository.save(Member.ofNickname("host", "provider", "provider-id"));
+		Member groupHost = memberRepository.save(Member.ofNickname("host"));
 		Group group = new Group(new GroupCapacity(GroupCapacity.MAX_CAPACITY), Group.GROUP_VALID_TIME);
 		group.addGroupMember(GroupMember.newInstance(groupHost, ParticipantType.HOST));
 
@@ -60,12 +60,12 @@ class GroupQueryServiceTest {
 	@DisplayName("그룹 호스트가 아닌 회원이 그룹의 상세정보를 조회하면 예외가 발생한다.")
 	void throws_exception_when_query_group_details_except_group_host() {
 		// given
-		Member groupHost = memberRepository.save(Member.ofNickname("groupHost", "provider", "provider-id"));
+		Member groupHost = memberRepository.save(Member.ofNickname("groupHost"));
 		Group group = new Group(new GroupCapacity(GroupCapacity.MAX_CAPACITY), Group.GROUP_VALID_TIME);
 		group.addGroupMember(GroupMember.newInstance(groupHost, ParticipantType.HOST));
 		Group savedGroup = groupRepository.save(group);
 
-		Member nonGroupHost = memberRepository.save(Member.ofNickname("nonGroupHost", "provider", "provider-id"));
+		Member nonGroupHost = memberRepository.save(Member.ofNickname("nonGroupHost"));
 
 		// when & then
 		assertThatThrownBy(() -> groupQueryService.getOne(nonGroupHost.id(), savedGroup.id()))
@@ -76,8 +76,8 @@ class GroupQueryServiceTest {
 	@Test
 	void isSubmitted() {
 		// given
-		Member host = memberRepository.save(Member.ofNickname("groupHost", "provider", "provider-id1"));
-		Member member = memberRepository.save(Member.ofNickname("groupMember", "provider", "provider-id2"));
+		Member host = memberRepository.save(Member.ofNickname("groupHost"));
+		Member member = memberRepository.save(Member.ofNickname("groupMember"));
 		Group group = groupRepository.save(
 			new Group(new GroupCapacity(GroupCapacity.MAX_CAPACITY), Group.GROUP_VALID_TIME));
 		group.addGroupMember(GroupMember.newInstance(host, ParticipantType.HOST));
@@ -96,8 +96,8 @@ class GroupQueryServiceTest {
 	@Test
 	void isNotSubmitted() {
 		// given
-		Member host = memberRepository.save(Member.ofNickname("groupHost", "provider", "provider-id1"));
-		Member member = memberRepository.save(Member.ofNickname("groupMember", "provider", "provider-id2"));
+		Member host = memberRepository.save(Member.ofNickname("groupHost"));
+		Member member = memberRepository.save(Member.ofNickname("groupMember"));
 		Group group = groupRepository.save(
 			new Group(new GroupCapacity(GroupCapacity.MAX_CAPACITY), Group.GROUP_VALID_TIME));
 		group.addGroupMember(GroupMember.newInstance(host, ParticipantType.HOST));
