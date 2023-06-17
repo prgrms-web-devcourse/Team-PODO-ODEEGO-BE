@@ -7,14 +7,11 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 
 import podo.odeego.domain.group.entity.GroupMember;
@@ -24,8 +21,6 @@ import podo.odeego.domain.member.exception.MemberNicknameUnformattedException;
 import podo.odeego.domain.type.BaseTime;
 
 @Entity
-@DiscriminatorColumn
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Member extends BaseTime {
 
 	private static final int MIN_LENGTH = 3;
@@ -47,42 +42,16 @@ public class Member extends BaseTime {
 
 	private String profileImageUrl;
 
-	// @Column(nullable = false, length = 20)
-	// private String provider;
-	//
-	// @Column(nullable = false, unique = true, length = 80)
-	// private String providerId;
-
 	@OneToMany(mappedBy = "member")
 	private List<GroupMember> groupMembers = new ArrayList<>();
 
 	protected Member() {
 	}
 
-	// private Member(String provider, String providerId) {
-	// 	this.provider = provider;
-	// 	this.providerId = providerId;
-	// }
-
-	// public Member(String profileImageUrl, MemberType type, String provider, String providerId) {
-	// 	this(provider, providerId);
-	// 	this.profileImageUrl = profileImageUrl;
-	// 	this.type = type;
-	// }
-
 	public Member(String profileImageUrl, MemberType type) {
 		this.profileImageUrl = profileImageUrl;
 		this.type = type;
 	}
-
-	//for test
-	// public static Member ofStationName(String nickname, String stationName, String provider, String providerId) {
-	// 	Member member = new Member(provider, providerId);
-	// 	member.nickname = nickname;
-	// 	member.defaultStationName = stationName;
-	// 	member.type = MemberType.REGULAR;
-	// 	return member;
-	// }
 
 	//for test
 	public static Member ofStationName(String nickname, String stationName) {
@@ -92,14 +61,6 @@ public class Member extends BaseTime {
 		member.type = MemberType.REGULAR;
 		return member;
 	}
-
-	// //for test
-	// public static Member ofNickname(String nickname, String provider, String providerId) {
-	// 	Member member = new Member(provider, providerId);
-	// 	member.nickname = nickname;
-	// 	member.type = MemberType.REGULAR;
-	// 	return member;
-	// }
 
 	//for test
 	public static Member ofNickname(String nickname) {

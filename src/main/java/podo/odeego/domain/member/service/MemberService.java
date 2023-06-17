@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import podo.odeego.domain.group.service.GroupRemoveService;
-import podo.odeego.domain.member.dto.MemberJoinResponse;
 import podo.odeego.domain.member.dto.MemberSignUpRequest;
 import podo.odeego.domain.member.entity.Member;
 import podo.odeego.domain.member.entity.MemberType;
@@ -34,26 +33,8 @@ public class MemberService {
 		this.groupRemoveService = groupRemoveService;
 	}
 
-	public MemberJoinResponse join(String profileImageUrl, String provider, String providerId) {
-		return memberRepository.findByProviderAndProviderId(provider, providerId)
-			.map(member -> {
-				log.info("Member already exist: {} for provider: {}, providerId: {}, memberType: {}.", member, provider,
-					providerId, member.type());
-				return new MemberJoinResponse(member.id(), member.profileImageUrl(), member.type());
-			})
-			.orElseGet(() -> {
-				log.info("New Member for provider: {}, providerId: {}.", provider, providerId);
-				Member savedMember = memberRepository.save(
-					new Member(profileImageUrl, MemberType.PRE, provider, providerId)
-				);
-				return new MemberJoinResponse(savedMember.id(), savedMember.profileImageUrl(), savedMember.type());
-			});
-	}
-
-	public Long join(String nickname) {
-		verifyUniqueNickname(nickname);
-		Member savedMember = memberRepository.save(Member.ofNickname(nickname, "provider", "providerId"));
-		return savedMember.id();
+	public Member join(String profileImageUrl) {
+		return memberRepository.save(new Member(profileImageUrl, MemberType.PRE));
 	}
 
 	public void signUp(Long memberId, MemberSignUpRequest signUpRequest) {
@@ -78,5 +59,12 @@ public class MemberService {
 		groupRemoveService.deleteGroupInfoByParticipantType(memberId);
 
 		memberRepository.delete(findMember);
+	}
+
+	public Member findById(Long memberId) {
+		return memberRepository.findById(memberId)
+			.orElseThrow(() -> new MemberNotFoundException(
+				"Cannot find Member for memberId=%d.".formatted(memberId)
+			));
 	}
 }
