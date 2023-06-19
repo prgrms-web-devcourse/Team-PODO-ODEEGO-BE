@@ -17,11 +17,11 @@ import podo.odeego.web.auth.service.AuthService;
 
 @RestController
 @RequestMapping("/api/v1/auth")
-public class AuthApi {
+public class AuthApiV1 {
 
 	private final AuthService authService;
 
-	public AuthApi(AuthService authService) {
+	public AuthApiV1(AuthService authService) {
 		this.authService = authService;
 	}
 
