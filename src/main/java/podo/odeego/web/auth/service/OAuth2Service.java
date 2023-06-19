@@ -23,8 +23,8 @@ public class OAuth2Service {
 	private final MemberService memberService;
 
 	public OAuth2Service(
-		SocialAccountService socialAccountService,
 		KakaoClient kakaoClient,
+		SocialAccountService socialAccountService,
 		MemberService memberService) {
 		this.kakaoClient = kakaoClient;
 		this.socialAccountService = socialAccountService;
@@ -37,14 +37,20 @@ public class OAuth2Service {
 		return socialAccountService.findByProviderAndProviderId(PROVIDER, kakaoProfileResponse.providerId())
 			.map(socialAuth -> {
 				Member foundMember = memberService.findById(socialAuth.memberId());
+				log.info("Already joined our service with OAuth2 account. provider: {}, memberType: {}",
+					socialAuth.provider(), foundMember.type());
 				return new OAuth2LoginResponse(foundMember.id(), kakaoProfileResponse.profileImageUrl(),
 					foundMember.type());
 			})
-			.orElseGet(() -> {
-				Member joinedMember = memberService.join(kakaoProfileResponse.profileImageUrl());
-				socialAccountService.save(PROVIDER, kakaoProfileResponse.providerId(), joinedMember.id());
-				return new OAuth2LoginResponse(joinedMember.id(), kakaoProfileResponse.profileImageUrl(),
-					joinedMember.type());
-			});
+			.orElseGet(() -> join(kakaoProfileResponse));
+	}
+
+	private OAuth2LoginResponse join(KakaoProfileResponse kakaoProfileResponse) {
+		Member joinedMember = memberService.join(kakaoProfileResponse.profileImageUrl());
+		socialAccountService.save(PROVIDER, kakaoProfileResponse.providerId(), joinedMember.id());
+		log.info("New member joined our service with OAuth2 account. provider: {}, memberType: {}", PROVIDER,
+			joinedMember.type());
+		return new OAuth2LoginResponse(joinedMember.id(), kakaoProfileResponse.profileImageUrl(),
+			joinedMember.type());
 	}
 }
