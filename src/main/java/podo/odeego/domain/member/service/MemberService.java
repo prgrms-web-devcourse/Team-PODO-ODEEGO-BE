@@ -64,7 +64,6 @@ public class MemberService {
 	public Member findById(Long memberId) {
 		return memberRepository.findById(memberId)
 			.orElseThrow(() -> new MemberNotFoundException(
-				"Cannot find Member for memberId=%d.".formatted(memberId)
-			));
+				"Cannot find Member for memberId=%d.".formatted(memberId)));
 	}
 }

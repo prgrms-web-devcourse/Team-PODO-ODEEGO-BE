@@ -32,4 +32,8 @@ public class SocialAccount {
 	public Long memberId() {
 		return memberId;
 	}
+
+	public String provider() {
+		return provider;
+	}
 }
