@@ -1,5 +1,6 @@
 package podo.odeego.web.auth.service;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import org.assertj.core.api.Assertions;
@@ -10,9 +11,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import podo.odeego.domain.member.entity.MemberType;
 import podo.odeego.domain.refreshtoken.entity.RefreshToken;
 import podo.odeego.domain.refreshtoken.service.RefreshTokenService;
 import podo.odeego.web.auth.JwtProvider;
+import podo.odeego.web.auth.dto.LoginResponse;
+import podo.odeego.web.auth.dto.OAuth2LoginResponse;
 import podo.odeego.web.auth.dto.ReissueResponse;
 
 @ExtendWith(MockitoExtension.class)
@@ -26,6 +30,35 @@ class AuthServiceTest {
 
 	@Mock
 	JwtProvider jwtProvider;
+
+	@Mock
+	OAuth2Service oAuth2Service;
+
+	@DisplayName("OAuth2 기반의 소셜 로그인을 진행하면 사용자 프로필 및 access token, refresh token을 발급받을 수 있습니다.")
+	@Test
+	public void login() {
+		//given
+		OAuth2LoginResponse oAuth2LoginResponse = new OAuth2LoginResponse(1L, "profileImageUrl", MemberType.PRE);
+		doReturn(oAuth2LoginResponse).when(oAuth2Service)
+			.login("oAuth2Token");
+
+		String accessToken = "accessToken";
+		doReturn(accessToken).when(jwtProvider)
+			.generateAccessToken(oAuth2LoginResponse.id());
+
+		String refreshToken = "refreshToken";
+		doReturn(refreshToken).when(refreshTokenService)
+			.create(oAuth2LoginResponse.id());
+
+		//when
+		LoginResponse loginResponse = authService.socialLogin("oAuth2Token");
+
+		//then
+		assertThat(loginResponse.getAccessToken()).isEqualTo("accessToken");
+		assertThat(loginResponse.getRefreshToken()).isEqualTo("refreshToken");
+		assertThat(loginResponse.getMemberType()).isEqualTo(MemberType.PRE);
+		assertThat(loginResponse.getProfileImageUrl()).isEqualTo("profileImageUrl");
+	}
 
 	@DisplayName("RefreshToken Storage에 Refresh Token이 존재한다면 Access Token을 재발급 받을 수 있습니다.")
 	@Test
