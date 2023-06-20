@@ -6,13 +6,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import podo.odeego.web.auth.dto.ReissueResponse;
 import podo.odeego.web.auth.service.AuthService;
 
 @RestController
@@ -30,10 +27,5 @@ public class AuthApiV1 {
 		IOException {
 		response.setHeader(HttpHeaders.AUTHORIZATION, request.getHeader(HttpHeaders.AUTHORIZATION));
 		response.sendRedirect("/api/v2/auth/login/oauth2");
-	}
-
-	@PostMapping("/reissue")
-	public ResponseEntity<ReissueResponse> reissue(@CookieValue("refreshToken") String refreshToken) {
-		return ResponseEntity.ok(authService.reissue(refreshToken));
 	}
 }
