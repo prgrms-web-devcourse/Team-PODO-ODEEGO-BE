@@ -9,7 +9,7 @@ import podo.odeego.domain.member.entity.Member;
 import podo.odeego.domain.member.service.MemberService;
 import podo.odeego.infra.openapi.kakao.KakaoClient;
 import podo.odeego.infra.openapi.kakao.dto.KakaoProfileResponse;
-import podo.odeego.web.auth.dto.OAuth2LoginResponse;
+import podo.odeego.web.auth.dto.LoginMemberInfoResponse;
 
 @Service
 public class OAuth2Service {
@@ -31,7 +31,7 @@ public class OAuth2Service {
 		this.memberService = memberService;
 	}
 
-	public OAuth2LoginResponse login(String oAuth2Token) {
+	public LoginMemberInfoResponse login(String oAuth2Token) {
 		KakaoProfileResponse kakaoProfileResponse = kakaoClient.getUserInfo(oAuth2Token);
 
 		return socialAccountService.findByProviderAndProviderId(PROVIDER, kakaoProfileResponse.providerId())
@@ -39,18 +39,18 @@ public class OAuth2Service {
 				Member foundMember = memberService.findById(socialAuth.memberId());
 				log.info("Already joined our service with OAuth2 account. provider: {}, memberType: {}",
 					socialAuth.provider(), foundMember.type());
-				return new OAuth2LoginResponse(foundMember.id(), kakaoProfileResponse.profileImageUrl(),
+				return new LoginMemberInfoResponse(foundMember.id(), kakaoProfileResponse.profileImageUrl(),
 					foundMember.type());
 			})
 			.orElseGet(() -> join(kakaoProfileResponse));
 	}
 
-	private OAuth2LoginResponse join(KakaoProfileResponse kakaoProfileResponse) {
+	private LoginMemberInfoResponse join(KakaoProfileResponse kakaoProfileResponse) {
 		Member joinedMember = memberService.join(kakaoProfileResponse.profileImageUrl());
 		socialAccountService.save(PROVIDER, kakaoProfileResponse.providerId(), joinedMember.id());
 		log.info("New member joined our service with OAuth2 account. provider: {}, memberType: {}", PROVIDER,
 			joinedMember.type());
-		return new OAuth2LoginResponse(joinedMember.id(), kakaoProfileResponse.profileImageUrl(),
+		return new LoginMemberInfoResponse(joinedMember.id(), kakaoProfileResponse.profileImageUrl(),
 			joinedMember.type());
 	}
 }

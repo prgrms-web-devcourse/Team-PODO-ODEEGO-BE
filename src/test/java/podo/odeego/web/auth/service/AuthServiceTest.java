@@ -15,8 +15,8 @@ import podo.odeego.domain.member.entity.MemberType;
 import podo.odeego.domain.refreshtoken.entity.RefreshToken;
 import podo.odeego.domain.refreshtoken.service.RefreshTokenService;
 import podo.odeego.web.auth.JwtProvider;
+import podo.odeego.web.auth.dto.LoginMemberInfoResponse;
 import podo.odeego.web.auth.dto.LoginResponse;
-import podo.odeego.web.auth.dto.OAuth2LoginResponse;
 import podo.odeego.web.auth.dto.ReissueResponse;
 
 @ExtendWith(MockitoExtension.class)
@@ -38,17 +38,17 @@ class AuthServiceTest {
 	@Test
 	public void login() {
 		//given
-		OAuth2LoginResponse oAuth2LoginResponse = new OAuth2LoginResponse(1L, "profileImageUrl", MemberType.PRE);
-		doReturn(oAuth2LoginResponse).when(oAuth2Service)
+		LoginMemberInfoResponse loginMemberInfo = new LoginMemberInfoResponse(1L, "profileImageUrl", MemberType.PRE);
+		doReturn(loginMemberInfo).when(oAuth2Service)
 			.login("oAuth2Token");
 
 		String accessToken = "accessToken";
 		doReturn(accessToken).when(jwtProvider)
-			.generateAccessToken(oAuth2LoginResponse.id());
+			.generateAccessToken(loginMemberInfo.memberId());
 
 		String refreshToken = "refreshToken";
 		doReturn(refreshToken).when(refreshTokenService)
-			.create(oAuth2LoginResponse.id());
+			.create(loginMemberInfo.memberId());
 
 		//when
 		LoginResponse loginResponse = authService.socialLogin("oAuth2Token");

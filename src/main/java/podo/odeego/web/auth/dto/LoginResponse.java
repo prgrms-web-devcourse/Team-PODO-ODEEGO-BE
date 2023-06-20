@@ -20,12 +20,12 @@ public class LoginResponse {
 		this.profileImageUrl = profileImageUrl;
 	}
 
-	public static LoginResponse of(String accessToken, String refreshToken, OAuth2LoginResponse joinResponse) {
+	public static LoginResponse of(String accessToken, String refreshToken, LoginMemberInfoResponse LoginMemberInfo) {
 		return new LoginResponse(
 			accessToken,
 			refreshToken,
-			joinResponse.memberType(),
-			joinResponse.profileImageUrl()
+			LoginMemberInfo.memberType(),
+			LoginMemberInfo.profileImageUrl()
 		);
 	}
 
