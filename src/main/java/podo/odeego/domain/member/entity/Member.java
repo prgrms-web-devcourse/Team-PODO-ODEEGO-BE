@@ -42,32 +42,20 @@ public class Member extends BaseTime {
 
 	private String profileImageUrl;
 
-	@Column(nullable = false, length = 20)
-	private String provider;
-
-	@Column(nullable = false, unique = true, length = 80)
-	private String providerId;
-
 	@OneToMany(mappedBy = "member")
 	private List<GroupMember> groupMembers = new ArrayList<>();
 
 	protected Member() {
 	}
 
-	private Member(String provider, String providerId) {
-		this.provider = provider;
-		this.providerId = providerId;
-	}
-
-	public Member(String profileImageUrl, MemberType type, String provider, String providerId) {
-		this(provider, providerId);
+	public Member(String profileImageUrl, MemberType type) {
 		this.profileImageUrl = profileImageUrl;
 		this.type = type;
 	}
 
 	//for test
-	public static Member ofStationName(String nickname, String stationName, String provider, String providerId) {
-		Member member = new Member(provider, providerId);
+	public static Member ofStationName(String nickname, String stationName) {
+		Member member = new Member();
 		member.nickname = nickname;
 		member.defaultStationName = stationName;
 		member.type = MemberType.REGULAR;
@@ -75,8 +63,8 @@ public class Member extends BaseTime {
 	}
 
 	//for test
-	public static Member ofNickname(String nickname, String provider, String providerId) {
-		Member member = new Member(provider, providerId);
+	public static Member ofNickname(String nickname) {
+		Member member = new Member();
 		member.nickname = nickname;
 		member.type = MemberType.REGULAR;
 		return member;

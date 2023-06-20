@@ -48,7 +48,7 @@ class GroupMemberValidateServiceTest {
 	@Test
 	void validateAndGet() {
 		// given
-		Member host = memberRepository.save(Member.ofNickname("host", "kakao", "12312123412"));
+		Member host = memberRepository.save(Member.ofNickname("host"));
 		Group savedGroup = groupRepository.save(new Group(new GroupCapacity(2L), LocalTime.of(1, 0)));
 		StationInfo savedStation = new StationInfo(
 			stationRepository.save(new Station("가양역", 127.12314, 37.123124, "9")));
@@ -85,7 +85,7 @@ class GroupMemberValidateServiceTest {
 	@Test
 	void undefinedGroup() {
 		// given
-		Member host = memberRepository.save(Member.ofNickname("host", "kakao", "12312123412"));
+		Member host = memberRepository.save(Member.ofNickname("host"));
 		Station savedStation = stationRepository.save(new Station("가양역", 127.12314, 37.123124, "9"));
 		UUID undefinedGroupId = UUID.randomUUID();
 
@@ -98,7 +98,7 @@ class GroupMemberValidateServiceTest {
 	@Test
 	void undefinedStation() {
 		// given
-		Member host = memberRepository.save(Member.ofNickname("host", "kakao", "12312123412"));
+		Member host = memberRepository.save(Member.ofNickname("host"));
 		String undefinedStationName = "모르는역";
 		Group savedGroup = groupRepository.save(new Group(new GroupCapacity(2L), LocalTime.of(1, 0)));
 

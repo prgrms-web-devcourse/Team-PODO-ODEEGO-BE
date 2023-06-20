@@ -35,7 +35,7 @@ class GroupMemberTest {
 	@Test
 	void defineStation() {
 		// given
-		Member host = memberRepository.save(Member.ofNickname("host", "kakao", "12312123412"));
+		Member host = memberRepository.save(Member.ofNickname("host"));
 		Group group = new Group(new GroupCapacity(2L), LocalTime.of(1, 0));
 		GroupMember groupHost = GroupMember.newInstance(host, ParticipantType.HOST);
 		group.addGroupMember(groupHost);
@@ -58,7 +58,7 @@ class GroupMemberTest {
 	@Test
 	void defineNullStation() {
 		// given
-		Member host = memberRepository.save(Member.ofNickname("host", "kakao", "12312123412"));
+		Member host = memberRepository.save(Member.ofNickname("host"));
 		Group group = new Group(new GroupCapacity(2L), LocalTime.of(1, 0));
 		GroupMember groupHost = GroupMember.newInstance(host, ParticipantType.HOST);
 		group.addGroupMember(groupHost);

@@ -18,8 +18,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import podo.odeego.domain.member.dto.MemberJoinResponse;
 import podo.odeego.domain.member.dto.MemberSignUpRequest;
+import podo.odeego.domain.member.entity.Member;
 import podo.odeego.domain.member.service.MemberService;
 import podo.odeego.domain.station.dto.StationInfo;
 import podo.odeego.domain.station.entity.Station;
@@ -47,7 +47,7 @@ class MemberApiTest {
 	@DisplayName("기본 지하철역을 가져올 수 있습니다")
 	public void getDefaultStation() throws Exception {
 		//given
-		MemberJoinResponse joinedMember = memberService.join("profileImageUrl", "provider", "providerId");
+		Member joinedMember = memberService.join("profileImageUrl");
 		memberService.signUp(joinedMember.id(), new MemberSignUpRequest("사용자123", "강남역"));
 		String accessToken = jwtProvider.generateAccessToken(joinedMember.id());
 

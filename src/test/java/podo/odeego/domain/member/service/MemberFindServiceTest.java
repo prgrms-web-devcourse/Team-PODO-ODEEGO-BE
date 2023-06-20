@@ -37,7 +37,7 @@ class MemberFindServiceTest {
 		// given
 		Station savedStation = stationRepository.save(new Station("강남역", 123.123, 12.231, "9호선"));
 		Member savedMember = memberRepository.save(
-			Member.ofStationName("test", savedStation.name(), "kakao", "123124123"));
+			Member.ofStationName("test", savedStation.name()));
 
 		MemberDefaultStationGetResponse expect = new MemberDefaultStationGetResponse(new StationInfo(savedStation));
 

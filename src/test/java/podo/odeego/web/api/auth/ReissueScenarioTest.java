@@ -24,7 +24,7 @@ import podo.odeego.config.TestRedisConfig;
 import podo.odeego.domain.member.dto.MemberSignUpRequest;
 import podo.odeego.infra.openapi.kakao.KakaoClient;
 import podo.odeego.infra.openapi.kakao.dto.KakaoProfileResponse;
-import podo.odeego.web.api.auth.dto.MemberLoginResponse;
+import podo.odeego.web.auth.dto.LoginResponse;
 
 @ActiveProfiles("reissue-test")
 @SpringBootTest(classes = TestRedisConfig.class)
@@ -48,14 +48,14 @@ class ReissueScenarioTest {
 		when(kakaoClient.getUserInfo("oAuth2Token"))
 			.thenReturn(kakaoProfileResponse);
 
-		String content = mockMvc.perform(post("/api/v1/auth/user/me")
+		String content = mockMvc.perform(post("/api/v2/auth/login/oauth2")
 				.header(AUTHORIZATION, "oAuth2Token"))
 			.andExpect(status().isOk())
 			.andReturn()
 			.getResponse().getContentAsString();
-		MemberLoginResponse loginResponse = objectMapper.readValue(content, MemberLoginResponse.class);
 
 		//when: access token이 만료되었다면
+		LoginResponse loginResponse = objectMapper.readValue(content, LoginResponse.class);
 		String signUpRequest = objectMapper.writeValueAsString(new MemberSignUpRequest("닉네임123", "강남역"));
 		mockMvc.perform(patch("/api/v1/members/sign-up")
 				.content(signUpRequest)
@@ -65,7 +65,7 @@ class ReissueScenarioTest {
 			.andDo(print());
 
 		//then: refresh token을 통해 재발급받을 수 있습니다
-		mockMvc.perform(post("/api/v1/auth/reissue")
+		mockMvc.perform(post("/api/v2/auth/reissue")
 				.cookie(new Cookie("refreshToken", loginResponse.getRefreshToken())))
 			.andExpect(status().isOk())
 			.andDo(print());

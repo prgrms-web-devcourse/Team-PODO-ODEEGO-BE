@@ -18,7 +18,7 @@ class MemberTest {
 	@DisplayName("한글과 숫자만을 포함한 3~20 글자의 닉네임으로 입력하면 회원가입 추가정보를 입력에 성공합니다.")
 	public void signUpSuccess(String actualNickname) {
 		//given
-		Member member = new Member("test", MemberType.PRE, "testProvider", "testProviderId");
+		Member member = new Member("test", MemberType.PRE);
 
 		//when
 		member.signUp(actualNickname, "테스트역");
@@ -35,7 +35,7 @@ class MemberTest {
 	@DisplayName("3글자 이상 20글자 이하가 아닌 길이의 닉네임을 입력할 경우 회원가입 추가정보 입력에 실패합니다.")
 	public void signUpFailByNicknameBoundary(String wrongNickname) {
 		//given
-		Member member = new Member("test", MemberType.PRE, "testProvider", "testProviderId");
+		Member member = new Member("test", MemberType.PRE);
 
 		//when & then
 		int actualLength = wrongNickname.length();
@@ -51,7 +51,7 @@ class MemberTest {
 	@DisplayName("한글, 숫자 이외의 숫자가 들어올 경우 회원가입 추가정보 입력에 실패합니다.")
 	public void signUpFailByNicknamePattern(String wrongNickname) {
 		//given
-		Member member = new Member("test", MemberType.PRE, "testProvider", "testProviderId");
+		Member member = new Member("test", MemberType.PRE);
 
 		//when & then
 		assertThatThrownBy(() -> member.signUp(wrongNickname, "테스트역"))
@@ -64,7 +64,7 @@ class MemberTest {
 	@DisplayName("회원의 상태가 REGULAR 이면 회원가입 추가정보 입력에 실패합니다.")
 	public void memberTypeShouldBePreWhenSignUp() {
 		//given
-		Member member = new Member("test", MemberType.REGULAR, "testProvider", "testProviderId");
+		Member member = new Member("test", MemberType.REGULAR);
 
 		//when & then
 		assertThatThrownBy(() -> member.signUp("닉네임123", "테스트역"))
@@ -77,7 +77,7 @@ class MemberTest {
 	@DisplayName("회원가입 추가정보 입력에 성공하면 회원 상태가 REGULAR 상태입니다.")
 	public void memberTypeShouldBeRegularAfterSignUp() {
 		//given
-		Member member = new Member("test", MemberType.PRE, "testProvider", "testProviderId");
+		Member member = new Member("test", MemberType.PRE);
 
 		//when
 		member.signUp("닉네임123", "테스트역");
@@ -91,7 +91,7 @@ class MemberTest {
 	@DisplayName("회원가입 추가정보 입력에 실패하면 회원 상태가 PRE 상태입니다.")
 	public void memberTypeShouldBePreIfSignUpFailed() {
 		//given
-		Member member = new Member("test", MemberType.PRE, "testProvider", "testProviderId");
+		Member member = new Member("test", MemberType.PRE);
 
 		//when & then
 		assertThatThrownBy(() -> member.signUp("닉", "테스트역"))

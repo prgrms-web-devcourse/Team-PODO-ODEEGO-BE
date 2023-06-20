@@ -19,7 +19,6 @@ import podo.odeego.domain.group.entity.GroupMember;
 import podo.odeego.domain.group.entity.ParticipantType;
 import podo.odeego.domain.group.repository.GroupMemberRepository;
 import podo.odeego.domain.group.repository.GroupRepository;
-import podo.odeego.domain.member.dto.MemberJoinResponse;
 import podo.odeego.domain.member.dto.MemberSignUpRequest;
 import podo.odeego.domain.member.entity.Member;
 import podo.odeego.domain.member.entity.MemberType;
@@ -56,9 +55,9 @@ class MemberServiceTest {
 	@DisplayName("서비스에 최초로 로그인한 사용자일 경우 준회원으로 회원가입됩니다")
 	public void joinPreMember() {
 		//given & when
-		MemberJoinResponse joinedMember = memberService.join("testProvider", "1234", "testUrl");
+		Member joinedMember = memberService.join("profileImageUrl");
 
-		MemberType actualType = joinedMember.memberType();
+		MemberType actualType = joinedMember.type();
 
 		//then
 		assertThat(actualType).isEqualTo(MemberType.PRE);
@@ -70,15 +69,15 @@ class MemberServiceTest {
 		//given
 		stationRepository.save(
 			new Station("강남역", 123.123, 123.123, "2호선"));
-		MemberJoinResponse joinedMember = memberService.join("testProvider", "1234", "testUrl");
+		Member joinedMember = memberService.join("profileImageUrl");
 
 		//when
 		MemberSignUpRequest signUpRequest = new MemberSignUpRequest("닉네임", "강남역");
 		memberService.signUp(joinedMember.id(), signUpRequest);
 
 		//then
-		joinedMember = memberService.join("testProvider", "1234", "testUrl");
-		MemberType actualType = joinedMember.memberType();
+		joinedMember = memberService.findById(joinedMember.id());
+		MemberType actualType = joinedMember.type();
 		assertThat(actualType).isEqualTo(MemberType.REGULAR);
 	}
 
@@ -86,7 +85,7 @@ class MemberServiceTest {
 	@DisplayName("중복된 닉네임으로 추가정보를 입력할 경우 실패합니다.")
 	public void signUpFailedByNickname() {
 		//given
-		Member member = Member.ofNickname("중복된닉네임", "testProvider", "1234");
+		Member member = Member.ofNickname("중복된닉네임");
 		Member existMember = memberRepository.save(member);
 
 		//when
@@ -104,7 +103,7 @@ class MemberServiceTest {
 		//given
 		stationRepository.save(
 			new Station("강남역", 123.123, 123.123, "2호선"));
-		MemberJoinResponse joinedMember = memberService.join("testProvider", "1234", "testUrl");
+		Member joinedMember = memberService.join("profileImageUrl");
 		MemberSignUpRequest signUpRequest = new MemberSignUpRequest("닉네임", "강남역");
 		memberService.signUp(joinedMember.id(), signUpRequest);
 
@@ -122,7 +121,7 @@ class MemberServiceTest {
 		//given
 		stationRepository.save(
 			new Station("강남역", 123.123, 123.123, "2호선"));
-		MemberJoinResponse joinedMember = memberService.join("testProvider", "1234", "testUrl");
+		Member joinedMember = memberService.join("profileImageUrl");
 		MemberSignUpRequest signUpRequest = new MemberSignUpRequest("닉네임", "강남역");
 		memberService.signUp(joinedMember.id(), signUpRequest);
 
@@ -140,7 +139,7 @@ class MemberServiceTest {
 	void group_is_deleted_if_member_participates_as_host_when_member_leaves() {
 		// given
 		Member hostMember =
-			memberRepository.save(Member.ofNickname("host", "provider", "providerId"));
+			memberRepository.save(Member.ofNickname("host"));
 
 		GroupMember groupMemberAsGuest = GroupMember.newInstance(hostMember, ParticipantType.HOST);
 		Group group = new Group(new GroupCapacity(GroupCapacity.MAX_CAPACITY), Group.GROUP_VALID_TIME);
@@ -169,7 +168,7 @@ class MemberServiceTest {
 	void only_groupMember_is_deleted_if_member_participates_as_host_when_member_leaves() {
 		// given
 		Member guestMember =
-			memberRepository.save(Member.ofNickname("guest", "provider", "providerId"));
+			memberRepository.save(Member.ofNickname("guest"));
 
 		GroupMember groupMemberAsGuest = GroupMember.newInstance(guestMember, ParticipantType.GUEST);
 		Group group = new Group(new GroupCapacity(GroupCapacity.MAX_CAPACITY), Group.GROUP_VALID_TIME);
