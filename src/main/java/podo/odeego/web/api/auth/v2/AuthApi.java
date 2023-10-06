@@ -3,6 +3,7 @@ package podo.odeego.web.api.auth.v2;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import podo.odeego.domain.member.entity.MemberType;
 import podo.odeego.web.auth.dto.CustomLoginRequest;
 import podo.odeego.web.auth.dto.JoinCustomAccountRequest;
 import podo.odeego.web.auth.dto.LoginResponse;
@@ -27,9 +29,16 @@ public class AuthApi {
 	}
 
 	@PostMapping("/login/oauth2")
-	public ResponseEntity<LoginResponse> login(HttpServletRequest request) {
+	public ResponseEntity<LoginResponseBody> login(HttpServletRequest request) {
 		String oAuth2Token = request.getHeader(HttpHeaders.AUTHORIZATION);
-		return ResponseEntity.ok(authService.socialLogin(oAuth2Token));
+		LoginResponse loginResponse = authService.socialLogin(oAuth2Token);
+		ResponseCookie responseCookie = ResponseCookie.from("refresh-token", loginResponse.getRefreshToken())
+			.httpOnly(true)
+			.secure(true)
+			.build();
+		return ResponseEntity.ok()
+			.header(HttpHeaders.SET_COOKIE, responseCookie.toString())
+			.body(new LoginResponseBody(loginResponse));
 	}
 
 	@PostMapping("/join/custom")
@@ -50,5 +59,29 @@ public class AuthApi {
 	@PostMapping("/reissue")
 	public ResponseEntity<ReissueResponse> reissue(@CookieValue("refreshToken") String refreshToken) {
 		return ResponseEntity.ok(authService.reissue(refreshToken));
+	}
+
+	public static class LoginResponseBody {
+		private final String accessToken;
+		private final MemberType memberType;
+		private final String profileImageUrl;
+
+		public LoginResponseBody(LoginResponse loginResponse) {
+			this.accessToken = loginResponse.getAccessToken();
+			this.memberType = loginResponse.getMemberType();
+			this.profileImageUrl = loginResponse.getProfileImageUrl();
+		}
+
+		public String getAccessToken() {
+			return accessToken;
+		}
+
+		public MemberType getMemberType() {
+			return memberType;
+		}
+
+		public String getProfileImageUrl() {
+			return profileImageUrl;
+		}
 	}
 }
