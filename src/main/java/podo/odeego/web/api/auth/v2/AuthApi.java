@@ -35,6 +35,8 @@ public class AuthApi {
 		ResponseCookie responseCookie = ResponseCookie.from("refresh-token", loginResponse.getRefreshToken())
 			.httpOnly(true)
 			.secure(true)
+			.sameSite("None")
+			.path("/api/v2/auth")
 			.build();
 		return ResponseEntity.ok()
 			.header(HttpHeaders.SET_COOKIE, responseCookie.toString())
