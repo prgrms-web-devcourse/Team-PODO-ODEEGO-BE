@@ -60,9 +60,9 @@ class AuthApiTest {
 
 		//then
 		result.andExpect(status().isOk())
-			.andExpect(cookie().value("refresh-token", "refresh-token-string"))
-			.andExpect(cookie().httpOnly("refresh-token", true))
-			.andExpect(cookie().secure("refresh-token", true))
+			.andExpect(cookie().value("refreshToken", "refresh-token-string"))
+			.andExpect(cookie().httpOnly("refreshToken", true))
+			.andExpect(cookie().secure("refreshToken", true))
 			.andExpect(jsonPath("$.accessToken").value("access-token"))
 			.andDo(print());
 	}
@@ -88,9 +88,9 @@ class AuthApiTest {
 
 		//then
 		result.andExpect(status().isOk())
-			.andExpect(cookie().value("refresh-token", "refresh-token-string"))
-			.andExpect(cookie().httpOnly("refresh-token", true))
-			.andExpect(cookie().secure("refresh-token", true))
+			.andExpect(cookie().value("refreshToken", "refresh-token-string"))
+			.andExpect(cookie().httpOnly("refreshToken", true))
+			.andExpect(cookie().secure("refreshToken", true))
 			.andExpect(jsonPath("$.accessToken").value("access-token"))
 			.andDo(print());
 	}
@@ -106,14 +106,14 @@ class AuthApiTest {
 		// when
 		ResultActions result = mockMvc.perform(
 			MockMvcRequestBuilders.post("/api/v2/auth/reissue")
-				.cookie(new Cookie("refresh-token", refreshToken))
+				.cookie(new Cookie("refreshToken", refreshToken))
 		);
 
 		//then
 		result.andExpect(status().isOk())
-			.andExpect(cookie().value("refresh-token", "refresh-token-string"))
-			.andExpect(cookie().httpOnly("refresh-token", true))
-			.andExpect(cookie().secure("refresh-token", true))
+			.andExpect(cookie().value("refreshToken", "refresh-token-string"))
+			.andExpect(cookie().httpOnly("refreshToken", true))
+			.andExpect(cookie().secure("refreshToken", true))
 			.andExpect(jsonPath("$.accessToken").value("access-token-string"))
 			.andDo(print());
 	}

@@ -32,7 +32,7 @@ public class AuthApi {
 		String oAuth2Token = request.getHeader(HttpHeaders.AUTHORIZATION);
 		LoginResponse loginResponse = authService.socialLogin(oAuth2Token);
 		return ResponseEntity.ok()
-			.header(HttpHeaders.SET_COOKIE, generateCookie("refresh-token", loginResponse.getRefreshToken()))
+			.header(HttpHeaders.SET_COOKIE, generateCookie("refreshToken", loginResponse.getRefreshToken()))
 			.body(loginResponse);
 	}
 
@@ -50,13 +50,16 @@ public class AuthApi {
 	) {
 		LoginResponse loginResponse = authService.customLogin(loginRequest);
 		return ResponseEntity.ok()
-			.header(HttpHeaders.SET_COOKIE, generateCookie("refresh-token", loginResponse.getRefreshToken()))
+			.header(HttpHeaders.SET_COOKIE, generateCookie("refreshToken", loginResponse.getRefreshToken()))
 			.body(loginResponse);
 	}
 
 	@PostMapping("/reissue")
 	public ResponseEntity<ReissueResponse> reissue(@CookieValue("refreshToken") String refreshToken) {
-		return ResponseEntity.ok(authService.reissue(refreshToken));
+		ReissueResponse reissueResponse = authService.reissue(refreshToken);
+		return ResponseEntity.ok()
+			.header(HttpHeaders.SET_COOKIE, generateCookie("refreshToken", reissueResponse.refreshToken()))
+			.body(reissueResponse);
 	}
 
 	private String generateCookie(String name, String value) {
