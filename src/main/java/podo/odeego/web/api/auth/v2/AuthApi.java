@@ -32,14 +32,8 @@ public class AuthApi {
 	public ResponseEntity<LoginResponseBody> login(HttpServletRequest request) {
 		String oAuth2Token = request.getHeader(HttpHeaders.AUTHORIZATION);
 		LoginResponse loginResponse = authService.socialLogin(oAuth2Token);
-		ResponseCookie responseCookie = ResponseCookie.from("refresh-token", loginResponse.getRefreshToken())
-			.httpOnly(true)
-			.secure(true)
-			.sameSite("None")
-			.path("/api/v2/auth")
-			.build();
 		return ResponseEntity.ok()
-			.header(HttpHeaders.SET_COOKIE, responseCookie.toString())
+			.header(HttpHeaders.SET_COOKIE, generateCookie("refresh-token", loginResponse.getRefreshToken()))
 			.body(new LoginResponseBody(loginResponse));
 	}
 
@@ -51,26 +45,29 @@ public class AuthApi {
 		return ResponseEntity.ok().build();
 	}
 
-	//TODO: 중복 코드 해결
 	@PostMapping("/login/custom")
 	public ResponseEntity<LoginResponseBody> login(
 		@RequestBody CustomLoginRequest loginRequest
 	) {
 		LoginResponse loginResponse = authService.customLogin(loginRequest);
-		ResponseCookie responseCookie = ResponseCookie.from("refresh-token", loginResponse.getRefreshToken())
-			.httpOnly(true)
-			.secure(true)
-			.sameSite("None")
-			.path("/api/v2/auth")
-			.build();
 		return ResponseEntity.ok()
-			.header(HttpHeaders.SET_COOKIE, responseCookie.toString())
+			.header(HttpHeaders.SET_COOKIE, generateCookie("refresh-token", loginResponse.getRefreshToken()))
 			.body(new LoginResponseBody(loginResponse));
 	}
 
 	@PostMapping("/reissue")
 	public ResponseEntity<ReissueResponse> reissue(@CookieValue("refreshToken") String refreshToken) {
 		return ResponseEntity.ok(authService.reissue(refreshToken));
+	}
+
+	private String generateCookie(String name, String value) {
+		return ResponseCookie.from(name, value)
+			.httpOnly(true)
+			.secure(true)
+			.sameSite("None")
+			.path("/api/v2/auth")
+			.build()
+			.toString();
 	}
 
 	public static class LoginResponseBody {
