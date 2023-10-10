@@ -1,10 +1,13 @@
 package podo.odeego.web.auth.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import podo.odeego.domain.member.entity.MemberType;
 
 public class LoginResponse {
 
 	private String accessToken;
+	@JsonIgnore
 	private String refreshToken;
 	private MemberType memberType;
 	private String profileImageUrl;

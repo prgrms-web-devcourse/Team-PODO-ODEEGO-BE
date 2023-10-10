@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import podo.odeego.domain.member.entity.MemberType;
 import podo.odeego.web.auth.dto.CustomLoginRequest;
 import podo.odeego.web.auth.dto.JoinCustomAccountRequest;
 import podo.odeego.web.auth.dto.LoginResponse;
@@ -29,12 +28,12 @@ public class AuthApi {
 	}
 
 	@PostMapping("/login/oauth2")
-	public ResponseEntity<LoginResponseBody> login(HttpServletRequest request) {
+	public ResponseEntity<LoginResponse> login(HttpServletRequest request) {
 		String oAuth2Token = request.getHeader(HttpHeaders.AUTHORIZATION);
 		LoginResponse loginResponse = authService.socialLogin(oAuth2Token);
 		return ResponseEntity.ok()
 			.header(HttpHeaders.SET_COOKIE, generateCookie("refresh-token", loginResponse.getRefreshToken()))
-			.body(new LoginResponseBody(loginResponse));
+			.body(loginResponse);
 	}
 
 	@PostMapping("/join/custom")
@@ -46,13 +45,13 @@ public class AuthApi {
 	}
 
 	@PostMapping("/login/custom")
-	public ResponseEntity<LoginResponseBody> login(
+	public ResponseEntity<LoginResponse> login(
 		@RequestBody CustomLoginRequest loginRequest
 	) {
 		LoginResponse loginResponse = authService.customLogin(loginRequest);
 		return ResponseEntity.ok()
 			.header(HttpHeaders.SET_COOKIE, generateCookie("refresh-token", loginResponse.getRefreshToken()))
-			.body(new LoginResponseBody(loginResponse));
+			.body(loginResponse);
 	}
 
 	@PostMapping("/reissue")
@@ -68,29 +67,5 @@ public class AuthApi {
 			.path("/api/v2/auth")
 			.build()
 			.toString();
-	}
-
-	public static class LoginResponseBody {
-		private final String accessToken;
-		private final MemberType memberType;
-		private final String profileImageUrl;
-
-		public LoginResponseBody(LoginResponse loginResponse) {
-			this.accessToken = loginResponse.getAccessToken();
-			this.memberType = loginResponse.getMemberType();
-			this.profileImageUrl = loginResponse.getProfileImageUrl();
-		}
-
-		public String getAccessToken() {
-			return accessToken;
-		}
-
-		public MemberType getMemberType() {
-			return memberType;
-		}
-
-		public String getProfileImageUrl() {
-			return profileImageUrl;
-		}
 	}
 }
