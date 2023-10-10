@@ -4,6 +4,8 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import javax.servlet.http.Cookie;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,7 @@ import podo.odeego.domain.member.entity.MemberType;
 import podo.odeego.web.auth.dto.CustomLoginRequest;
 import podo.odeego.web.auth.dto.LoginMemberInfoResponse;
 import podo.odeego.web.auth.dto.LoginResponse;
+import podo.odeego.web.auth.dto.ReissueResponse;
 import podo.odeego.web.auth.service.AuthService;
 
 @SpringBootTest(classes = TestRedisConfig.class)
@@ -93,13 +96,25 @@ class AuthApiTest {
 	}
 
 	@Test
-	@DisplayName("Refresh Token으로 Access Token 재발급 요청을 보낼 경우 response body에 Access Token을 응답합니다.")
-	void reissue() {
+	@DisplayName("Refresh Token으로 Access Token 재발급 요청을 보낼 경우 response body에 Access Token, cookie에 RefreshToken을 응답합니다.")
+	void reissue() throws Exception {
 		//given
+		String refreshToken = "refresh-token-string";
+		String accessToken = "access-token-string";
+		when(authService.reissue(refreshToken)).thenReturn(new ReissueResponse(accessToken, refreshToken));
 
-		//when
+		// when
+		ResultActions result = mockMvc.perform(
+			MockMvcRequestBuilders.post("/api/v2/auth/reissue")
+				.cookie(new Cookie("refresh-token", refreshToken))
+		);
 
 		//then
-
+		result.andExpect(status().isOk())
+			.andExpect(cookie().value("refresh-token", "refresh-token-string"))
+			.andExpect(cookie().httpOnly("refresh-token", true))
+			.andExpect(cookie().secure("refresh-token", true))
+			.andExpect(jsonPath("$.accessToken").value("access-token-string"))
+			.andDo(print());
 	}
 }
