@@ -51,11 +51,21 @@ public class AuthApi {
 		return ResponseEntity.ok().build();
 	}
 
+	//TODO: 중복 코드 해결
 	@PostMapping("/login/custom")
-	public ResponseEntity<LoginResponse> login(
+	public ResponseEntity<LoginResponseBody> login(
 		@RequestBody CustomLoginRequest loginRequest
 	) {
-		return ResponseEntity.ok(authService.customLogin(loginRequest));
+		LoginResponse loginResponse = authService.customLogin(loginRequest);
+		ResponseCookie responseCookie = ResponseCookie.from("refresh-token", loginResponse.getRefreshToken())
+			.httpOnly(true)
+			.secure(true)
+			.sameSite("None")
+			.path("/api/v2/auth")
+			.build();
+		return ResponseEntity.ok()
+			.header(HttpHeaders.SET_COOKIE, responseCookie.toString())
+			.body(new LoginResponseBody(loginResponse));
 	}
 
 	@PostMapping("/reissue")
