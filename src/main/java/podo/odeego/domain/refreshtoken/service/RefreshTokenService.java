@@ -1,8 +1,11 @@
 package podo.odeego.domain.refreshtoken.service;
 
+import java.util.UUID;
+
 import org.springframework.stereotype.Service;
 
 import podo.odeego.domain.refreshtoken.entity.LegacyDtoRefreshToken;
+import podo.odeego.domain.refreshtoken.entity.RefreshToken;
 import podo.odeego.domain.refreshtoken.repository.RefreshTokenRepository;
 import podo.odeego.web.auth.exception.WrongRefreshTokenException;
 
@@ -16,14 +19,10 @@ public class RefreshTokenService {
 	}
 
 	public String create(Long memberId) {
-		return refreshTokenRepository.save(memberId);
+		RefreshToken refreshToken = new RefreshToken(UUID.randomUUID().toString(), true);
+		refreshTokenRepository.save(refreshToken, memberId);
+		return refreshToken.getToken();
 	}
-
-	// public String create(Long memberId) {
-	// 	LegacyDtoRefreshToken legacyDtoRefreshToken = LegacyDtoRefreshToken.randomUUID(memberId);
-	// 	refreshTokenRepository.save(legacyDtoRefreshToken);
-	// 	return legacyDtoRefreshToken.token();
-	// }
 
 	//TODO: 컴파일 에러 방지
 	public LegacyDtoRefreshToken findById(String refreshToken) {

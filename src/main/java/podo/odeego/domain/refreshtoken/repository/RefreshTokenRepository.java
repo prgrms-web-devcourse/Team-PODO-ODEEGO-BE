@@ -2,7 +2,6 @@ package podo.odeego.domain.refreshtoken.repository;
 
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -32,37 +31,24 @@ public class RefreshTokenRepository {
 		this.objectMapper = objectMapper;
 	}
 
-	public String save(Long memberId) {
-		ValueOperations<String, Long> valueOperations = template.opsForValue();
-
-		// TODO
-		// randomUUID로 Refresh TOken을 생성하기로 정책을 결정했다면, 그 정책을 수행하는 계층인 service에서 해줘야하는 것 아닌가?
-		// 또한, valid 값을 초기에 true로 해야한다는 것도 정책(RTR)인데, service에서 해서 넘겨줘야지
-		RefreshToken refreshToken = new RefreshToken(UUID.randomUUID().toString(), true);
+	public void save(RefreshToken refreshToken, Long memberId) {
 		String serializedRefreshToken;
 		try {
 			serializedRefreshToken = objectMapper.writeValueAsString(refreshToken);
 		} catch (JsonProcessingException e) {
 			throw new RuntimeException(e);
 		}
+
+		ValueOperations<String, Long> valueOperations = template.opsForValue();
 		valueOperations.set(serializedRefreshToken, memberId);
 		template.expire(serializedRefreshToken, refreshTokenExpirationMillis, TimeUnit.SECONDS);
-		return refreshToken.getToken();
 	}
 
-	// public void save(LegacyDtoRefreshToken legacyDtoRefreshToken) {
-	// 	ValueOperations<String, Long> valueOperations = template.opsForValue();
-	// 	valueOperations.set(legacyDtoRefreshToken.token(), legacyDtoRefreshToken.memberId());
-	// 	template.expire(legacyDtoRefreshToken.token(), refreshTokenExpirationMillis, TimeUnit.SECONDS);
-	// }
-
-	public Optional<Long> findMemberIdByRefreshToken(String refreshToken) {
+	public Optional<Long> findMemberIdByRefreshToken(RefreshToken refreshToken) {
 		ValueOperations<String, Long> valueOperations = template.opsForValue();
 		Long memberId;
 		try {
-			//TODO
-			// key(RefreshToken)로 value(memberID)를 조회하는데, key 값이 항상 isValid가 true로 세팅되어야 하는 것은 service에서 알고있어야 하는 것 아닌가?
-			memberId = valueOperations.get(objectMapper.writeValueAsString(new RefreshToken(refreshToken, true)));
+			memberId = valueOperations.get(objectMapper.writeValueAsString(refreshToken));
 		} catch (JsonProcessingException e) {
 			throw new RuntimeException(e);
 		}
