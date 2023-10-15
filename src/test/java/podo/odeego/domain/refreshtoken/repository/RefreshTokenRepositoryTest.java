@@ -2,15 +2,12 @@ package podo.odeego.domain.refreshtoken.repository;
 
 import static org.assertj.core.api.Assertions.*;
 
-import java.util.UUID;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import podo.odeego.config.TestRedisConfig;
-import podo.odeego.domain.refreshtoken.entity.RefreshToken;
 
 @SpringBootTest(classes = TestRedisConfig.class)
 class RefreshTokenRepositoryTest {
@@ -22,15 +19,15 @@ class RefreshTokenRepositoryTest {
 	@DisplayName("RefreshToken을 저장할 수 있습니다.")
 	public void saveRefreshToken() {
 		//given
-		String actualUUID = UUID.randomUUID().toString();
+		// String actualUUID = UUID.randomUUID().toString();
 
 		//when
-		RefreshToken refreshToken = RefreshToken.of(actualUUID, 1L);
-		refreshTokenRepository.save(refreshToken);
-		String expectedUUID = refreshTokenRepository.findById(refreshToken.token())
-			.get().token();
+		// LegacyDtoRefreshToken legacyDtoRefreshToken = LegacyDtoRefreshToken.of(actualUUID, 1L);\
+		String refreshToken = refreshTokenRepository.save(1L);
+		Long memberId = refreshTokenRepository.findMemberIdByRefreshToken(refreshToken)
+			.get();
 
 		//then
-		assertThat(expectedUUID).isEqualTo(actualUUID);
+		assertThat(memberId).isEqualTo(1L);
 	}
 }
