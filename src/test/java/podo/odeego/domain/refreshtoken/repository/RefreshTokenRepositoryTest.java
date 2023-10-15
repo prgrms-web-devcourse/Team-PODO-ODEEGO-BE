@@ -83,4 +83,25 @@ class RefreshTokenRepositoryTest {
 		//then
 		assertThat(actualMemberId).isEmpty();
 	}
+
+	@Test
+	@DisplayName("RefreshToken을 새로운 RefreshToken으로 갱신할 수 있습니다.")
+	void updateRefreshToken() {
+		//given
+		RefreshToken oldRefreshToken = new RefreshToken(UUID.randomUUID().toString(), true);
+		refreshTokenRepository.save(oldRefreshToken, 1L);
+
+		RefreshToken newRefreshToken = new RefreshToken(UUID.randomUUID().toString(), true);
+
+		//when
+		refreshTokenRepository.updateRefreshToken(oldRefreshToken, newRefreshToken);
+
+		//then
+		Optional<Long> notExistsMemberId = refreshTokenRepository.findMemberIdByRefreshToken(oldRefreshToken);
+		assertThat(notExistsMemberId).isEmpty();
+
+		Optional<Long> actualMemberId = refreshTokenRepository.findMemberIdByRefreshToken(newRefreshToken);
+		assertThat(actualMemberId).isPresent().get()
+			.isEqualTo(1L);
+	}
 }

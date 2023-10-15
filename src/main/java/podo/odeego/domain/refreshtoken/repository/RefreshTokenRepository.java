@@ -59,6 +59,17 @@ public class RefreshTokenRepository {
 		return Optional.of(memberId);
 	}
 
+	public void updateRefreshToken(RefreshToken oldrefreshToken, RefreshToken newRefreshToken) {
+		String serializedOldRefreshToken, serializedNewRefreshToken;
+		try {
+			serializedOldRefreshToken = objectMapper.writeValueAsString(oldrefreshToken);
+			serializedNewRefreshToken = objectMapper.writeValueAsString(newRefreshToken);
+		} catch (JsonProcessingException e) {
+			throw new RuntimeException(e);
+		}
+		template.rename(serializedOldRefreshToken, serializedNewRefreshToken);
+	}
+
 	//TODO: 컴파일 에러 방지
 	public Optional<LegacyDtoRefreshToken> findById() {
 		return Optional.empty();
