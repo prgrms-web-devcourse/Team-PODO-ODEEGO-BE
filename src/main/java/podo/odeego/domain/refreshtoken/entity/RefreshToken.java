@@ -15,4 +15,8 @@ public class RefreshToken implements Serializable {
 	public String getToken() {
 		return token;
 	}
+
+	public boolean isValid() {
+		return isValid;
+	}
 }
