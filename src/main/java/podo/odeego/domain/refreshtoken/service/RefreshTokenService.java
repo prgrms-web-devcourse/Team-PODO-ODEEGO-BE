@@ -30,8 +30,18 @@ public class RefreshTokenService {
 			.orElseThrow(() -> new WrongRefreshTokenException("Wrong RefreshToken: %s".formatted(refreshToken)));
 	}
 
-	// public LegacyDtoRefreshToken findById(String refreshToken) {
-	// 	return refreshTokenRepository.findById(refreshToken)
-	// 		.orElseThrow(() -> new WrongRefreshTokenException("Wrong RefreshToken: %s".formatted(refreshToken)));
-	// }
+	public Long findMemberIdByRefreshToken(String token) {
+		RefreshToken refreshToken = new RefreshToken(token, true);
+		return refreshTokenRepository.findMemberIdByRefreshToken(refreshToken)
+			.orElseThrow(() -> new WrongRefreshTokenException("Wrong RefreshToken: %s".formatted(refreshToken)));
+	}
+
+	public String rotate(String oldRefreshToken, Long memberId) {
+		refreshTokenRepository.updateRefreshToken(new RefreshToken(oldRefreshToken, true),
+			new RefreshToken(oldRefreshToken, false));
+
+		RefreshToken refreshToken = new RefreshToken(UUID.randomUUID().toString(), true);
+		refreshTokenRepository.save(refreshToken, memberId);
+		return refreshToken.getToken();
+	}
 }
