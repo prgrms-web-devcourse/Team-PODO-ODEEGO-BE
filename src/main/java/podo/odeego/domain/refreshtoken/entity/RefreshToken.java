@@ -6,7 +6,7 @@ public class RefreshToken {
 
 	@Id
 	private final Long memberId;
-	private final String token;
+	private String token;
 
 	public RefreshToken(Long memberId, String token) {
 		this.memberId = memberId;
@@ -21,7 +21,11 @@ public class RefreshToken {
 		return token;
 	}
 
-	public boolean isTokenEqualsTo(String oldRefreshToken) {
-		return this.token.equals(oldRefreshToken);
+	public boolean isTokenEqualsTo(String oldToken) {
+		return this.token.equals(oldToken);
+	}
+
+	public void changeNewToken(String newToken) {
+		this.token = newToken;
 	}
 }
