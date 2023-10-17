@@ -1,22 +1,23 @@
 package podo.odeego.domain.refreshtoken.entity;
 
-import java.io.Serializable;
+import org.springframework.data.annotation.Id;
 
-public class RefreshToken implements Serializable {
+public class RefreshToken {
 
+	@Id
+	private final Long memberId;
 	private final String token;
-	private final boolean isValid;
 
-	public RefreshToken(String token, boolean isValid) {
+	public RefreshToken(Long memberId, String token) {
+		this.memberId = memberId;
 		this.token = token;
-		this.isValid = isValid;
 	}
 
-	public String getToken() {
+	public Long memberId() {
+		return memberId;
+	}
+
+	public String token() {
 		return token;
-	}
-
-	public boolean isValid() {
-		return isValid;
 	}
 }
