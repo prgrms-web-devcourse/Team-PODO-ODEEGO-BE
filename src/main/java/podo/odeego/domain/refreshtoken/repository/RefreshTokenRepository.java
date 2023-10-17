@@ -35,9 +35,13 @@ public class RefreshTokenRepository {
 	}
 
 	public void update(RefreshToken refreshToken) {
-		ValueOperations<Long, String> longStringValueOperations = redisTemplate.opsForValue();
-		longStringValueOperations.setIfPresent(refreshToken.memberId(), refreshToken.token(),
+		ValueOperations<Long, String> valueOperations = redisTemplate.opsForValue();
+		valueOperations.setIfPresent(refreshToken.memberId(), refreshToken.token(),
 			refreshTokenExpirationMillis, TimeUnit.SECONDS);
+	}
+
+	public void deleteByMemberId(Long memberId) {
+		redisTemplate.delete(memberId);
 	}
 
 	public Optional<RefreshToken> findByMemberId(Long memberId) {

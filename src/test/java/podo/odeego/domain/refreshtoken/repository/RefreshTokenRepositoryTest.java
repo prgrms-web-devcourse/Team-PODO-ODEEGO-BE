@@ -92,4 +92,20 @@ class RefreshTokenRepositoryTest {
 		Optional<RefreshToken> expectedEmptyRefreshToken = refreshTokenRepository.findByMemberId(wrongMemberId);
 		assertThat(expectedEmptyRefreshToken).isEmpty();
 	}
+
+	@Test
+	@DisplayName("인자로 넘어온 memberId로 RefreshToken을 저장소에서 삭제할 수 있습니다.")
+	void deleteByMemberId() {
+		//given
+		Long memberId = 1L;
+		RefreshToken refreshToken = new RefreshToken(memberId, UUID.randomUUID().toString());
+		refreshTokenRepository.save(refreshToken);
+
+		//when
+		refreshTokenRepository.deleteByMemberId(memberId);
+
+		//then
+		Optional<RefreshToken> expectedRefreshToken = refreshTokenRepository.findByMemberId(memberId);
+		assertThat(expectedRefreshToken).isEmpty();
+	}
 }
