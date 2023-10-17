@@ -20,4 +20,8 @@ public class RefreshToken {
 	public String token() {
 		return token;
 	}
+
+	public boolean isTokenEqualsTo(String oldRefreshToken) {
+		return this.token.equals(oldRefreshToken);
+	}
 }
