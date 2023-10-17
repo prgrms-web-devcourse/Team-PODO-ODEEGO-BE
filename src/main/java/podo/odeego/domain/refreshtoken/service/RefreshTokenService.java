@@ -6,8 +6,9 @@ import org.springframework.stereotype.Service;
 
 import podo.odeego.domain.refreshtoken.dto.RefreshTokenResponse;
 import podo.odeego.domain.refreshtoken.entity.RefreshToken;
+import podo.odeego.domain.refreshtoken.exception.RefreshTokenNotFoundException;
+import podo.odeego.domain.refreshtoken.exception.WrongRefreshTokenException;
 import podo.odeego.domain.refreshtoken.repository.RefreshTokenRepository;
-import podo.odeego.web.auth.exception.WrongRefreshTokenException;
 
 @Service
 public class RefreshTokenService {
@@ -24,10 +25,23 @@ public class RefreshTokenService {
 		return new RefreshTokenResponse(refreshToken.token());
 	}
 
-	//TODO: 컴파일 에러 방지
-	public RefreshToken findById(String refreshToken) {
-		return refreshTokenRepository.findById()
-			.orElseThrow(() -> new WrongRefreshTokenException("Wrong RefreshToken: %s".formatted(refreshToken)));
+	public RefreshTokenResponse rotate(Long memberId, String oldRefreshToken) {
+		RefreshToken refreshToken = findByMemberId(memberId);
+
+		if (!refreshToken.isTokenEqualsTo(oldRefreshToken)) {
+			refreshTokenRepository.deleteByMemberId(memberId);
+			throw new WrongRefreshTokenException("Wrong Refresh Token: %s".formatted(oldRefreshToken));
+		}
+
+		refreshToken.changeNewToken(UUID.randomUUID().toString());
+		refreshTokenRepository.update(refreshToken);
+		return new RefreshTokenResponse(refreshToken.token());
+	}
+
+	private RefreshToken findByMemberId(Long memberId) {
+		return refreshTokenRepository.findByMemberId(memberId)
+			.orElseThrow(
+				() -> new RefreshTokenNotFoundException("RefreshToken Not Found. memberId: %d".formatted(memberId)));
 	}
 
 	// public Long findMemberIdByRefreshToken(String token) {
