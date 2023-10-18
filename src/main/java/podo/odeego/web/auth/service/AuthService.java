@@ -1,16 +1,22 @@
 package podo.odeego.web.auth.service;
 
+import static podo.odeego.global.error.ErrorCode.*;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import podo.odeego.domain.refreshtoken.entity.RefreshToken;
+import podo.odeego.domain.refreshtoken.dto.RefreshTokenResponse;
+import podo.odeego.domain.refreshtoken.exception.RefreshTokenNotFoundException;
+import podo.odeego.domain.refreshtoken.exception.WrongRefreshTokenException;
 import podo.odeego.domain.refreshtoken.service.RefreshTokenService;
+import podo.odeego.global.error.exception.AuthenticationException;
 import podo.odeego.web.auth.JwtProvider;
 import podo.odeego.web.auth.dto.CustomLoginRequest;
 import podo.odeego.web.auth.dto.JoinCustomAccountRequest;
 import podo.odeego.web.auth.dto.LoginMemberInfoResponse;
 import podo.odeego.web.auth.dto.LoginResponse;
+import podo.odeego.web.auth.dto.ReissueRequest;
 import podo.odeego.web.auth.dto.ReissueResponse;
 
 @Service
@@ -66,17 +72,24 @@ public class AuthService {
 
 	private TokenResponse generateToken(Long memberId) {
 		String accessToken = jwtProvider.generateAccessToken(memberId);
-		String refreshToken = refreshTokenService.create(memberId);
+		RefreshTokenResponse refreshToken = refreshTokenService.create(memberId);
 
-		return new TokenResponse(accessToken, refreshToken);
+		return new TokenResponse(accessToken, refreshToken.token());
 	}
 
-	public ReissueResponse reissue(String refreshToken) {
-		RefreshToken foundToken = refreshTokenService.findById(refreshToken);
-		log.info("Refresh Token found: {}", foundToken);
+	public ReissueResponse reissue(ReissueRequest request, String oldRefreshToken) {
+		Long memberId = jwtProvider.extractMemberIdFromExpiredJwt(request.getAccessToken());
 
-		String accessToken = jwtProvider.generateAccessToken(foundToken.memberId());
-		return new ReissueResponse(accessToken, refreshToken);
+		RefreshTokenResponse refreshTokenResponse;
+		try {
+			refreshTokenResponse = refreshTokenService.rotate(memberId, oldRefreshToken);
+		} catch (RefreshTokenNotFoundException | WrongRefreshTokenException e) {
+			throw new AuthenticationException(
+				"Reissue Failed. memberId: %d, RefreshToken: %s".formatted(memberId, oldRefreshToken), REISSUE_FAILED);
+		}
+
+		String accessToken = jwtProvider.generateAccessToken(memberId);
+		return new ReissueResponse(accessToken, refreshTokenResponse.token());
 	}
 
 	private static class TokenResponse {

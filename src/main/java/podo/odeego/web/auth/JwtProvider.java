@@ -44,6 +44,21 @@ public class JwtProvider {
 			.compact();
 	}
 
+	public Long extractMemberIdFromExpiredJwt(String accessToken) {
+		Claims claims;
+		try {
+			claims = getJwtParser().parseClaimsJws(accessToken).getBody();
+		} catch (io.jsonwebtoken.ExpiredJwtException e) {
+			claims = e.getClaims();
+		} catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
+			throw new InvalidJwtException("Invalid JWT: %s".formatted(accessToken));
+		}
+
+		return Long.parseLong(
+			String.valueOf(claims.get(ID_KEY))
+		);
+	}
+
 	public Long extractMemberId(String accessToken) {
 		Claims claims = parseClaims(accessToken);
 		return Long.parseLong(

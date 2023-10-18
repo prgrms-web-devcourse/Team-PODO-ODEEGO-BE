@@ -80,3 +80,35 @@ Content-Type: application/json
     }
   ]
 }
+
+### 커스텀 회원가입
+POST http://localhost:8080/api/v2/auth/join/custom
+Content-Type: application/json
+
+{
+  "username": "username123",
+  "password": "password123!",
+  "profileImageUrl": "image.png"
+}
+
+###
+POST http://localhost:8080/api/v2/auth/login/custom
+Content-Type: application/json
+
+{
+  "username": "username123",
+  "password": "password123!"
+}
+
+###
+GET http://localhost:8080/api/v1/members/default-station
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJtZW1iZXJJZCI6MSwiZXhwIjoxNjk3NjA4NjM5fQ.UGl9umXPeS9Jzrzk3RaAN9dDKGzVBL8vQODkTQ-WDnY
+
+###
+POST http://localhost:8080/api/v2/auth/reissue
+Cookie: refreshToken=5ef9dff6-4176-475b-bcc8-db9502ec61d2
+Content-Type: application/json
+
+{
+  "accessToken": "eyJhbGciOiJIUzI1NiJ9.eyJtZW1iZXJJZCI6MSwiZXhwIjoxNjk3NjA5NDcyfQ.6nsfqCjn8Pfet7vDge8C9GqMUdR5VCjk7dZOp6YBxfA"
+}
