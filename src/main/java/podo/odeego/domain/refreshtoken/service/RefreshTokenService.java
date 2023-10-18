@@ -43,19 +43,4 @@ public class RefreshTokenService {
 			.orElseThrow(
 				() -> new RefreshTokenNotFoundException("RefreshToken Not Found. memberId: %d".formatted(memberId)));
 	}
-
-	// public Long findMemberIdByRefreshToken(String token) {
-	// 	RefreshToken refreshToken = new RefreshToken(token, true);
-	// 	return refreshTokenRepository.findMemberIdByRefreshToken(refreshToken)
-	// 		.orElseThrow(() -> new WrongRefreshTokenException("Wrong RefreshToken: %s".formatted(refreshToken)));
-	// }
-	//
-	// public String rotate(String oldRefreshToken, Long memberId) {
-	// 	refreshTokenRepository.updateRefreshToken(new RefreshToken(oldRefreshToken, true),
-	// 		new RefreshToken(oldRefreshToken, false));
-	//
-	// 	RefreshToken refreshToken = new RefreshToken(UUID.randomUUID().toString(), true);
-	// 	refreshTokenRepository.save(refreshToken, memberId);
-	// 	return refreshToken.getToken();
-	// }
 }
