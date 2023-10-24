@@ -20,7 +20,6 @@ import podo.odeego.global.error.exception.AuthenticationException;
 import podo.odeego.web.auth.JwtProvider;
 import podo.odeego.web.auth.dto.LoginMemberInfoResponse;
 import podo.odeego.web.auth.dto.LoginResponse;
-import podo.odeego.web.auth.dto.ReissueRequest;
 import podo.odeego.web.auth.dto.ReissueResponse;
 
 @ExtendWith(MockitoExtension.class)
@@ -76,10 +75,9 @@ class AuthServiceTest {
 		String accessToken = "accessToken";
 		doReturn(accessToken).when(jwtProvider)
 			.generateAccessToken(1L);
-		ReissueRequest reissueRequest = new ReissueRequest(accessToken);
 
 		//when
-		ReissueResponse expectedResponse = authService.reissue(reissueRequest, "refreshToken");
+		ReissueResponse expectedResponse = authService.reissue(accessToken, "refreshToken");
 		String expectedAccessToken = expectedResponse.accessToken();
 		String expectedRefreshToken = expectedResponse.refreshToken();
 
@@ -100,10 +98,9 @@ class AuthServiceTest {
 			.rotate(1L, wrongRefreshToken);
 
 		String accessToken = "accessToken";
-		ReissueRequest reissueRequest = new ReissueRequest(accessToken);
 
 		//when & then
-		assertThatThrownBy(() -> authService.reissue(reissueRequest, wrongRefreshToken))
+		assertThatThrownBy(() -> authService.reissue(accessToken, wrongRefreshToken))
 			.isInstanceOf(AuthenticationException.class);
 	}
 
@@ -119,10 +116,9 @@ class AuthServiceTest {
 			.rotate(wrongMemberId, "notFoundRefreshToken");
 
 		String accessToken = "accessToken";
-		ReissueRequest reissueRequest = new ReissueRequest(accessToken);
 
 		//when & then
-		assertThatThrownBy(() -> authService.reissue(reissueRequest, "notFoundRefreshToken"))
+		assertThatThrownBy(() -> authService.reissue(accessToken, "notFoundRefreshToken"))
 			.isInstanceOf(AuthenticationException.class);
 	}
 }

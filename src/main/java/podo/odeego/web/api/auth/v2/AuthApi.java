@@ -55,8 +55,12 @@ public class AuthApi {
 	}
 
 	@PostMapping("/reissue")
-	public ResponseEntity<ReissueResponse> reissue(@CookieValue("refreshToken") String refreshToken) {
-		ReissueResponse reissueResponse = authService.reissue(refreshToken);
+	public ResponseEntity<ReissueResponse> reissue(
+		@CookieValue("refreshToken") String refreshToken,
+		HttpServletRequest request
+	) {
+		ReissueResponse reissueResponse = authService.reissue(request.getHeader(HttpHeaders.AUTHORIZATION),
+			refreshToken);
 		return ResponseEntity.ok()
 			.header(HttpHeaders.SET_COOKIE, generateCookie("refreshToken", reissueResponse.refreshToken()))
 			.body(reissueResponse);

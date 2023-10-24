@@ -101,11 +101,12 @@ class AuthApiTest {
 		//given
 		String refreshToken = "refresh-token-string";
 		String accessToken = "access-token-string";
-		when(authService.reissue(refreshToken)).thenReturn(new ReissueResponse(accessToken, refreshToken));
+		when(authService.reissue(accessToken, refreshToken)).thenReturn(new ReissueResponse(accessToken, refreshToken));
 
 		// when
 		ResultActions result = mockMvc.perform(
 			MockMvcRequestBuilders.post("/api/v2/auth/reissue")
+				.header(HttpHeaders.AUTHORIZATION, accessToken)
 				.cookie(new Cookie("refreshToken", refreshToken))
 		);
 

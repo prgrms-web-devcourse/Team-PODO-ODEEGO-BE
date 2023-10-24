@@ -2,8 +2,6 @@ package podo.odeego.web.auth.service;
 
 import static podo.odeego.global.error.ErrorCode.*;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import podo.odeego.domain.refreshtoken.dto.RefreshTokenResponse;
@@ -16,13 +14,10 @@ import podo.odeego.web.auth.dto.CustomLoginRequest;
 import podo.odeego.web.auth.dto.JoinCustomAccountRequest;
 import podo.odeego.web.auth.dto.LoginMemberInfoResponse;
 import podo.odeego.web.auth.dto.LoginResponse;
-import podo.odeego.web.auth.dto.ReissueRequest;
 import podo.odeego.web.auth.dto.ReissueResponse;
 
 @Service
 public class AuthService {
-
-	private final Logger log = LoggerFactory.getLogger(AuthService.class);
 
 	private final RefreshTokenService refreshTokenService;
 	private final JwtProvider jwtProvider;
@@ -77,8 +72,8 @@ public class AuthService {
 		return new TokenResponse(accessToken, refreshToken.token());
 	}
 
-	public ReissueResponse reissue(ReissueRequest request, String oldRefreshToken) {
-		Long memberId = jwtProvider.extractMemberIdFromExpiredJwt(request.getAccessToken());
+	public ReissueResponse reissue(String oldAccessToken, String oldRefreshToken) {
+		Long memberId = jwtProvider.extractMemberIdFromExpiredJwt(oldAccessToken);
 
 		RefreshTokenResponse refreshTokenResponse;
 		try {
