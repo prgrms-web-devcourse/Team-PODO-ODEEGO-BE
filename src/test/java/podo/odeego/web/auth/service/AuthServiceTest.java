@@ -89,17 +89,15 @@ class AuthServiceTest {
 	@DisplayName("저장소에서 조회한 RefreshToken과 일치하지 않는 RefreshToken으로 재발급 받으려고 하면 재발급에 실패하고 예외가 발생합니다.")
 	void reissueFailByRefreshToken() {
 		//given
-		String wrongRefreshToken = "wrongRefreshToken";
 		doReturn(1L).when(jwtProvider)
 			.extractMemberIdFromExpiredJwt("accessToken");
 
+		String wrongRefreshToken = "wrongRefreshToken";
 		doThrow(WrongRefreshTokenException.class).when(refreshTokenService)
 			.rotate(1L, wrongRefreshToken);
 
-		String accessToken = "accessToken";
-
 		//when & then
-		assertThatThrownBy(() -> authService.reissue(accessToken, wrongRefreshToken))
+		assertThatThrownBy(() -> authService.reissue("accessToken", wrongRefreshToken))
 			.isInstanceOf(AuthenticationException.class);
 	}
 
@@ -111,13 +109,12 @@ class AuthServiceTest {
 		doReturn(wrongMemberId).when(jwtProvider)
 			.extractMemberIdFromExpiredJwt("accessToken");
 
+		String notFoundRefreshToken = "notFoundRefreshToken";
 		doThrow(RefreshTokenNotFoundException.class).when(refreshTokenService)
-			.rotate(wrongMemberId, "notFoundRefreshToken");
-
-		String accessToken = "accessToken";
+			.rotate(wrongMemberId, notFoundRefreshToken);
 
 		//when & then
-		assertThatThrownBy(() -> authService.reissue(accessToken, "notFoundRefreshToken"))
+		assertThatThrownBy(() -> authService.reissue("accessToken", notFoundRefreshToken))
 			.isInstanceOf(AuthenticationException.class);
 	}
 }
