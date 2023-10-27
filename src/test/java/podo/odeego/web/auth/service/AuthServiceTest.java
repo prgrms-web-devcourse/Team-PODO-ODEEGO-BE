@@ -72,17 +72,16 @@ class AuthServiceTest {
 		doReturn(new RefreshTokenResponse("newRefreshToken")).when(refreshTokenService)
 			.rotate(1L, "refreshToken");
 
-		String accessToken = "accessToken";
-		doReturn(accessToken).when(jwtProvider)
+		doReturn("newAccessToken").when(jwtProvider)
 			.generateAccessToken(1L);
 
 		//when
-		ReissueResponse expectedResponse = authService.reissue(accessToken, "refreshToken");
+		ReissueResponse expectedResponse = authService.reissue("accessToken", "refreshToken");
 		String expectedAccessToken = expectedResponse.accessToken();
 		String expectedRefreshToken = expectedResponse.refreshToken();
 
 		//then
-		Assertions.assertThat(expectedAccessToken).isEqualTo("accessToken");
+		Assertions.assertThat(expectedAccessToken).isEqualTo("newAccessToken");
 		Assertions.assertThat(expectedRefreshToken).isEqualTo("newRefreshToken");
 	}
 
