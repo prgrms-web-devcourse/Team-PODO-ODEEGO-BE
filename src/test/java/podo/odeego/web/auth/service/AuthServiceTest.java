@@ -66,6 +66,10 @@ class AuthServiceTest {
 	@Test
 	public void reissue() {
 		//given
+		String bearerToken = "Bearer accessToken";
+		doReturn("accessToken").when(jwtProvider)
+			.resolveToken(bearerToken);
+
 		doReturn(1L).when(jwtProvider)
 			.extractMemberIdFromExpiredJwt("accessToken");
 
@@ -76,7 +80,7 @@ class AuthServiceTest {
 			.generateAccessToken(1L);
 
 		//when
-		ReissueResponse expectedResponse = authService.reissue("accessToken", "refreshToken");
+		ReissueResponse expectedResponse = authService.reissue(bearerToken, "refreshToken");
 		String expectedAccessToken = expectedResponse.accessToken();
 		String expectedRefreshToken = expectedResponse.refreshToken();
 
@@ -89,6 +93,10 @@ class AuthServiceTest {
 	@DisplayName("저장소에서 조회한 RefreshToken과 일치하지 않는 RefreshToken으로 재발급 받으려고 하면 재발급에 실패하고 예외가 발생합니다.")
 	void reissueFailByRefreshToken() {
 		//given
+		String bearerToken = "Bearer accessToken";
+		doReturn("accessToken").when(jwtProvider)
+			.resolveToken(bearerToken);
+
 		doReturn(1L).when(jwtProvider)
 			.extractMemberIdFromExpiredJwt("accessToken");
 
@@ -97,7 +105,7 @@ class AuthServiceTest {
 			.rotate(1L, wrongRefreshToken);
 
 		//when & then
-		assertThatThrownBy(() -> authService.reissue("accessToken", wrongRefreshToken))
+		assertThatThrownBy(() -> authService.reissue(bearerToken, wrongRefreshToken))
 			.isInstanceOf(AuthenticationException.class);
 	}
 
@@ -105,6 +113,10 @@ class AuthServiceTest {
 	@DisplayName("RefreshToken 저장소에 존재하지 않는 memberId로 재발급 받으려고 하면 재발급에 실패하고 예외가 발생합니다.")
 	void reissueFailByMemberId() {
 		//given
+		String bearerToken = "Bearer accessToken";
+		doReturn("accessToken").when(jwtProvider)
+			.resolveToken(bearerToken);
+
 		Long wrongMemberId = 1L;
 		doReturn(wrongMemberId).when(jwtProvider)
 			.extractMemberIdFromExpiredJwt("accessToken");
@@ -114,7 +126,7 @@ class AuthServiceTest {
 			.rotate(wrongMemberId, notFoundRefreshToken);
 
 		//when & then
-		assertThatThrownBy(() -> authService.reissue("accessToken", notFoundRefreshToken))
+		assertThatThrownBy(() -> authService.reissue(bearerToken, notFoundRefreshToken))
 			.isInstanceOf(AuthenticationException.class);
 	}
 }

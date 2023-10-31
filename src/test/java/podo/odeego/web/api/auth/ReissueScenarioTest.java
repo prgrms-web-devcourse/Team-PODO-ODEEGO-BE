@@ -68,7 +68,7 @@ class ReissueScenarioTest {
 
 		//then: refresh token을 통해 재발급받을 수 있습니다
 		mockMvc.perform(post("/api/v2/auth/reissue")
-				.header(AUTHORIZATION, loginResponse.getAccessToken())
+				.header(AUTHORIZATION, "Bearer " + loginResponse.getAccessToken())
 				.cookie(new Cookie("refreshToken", refreshToken)))
 			.andExpect(status().isOk())
 			.andDo(print());

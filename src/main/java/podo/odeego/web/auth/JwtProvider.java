@@ -16,11 +16,14 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import podo.odeego.web.auth.exception.ExpiredJwtException;
 import podo.odeego.web.auth.exception.InvalidJwtException;
+import podo.odeego.web.auth.exception.TokenTypeNotGrantedException;
 
 @Component
 public class JwtProvider {
 
 	private static final String ID_KEY = "memberId";
+	private static final String BEARER_PREFIX = "Bearer";
+	private static final int SPLIT_AT = 7;
 
 	private final long accessTokenExpirationMillis;
 	private final SecretKey key;
@@ -31,6 +34,15 @@ public class JwtProvider {
 	) {
 		this.key = Keys.hmacShaKeyFor(key.getBytes(StandardCharsets.UTF_8));
 		this.accessTokenExpirationMillis = accessTokenExpirationMillis;
+	}
+
+	public String resolveToken(String bearerToken) {
+		if (bearerToken.startsWith(BEARER_PREFIX)) {
+			return bearerToken.substring(SPLIT_AT);
+		} else {
+			throw new TokenTypeNotGrantedException(
+				"Not granted token type. Token type must be %s".formatted(BEARER_PREFIX));
+		}
 	}
 
 	public String generateAccessToken(Long memberId) {

@@ -72,7 +72,8 @@ public class AuthService {
 		return new TokenResponse(accessToken, refreshToken.token());
 	}
 
-	public ReissueResponse reissue(String oldAccessToken, String oldRefreshToken) {
+	public ReissueResponse reissue(String bearerToken, String oldRefreshToken) {
+		String oldAccessToken = jwtProvider.resolveToken(bearerToken);
 		Long memberId = jwtProvider.extractMemberIdFromExpiredJwt(oldAccessToken);
 
 		RefreshTokenResponse refreshTokenResponse;
