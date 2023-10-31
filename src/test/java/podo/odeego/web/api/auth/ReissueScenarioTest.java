@@ -17,6 +17,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -48,11 +49,12 @@ class ReissueScenarioTest {
 		when(kakaoClient.getUserInfo("oAuth2Token"))
 			.thenReturn(kakaoProfileResponse);
 
-		String content = mockMvc.perform(post("/api/v2/auth/login/oauth2")
+		MvcResult result = mockMvc.perform(post("/api/v2/auth/login/oauth2")
 				.header(AUTHORIZATION, "oAuth2Token"))
 			.andExpect(status().isOk())
-			.andReturn()
-			.getResponse().getContentAsString();
+			.andReturn();
+		String refreshToken = result.getResponse().getCookie("refreshToken").getValue();
+		String content = result.getResponse().getContentAsString();
 
 		//when: access token이 만료되었다면
 		LoginResponse loginResponse = objectMapper.readValue(content, LoginResponse.class);
@@ -61,12 +63,13 @@ class ReissueScenarioTest {
 				.content(signUpRequest)
 				.contentType(MediaType.APPLICATION_JSON)
 				.header(AUTHORIZATION, "Bearer " + loginResponse.getAccessToken()))
-			.andExpect(status().is4xxClientError())
+			.andExpect(status().isUnauthorized())
 			.andDo(print());
 
 		//then: refresh token을 통해 재발급받을 수 있습니다
 		mockMvc.perform(post("/api/v2/auth/reissue")
-				.cookie(new Cookie("refreshToken", loginResponse.getRefreshToken())))
+				.header(AUTHORIZATION, "Bearer " + loginResponse.getAccessToken())
+				.cookie(new Cookie("refreshToken", refreshToken)))
 			.andExpect(status().isOk())
 			.andDo(print());
 	}

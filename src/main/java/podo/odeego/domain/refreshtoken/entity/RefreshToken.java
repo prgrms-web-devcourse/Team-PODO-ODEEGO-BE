@@ -1,41 +1,31 @@
 package podo.odeego.domain.refreshtoken.entity;
 
-import java.util.UUID;
-
 import org.springframework.data.annotation.Id;
 
 public class RefreshToken {
 
 	@Id
-	private final String token;
 	private final Long memberId;
+	private String token;
 
-	private RefreshToken(String token, Long memberId) {
-		this.token = token;
+	public RefreshToken(Long memberId, String token) {
 		this.memberId = memberId;
-	}
-
-	public static RefreshToken randomUUID(Long memberId) {
-		return new RefreshToken(UUID.randomUUID().toString(), memberId);
-	}
-
-	public static RefreshToken of(String refreshToken, Long memberId) {
-		return new RefreshToken(refreshToken, memberId);
-	}
-
-	public String token() {
-		return token;
+		this.token = token;
 	}
 
 	public Long memberId() {
 		return memberId;
 	}
 
-	@Override
-	public String toString() {
-		return "RefreshToken{" +
-			"token='" + token + '\'' +
-			", memberId=" + memberId +
-			'}';
+	public String token() {
+		return token;
+	}
+
+	public boolean isTokenEqualsTo(String oldToken) {
+		return this.token.equals(oldToken);
+	}
+
+	public void changeNewToken(String newToken) {
+		this.token = newToken;
 	}
 }

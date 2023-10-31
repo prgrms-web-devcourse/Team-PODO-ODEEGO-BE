@@ -3,6 +3,7 @@ package podo.odeego.web.api.auth.v2;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,7 +30,10 @@ public class AuthApi {
 	@PostMapping("/login/oauth2")
 	public ResponseEntity<LoginResponse> login(HttpServletRequest request) {
 		String oAuth2Token = request.getHeader(HttpHeaders.AUTHORIZATION);
-		return ResponseEntity.ok(authService.socialLogin(oAuth2Token));
+		LoginResponse loginResponse = authService.socialLogin(oAuth2Token);
+		return ResponseEntity.ok()
+			.header(HttpHeaders.SET_COOKIE, generateCookie("refreshToken", loginResponse.getRefreshToken()))
+			.body(loginResponse);
 	}
 
 	@PostMapping("/join/custom")
@@ -44,11 +48,31 @@ public class AuthApi {
 	public ResponseEntity<LoginResponse> login(
 		@RequestBody CustomLoginRequest loginRequest
 	) {
-		return ResponseEntity.ok(authService.customLogin(loginRequest));
+		LoginResponse loginResponse = authService.customLogin(loginRequest);
+		return ResponseEntity.ok()
+			.header(HttpHeaders.SET_COOKIE, generateCookie("refreshToken", loginResponse.getRefreshToken()))
+			.body(loginResponse);
 	}
 
 	@PostMapping("/reissue")
-	public ResponseEntity<ReissueResponse> reissue(@CookieValue("refreshToken") String refreshToken) {
-		return ResponseEntity.ok(authService.reissue(refreshToken));
+	public ResponseEntity<ReissueResponse> reissue(
+		@CookieValue("refreshToken") String refreshToken,
+		HttpServletRequest request
+	) {
+		ReissueResponse reissueResponse = authService.reissue(request.getHeader(HttpHeaders.AUTHORIZATION),
+			refreshToken);
+		return ResponseEntity.ok()
+			.header(HttpHeaders.SET_COOKIE, generateCookie("refreshToken", reissueResponse.refreshToken()))
+			.body(reissueResponse);
+	}
+
+	private String generateCookie(String name, String value) {
+		return ResponseCookie.from(name, value)
+			.httpOnly(true)
+			.secure(true)
+			.sameSite("None")
+			.path("/api/v2/auth")
+			.build()
+			.toString();
 	}
 }

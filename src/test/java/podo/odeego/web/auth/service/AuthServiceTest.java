@@ -12,8 +12,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import podo.odeego.domain.member.entity.MemberType;
-import podo.odeego.domain.refreshtoken.entity.RefreshToken;
+import podo.odeego.domain.refreshtoken.dto.RefreshTokenResponse;
+import podo.odeego.domain.refreshtoken.exception.RefreshTokenNotFoundException;
+import podo.odeego.domain.refreshtoken.exception.WrongRefreshTokenException;
 import podo.odeego.domain.refreshtoken.service.RefreshTokenService;
+import podo.odeego.global.error.exception.AuthenticationException;
 import podo.odeego.web.auth.JwtProvider;
 import podo.odeego.web.auth.dto.LoginMemberInfoResponse;
 import podo.odeego.web.auth.dto.LoginResponse;
@@ -46,8 +49,7 @@ class AuthServiceTest {
 		doReturn(accessToken).when(jwtProvider)
 			.generateAccessToken(loginMemberInfo.memberId());
 
-		String refreshToken = "refreshToken";
-		doReturn(refreshToken).when(refreshTokenService)
+		doReturn(new RefreshTokenResponse("refreshToken")).when(refreshTokenService)
 			.create(loginMemberInfo.memberId());
 
 		//when
@@ -60,25 +62,71 @@ class AuthServiceTest {
 		assertThat(loginResponse.getProfileImageUrl()).isEqualTo("profileImageUrl");
 	}
 
-	@DisplayName("RefreshToken Storage에 Refresh Token이 존재한다면 Access Token을 재발급 받을 수 있습니다.")
+	@DisplayName("reissue() 메서드 호출을 통해 Refresh Token과 Access Token을 재발급 받을 수 있습니다.")
 	@Test
 	public void reissue() {
 		//given
-		RefreshToken refreshToken = RefreshToken.of("refreshToken", 1L);
-		doReturn(refreshToken).when(refreshTokenService)
-			.findById("refreshToken");
+		String bearerToken = "Bearer accessToken";
+		doReturn("accessToken").when(jwtProvider)
+			.resolveToken(bearerToken);
 
-		String accessToken = "accessToken";
-		doReturn(accessToken).when(jwtProvider)
-			.generateAccessToken(refreshToken.memberId());
+		doReturn(1L).when(jwtProvider)
+			.extractMemberIdFromExpiredJwt("accessToken");
+
+		doReturn(new RefreshTokenResponse("newRefreshToken")).when(refreshTokenService)
+			.rotate(1L, "refreshToken");
+
+		doReturn("newAccessToken").when(jwtProvider)
+			.generateAccessToken(1L);
 
 		//when
-		ReissueResponse expectedResponse = authService.reissue("refreshToken");
+		ReissueResponse expectedResponse = authService.reissue(bearerToken, "refreshToken");
 		String expectedAccessToken = expectedResponse.accessToken();
 		String expectedRefreshToken = expectedResponse.refreshToken();
 
 		//then
-		Assertions.assertThat(expectedAccessToken).isEqualTo("accessToken");
-		Assertions.assertThat(expectedRefreshToken).isEqualTo("refreshToken");
+		Assertions.assertThat(expectedAccessToken).isEqualTo("newAccessToken");
+		Assertions.assertThat(expectedRefreshToken).isEqualTo("newRefreshToken");
+	}
+
+	@Test
+	@DisplayName("저장소에서 조회한 RefreshToken과 일치하지 않는 RefreshToken으로 재발급 받으려고 하면 재발급에 실패하고 예외가 발생합니다.")
+	void reissueFailByRefreshToken() {
+		//given
+		String bearerToken = "Bearer accessToken";
+		doReturn("accessToken").when(jwtProvider)
+			.resolveToken(bearerToken);
+
+		doReturn(1L).when(jwtProvider)
+			.extractMemberIdFromExpiredJwt("accessToken");
+
+		String wrongRefreshToken = "wrongRefreshToken";
+		doThrow(WrongRefreshTokenException.class).when(refreshTokenService)
+			.rotate(1L, wrongRefreshToken);
+
+		//when & then
+		assertThatThrownBy(() -> authService.reissue(bearerToken, wrongRefreshToken))
+			.isInstanceOf(AuthenticationException.class);
+	}
+
+	@Test
+	@DisplayName("RefreshToken 저장소에 존재하지 않는 memberId로 재발급 받으려고 하면 재발급에 실패하고 예외가 발생합니다.")
+	void reissueFailByMemberId() {
+		//given
+		String bearerToken = "Bearer accessToken";
+		doReturn("accessToken").when(jwtProvider)
+			.resolveToken(bearerToken);
+
+		Long wrongMemberId = 1L;
+		doReturn(wrongMemberId).when(jwtProvider)
+			.extractMemberIdFromExpiredJwt("accessToken");
+
+		String notFoundRefreshToken = "notFoundRefreshToken";
+		doThrow(RefreshTokenNotFoundException.class).when(refreshTokenService)
+			.rotate(wrongMemberId, notFoundRefreshToken);
+
+		//when & then
+		assertThatThrownBy(() -> authService.reissue(bearerToken, notFoundRefreshToken))
+			.isInstanceOf(AuthenticationException.class);
 	}
 }
